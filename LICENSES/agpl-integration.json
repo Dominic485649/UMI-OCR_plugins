@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "verification_date": "2026-10-14",
+  "verification_date": "2026-10-18",
   "project_license_facts": {
     "root_LICENSE": {
       "license": "MIT",
@@ -14,7 +14,7 @@
     "about_json": {
       "license": "AGPL-3.0-or-later",
       "repository_path": "UmiOCR-data/about.json",
-      "SHA256": "ae73d36a5227e0808345b0a13cec22bb007d1e6c226de93a813bafd2de786fa8"
+      "SHA256": "739e49cad9336b76c48cdd16ecbde64991e8f907d17be2e8b525ee16bc18c683"
     },
     "combined_distribution": {
       "license": "AGPL-3.0-or-later",

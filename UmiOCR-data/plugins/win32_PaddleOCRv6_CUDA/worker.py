@@ -147,8 +147,19 @@ def stop_engine():
         gc.collect()
 
 
+def _configure_stdio():
+    # Direct launches may inherit a legacy PYTHONIOENCODING even when the
+    # interpreter uses UTF-8 mode. Keep JSON stdout and diagnostic stderr
+    # separate, and preserve their existing error-handling policies.
+    for stream in (sys.stdin, sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if callable(reconfigure):
+            reconfigure(encoding="utf-8", errors=stream.errors)
+
+
 def main():
     global _engine, _config
+    _configure_stdio()
     for line in sys.stdin:
         try:
             request = json.loads(line)

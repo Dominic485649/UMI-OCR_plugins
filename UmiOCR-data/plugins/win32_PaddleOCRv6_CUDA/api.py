@@ -64,9 +64,13 @@ class _WorkerClient:
             self.stderr_file = tempfile.NamedTemporaryFile(
                 prefix="umi-ocr-cuda-worker-", suffix=".log", delete=False
             )
+            environment = os.environ.copy()
+            environment["PYTHONUTF8"] = "1"
+            environment["PYTHONIOENCODING"] = "utf-8"
             self.process = subprocess.Popen(
-                [str(worker_python), "-u", str(WORKER)],
+                [str(worker_python), "-X", "utf8", "-u", str(WORKER)],
                 cwd=str(PLUGIN_DIR),
+                env=environment,
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=self.stderr_file,

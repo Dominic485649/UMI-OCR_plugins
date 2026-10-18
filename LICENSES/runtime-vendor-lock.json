@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "verification_date": "2026-10-14",
+  "verification_date": "2026-10-18",
   "runtime_lock": "UmiOCR-data/plugins/win32_PaddleOCRv6_CUDA/runtime.lock.json",
   "runtime_lock_valid": true,
   "runtime_lock_failures": [],
