@@ -13,7 +13,7 @@
     "agpl_nvidia": "PASS",
     "cpu_ocr": "NOT_INCLUDED",
     "document_models": "NOT_INCLUDED",
-    "gpu_ocr_e2e": "BLOCK",
+    "gpu_ocr_e2e": "PASS",
     "source_delivery": "BLOCK",
     "current_source_e2e": "BLOCK"
   },
@@ -23,7 +23,7 @@
   "source_delivery": {
     "status": "BLOCK",
     "verified": false,
-    "previous_recorded_status": null,
+    "previous_recorded_status": "BLOCK",
     "blockers": [
       "A fresh --release-gates input and successful verification are required."
     ]
@@ -31,7 +31,7 @@
   "current_source_e2e": {
     "status": "BLOCK",
     "verified": false,
-    "previous_recorded_status": null,
+    "previous_recorded_status": "BLOCK",
     "blockers": [
       "A fresh --release-gates input and successful verification are required."
     ]

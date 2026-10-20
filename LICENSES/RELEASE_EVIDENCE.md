@@ -16,7 +16,7 @@ Artifact kind: `gpu`
 | agpl_nvidia | PASS | `LICENSES/agpl-integration.json` |
 | cpu_ocr | NOT_INCLUDED | `LICENSES/cpu-document-gates.json` |
 | document_models | NOT_INCLUDED | `LICENSES/cpu-document-gates.json` |
-| gpu_ocr_e2e | BLOCK | `LICENSES/gpu-e2e-evidence.json` |
+| gpu_ocr_e2e | PASS | `LICENSES/gpu-e2e-evidence.json` |
 | source_delivery | BLOCK | `LICENSES/source-delivery.json` |
 | current_source_e2e | BLOCK | `LICENSES/current-source-e2e.json` |
 
