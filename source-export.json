@@ -1,7 +1,7 @@
 {
   "version": "3.0.2",
   "scope": "public-cuda-only",
-  "parent_revision": "04d81a28b686050378dd3358c07b8dcdc11aac14",
+  "parent_revision": "96b08baf2f96943c45e8fc2f768dc88954b16363",
   "git_history_included": false,
   "local_changes_included": true,
   "public_release_allowed": false,
@@ -36,7 +36,7 @@
     "docs/RELEASE_3.0.1_ACCEPTANCE.md": "3023fdfe0a5bfc03bbdc61f67a4036e5432a9e543355bcb1acc99e7e81553b3f",
     "docs/RELEASE_3.0.1_DRAFT.md": "79c6440f71804333bf5b3cdc01b287a390514fbef75e669aaa42fdd496bc8316",
     "docs/RELEASE_3.0.2_ACCEPTANCE.md": "bf0d4c18b5b3e953602760dc141361d9702c1e227415b411a20635488d008820",
-    "docs/RELEASE_3.0.2_DRAFT.md": "21b87f096d40c088240b00d9b8c330bbd8a704b5440226b66db3fbfc0ae3ff2f",
+    "docs/RELEASE_3.0.2_DRAFT.md": "4a6f00373f7fcc03c91eb8f05cdab651dba453b3f2ebf42871d0c08eee74e29b",
     "docs/RELEASE_3.0.2_LOCAL.md": "0b8056bf14db965df69fc6c6e6ba537fecce5e846c72d47f4969e797fb42b04b",
     "docs/RELEASE_3.0.2_REVIEW.md": "d3442bf658af65976a5bf90fec6603befdfebec0b9c312e86a9140dc65840da9",
     "docs/RELEASE_CUDA_3.0.1_DRAFT.md": "9e57bf19e8d3cc1b8cda5ff7377dd2b17a25efe7857322c5854fdd1ae22d9e1a",

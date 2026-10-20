@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "verification_date": "2026-10-14",
+  "verification_date": "2026-10-20",
   "models": [
     {
       "model_name": "PP-LCNet_x1_0_doc_ori_infer",
@@ -22,7 +22,7 @@
         "PaddlePaddle attribution",
         "UmiOCR-data/plugins/win32_PaddleOCRv6_CUDA/models/PP-LCNet_x1_0_doc_ori_infer/README.md"
       ],
-      "verification_date": "2026-10-14",
+      "verification_date": "2026-10-20",
       "evidence_snapshot_path": "LICENSES/model-rights.json",
       "status": "PASS"
     },
@@ -46,7 +46,7 @@
         "PaddlePaddle attribution",
         "UVDoc_grid_infer modification notice"
       ],
-      "verification_date": "2026-10-14",
+      "verification_date": "2026-10-20",
       "evidence_snapshot_path": "LICENSES/model-rights.json",
       "status": "PASS"
     },
@@ -69,7 +69,7 @@
         "LICENSES/Apache-2.0.txt",
         "PaddlePaddle attribution"
       ],
-      "verification_date": "2026-10-14",
+      "verification_date": "2026-10-20",
       "evidence_snapshot_path": "LICENSES/model-rights.json",
       "status": "PASS"
     },
@@ -92,7 +92,7 @@
         "LICENSES/Apache-2.0.txt",
         "PaddlePaddle attribution"
       ],
-      "verification_date": "2026-10-14",
+      "verification_date": "2026-10-20",
       "evidence_snapshot_path": "LICENSES/model-rights.json",
       "status": "PASS"
     },
@@ -115,7 +115,7 @@
         "LICENSES/Apache-2.0.txt",
         "PaddlePaddle attribution"
       ],
-      "verification_date": "2026-10-14",
+      "verification_date": "2026-10-20",
       "evidence_snapshot_path": "LICENSES/model-rights.json",
       "status": "PASS"
     }
