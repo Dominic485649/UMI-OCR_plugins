@@ -1,26 +1,26 @@
 {
   "schema_version": 1,
-  "verification_date": "2026-10-21",
+  "verification_date": "2026-10-22",
   "evidence": {
     "artifact_path": "UmiOCR-data/plugins/win32_PaddleOCRv6_CUDA/gpu-e2e-evidence.json",
-    "SHA256": "890f24502f8cb4e74633f1294ade4cbc7970bb56cdd045b17f8e76751776ddb6"
+    "SHA256": "28ae9716e8ed6294159357f442be0b876c1f439149df2c548d33c731ac22697a"
   },
   "source_mirror_evidence": {
     "artifact_path": "source/UmiOCR-data/plugins/win32_PaddleOCRv6_CUDA/gpu-e2e-evidence.json",
-    "SHA256": "890f24502f8cb4e74633f1294ade4cbc7970bb56cdd045b17f8e76751776ddb6"
+    "SHA256": "28ae9716e8ed6294159357f442be0b876c1f439149df2c548d33c731ac22697a"
   },
   "source_binding_valid": true,
   "external_source_channel": {
     "mode": "external-source-channel",
     "notice": {
       "artifact_path": "SOURCE-CODE.md",
-      "SHA256": "5bc78c11fe6d4c28a29e5dcd7bd9ad67797856ed7299d2d25796c90a29966a71"
+      "SHA256": "d999f663bf7493c7527621ed68d6f00a2c901de2bacab65ee806ac52dd35ae39"
     },
-    "repository": "https://github.com/hiroi-sora/Umi-OCR",
-    "commit": "b0518fff09d0c0dc730c2bd629a1e1415b354094",
-    "tag": "v3.0.3",
-    "public_source_url": "PENDING",
-    "commit_object_verified": true,
+    "repository": null,
+    "commit": null,
+    "tag": null,
+    "public_source_url": null,
+    "commit_object_verified": false,
     "tag_target_verified": false,
     "verified": false,
     "reason": "Bundled source/ is available; no external source channel is required."
@@ -39,7 +39,7 @@
   "record": {
     "test_type": "real_gpu_ocr_workflows_e2e",
     "status": "PASS",
-    "tested_at": "2026-10-20T17:46:33.661225+00:00",
+    "tested_at": "2026-10-21T18:23:34.957499+00:00",
     "device": "gpu:0",
     "architecture": {
       "type": "separate-worker-stdio-ipc",
@@ -60,8 +60,8 @@
       "SHA256": "b2eeab87fb105ff865d11e4afa661e4b7030b011570dc45b486e96c61141ccca"
     },
     "workflow_log": {
-      "file": "gpu-workflows-local.log",
-      "SHA256": "72441d4f3b4bea9b8afc43f0ebf46c7ae92de60075f9e5c2c91dfa36b42f66d4"
+      "file": "gpu-workflows-initial.log",
+      "SHA256": "fb7a024aff47a5a1b2cfd63b1bba0a2a03905265e4428f554d5d0898676f1213"
     },
     "model_initialization": [
       "PP-LCNet_x1_0_doc_ori",
