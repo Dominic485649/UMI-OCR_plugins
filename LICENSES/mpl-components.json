@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "verification_date": "2026-10-20",
+  "verification_date": "2026-10-21",
   "source_archives": [
     {
       "artifact_path": "source/third_party/certifi-2026.6.17.tar.gz",

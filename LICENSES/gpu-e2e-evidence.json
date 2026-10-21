@@ -1,33 +1,33 @@
 {
   "schema_version": 1,
-  "verification_date": "2026-10-20",
+  "verification_date": "2026-10-21",
   "evidence": {
     "artifact_path": "UmiOCR-data/plugins/win32_PaddleOCRv6_CUDA/gpu-e2e-evidence.json",
-    "SHA256": "581bc915abe9dc5c18c251caa1bae25b88c68cde3d1e0067034dcda91eaf461d"
+    "SHA256": "890f24502f8cb4e74633f1294ade4cbc7970bb56cdd045b17f8e76751776ddb6"
   },
   "source_mirror_evidence": {
     "artifact_path": "source/UmiOCR-data/plugins/win32_PaddleOCRv6_CUDA/gpu-e2e-evidence.json",
-    "SHA256": "581bc915abe9dc5c18c251caa1bae25b88c68cde3d1e0067034dcda91eaf461d"
+    "SHA256": "890f24502f8cb4e74633f1294ade4cbc7970bb56cdd045b17f8e76751776ddb6"
   },
   "source_binding_valid": true,
   "external_source_channel": {
     "mode": "external-source-channel",
     "notice": {
       "artifact_path": "SOURCE-CODE.md",
-      "SHA256": "dfd43b29e3580246201fe644cac9089cbfed9d5380c73c6bbadbf645bd4b9c5e"
+      "SHA256": "5bc78c11fe6d4c28a29e5dcd7bd9ad67797856ed7299d2d25796c90a29966a71"
     },
-    "repository": null,
-    "commit": null,
-    "tag": null,
-    "public_source_url": null,
-    "commit_object_verified": false,
+    "repository": "https://github.com/hiroi-sora/Umi-OCR",
+    "commit": "b0518fff09d0c0dc730c2bd629a1e1415b354094",
+    "tag": "v3.0.3",
+    "public_source_url": "PENDING",
+    "commit_object_verified": true,
     "tag_target_verified": false,
     "verified": false,
     "reason": "Bundled source/ is available; no external source channel is required."
   },
   "runtime_lock_reverified": {
     "artifact_path": "UmiOCR-data/plugins/win32_PaddleOCRv6_CUDA/runtime.lock.json",
-    "SHA256": "4f3862b4c7ca376291895fd0a40456522634236987268aa170f77ff2d4caf42f"
+    "SHA256": "19a2c680a4fbe5346762c8dd62ee69fb9f93db62222d09de7a67997dc1b9e642"
   },
   "expected_model_initialization": [
     "PP-LCNet_x1_0_doc_ori",
@@ -39,14 +39,14 @@
   "record": {
     "test_type": "real_gpu_ocr_workflows_e2e",
     "status": "PASS",
-    "tested_at": "2026-10-20T13:57:53.413675+00:00",
+    "tested_at": "2026-10-20T17:46:33.661225+00:00",
     "device": "gpu:0",
     "architecture": {
       "type": "separate-worker-stdio-ipc",
       "host_loaded_proprietary_modules": [],
       "ipc_payload": "JSON-lines path/base64 -> JSON OCR result"
     },
-    "plugin_runtime_lock_sha256": "4f3862b4c7ca376291895fd0a40456522634236987268aa170f77ff2d4caf42f",
+    "plugin_runtime_lock_sha256": "19a2c680a4fbe5346762c8dd62ee69fb9f93db62222d09de7a67997dc1b9e642",
     "plugin_source_sha256": {
       "__init__.py": "ce911c7da3e3616a6b979bc6085af4f2a6b9de9d00ec221b42dd5691f4c9850d",
       "api.py": "b256bd241a3f2791f3e09dfe4e9da1731e3b87ddc9ab07478f6939b1a18c1ce7",
@@ -60,8 +60,8 @@
       "SHA256": "b2eeab87fb105ff865d11e4afa661e4b7030b011570dc45b486e96c61141ccca"
     },
     "workflow_log": {
-      "file": "gpu-workflows-public.log",
-      "SHA256": "19a1d0a2b38641a501b68a013da82e8f897396552e05e41a685e8882047a8138"
+      "file": "gpu-workflows-local.log",
+      "SHA256": "72441d4f3b4bea9b8afc43f0ebf46c7ae92de60075f9e5c2c91dfa36b42f66d4"
     },
     "model_initialization": [
       "PP-LCNet_x1_0_doc_ori",

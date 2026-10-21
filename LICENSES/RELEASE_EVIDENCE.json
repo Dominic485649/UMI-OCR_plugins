@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "verification_date": "2026-10-20",
+  "verification_date": "2026-10-21",
   "artifact_kind": "gpu",
   "gates": {
     "runtime_vendor": "PASS",
@@ -35,5 +35,9 @@
     "blockers": [
       "A fresh --release-gates input and successful verification are required."
     ]
+  },
+  "current_source_validation": {
+    "status": "NOT_RUN",
+    "reason": "Historical GPU evidence is not current-source/current-artifact E2E acceptance."
   }
 }
