@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "win32_PaddleOCRv6_CUDA",
   "name": "PP-OCRv6 CUDA",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "host_api": ">=2.7,<3.0",
   "platform": [
     "win32"
@@ -30,7 +30,7 @@
     "closure_lock": "runtime.lock.json",
     "process_boundary": {
       "type": "separate-worker-stdio-ipc",
-      "entry": "worker.py",
+      "entry": "UmiOCR-CudaWorker.exe",
       "request_schema": "JSON lines: run_path(path) or run_bytes(base64)",
       "response_schema": "JSON lines: OCR result {code,data} and timing"
     }

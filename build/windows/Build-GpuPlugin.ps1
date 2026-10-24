@@ -68,10 +68,10 @@ if ($ReleaseGates) {
 }
 $PluginId = "win32_PaddleOCRv6_CUDA"
 $PluginSource = Join-Path $RepoRoot "UmiOCR-data\plugins\$PluginId"
-$Manifest = Get-Content -Raw (Join-Path $PluginSource "umi-plugin.json") | ConvertFrom-Json
-$About = Get-Content -Raw (Join-Path $RepoRoot "UmiOCR-data/about.json") | ConvertFrom-Json
-$Version = "$($About.version.major).$($About.version.minor).$($About.version.patch)"
-if ([string]$Manifest.version -ne $Version) { throw "CUDA manifest version must match about.json: $Version" }
+$PluginManifestPath = Join-Path $PluginSource "umi-plugin.json"
+$Manifest = Get-Content -Raw $PluginManifestPath | ConvertFrom-Json
+$Version = [string]$Manifest.version
+if ($Manifest.id -cne $PluginId -or $Version -cnotmatch '^\d+\.\d+\.\d+$') { throw "CUDA manifest must identify this plugin and its independent release version." }
 $Lock = Get-Content -Raw (Join-Path $RepoRoot "build\sources-windows-cu126.lock.json") | ConvertFrom-Json
 
 if (-not $StagingRoot) { $StagingRoot = Join-Path $RepoRoot "build\staging\$Version-gpu-$([guid]::NewGuid().ToString('N'))" }
@@ -136,7 +136,14 @@ function Remove-BuildTree([string]$Path) {
     if (-not $full.StartsWith($StagingRoot + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) {
         throw "Refusing to remove a path outside this new staging directory: $full"
     }
-    if (Test-Path -LiteralPath $full) { Remove-Item -Recurse -Force -LiteralPath $full }
+    if (Test-Path -LiteralPath $full) {
+        $occupied = @(Get-Process | Where-Object { $_.Path -like ($full.TrimEnd('\','/') + '\*') } | Select-Object Id,ProcessName,Path)
+        if ($occupied.Count) {
+            $occupied | Format-Table -AutoSize
+            throw "构建临时目录有进程占用；请正常退出后重试，不会终止进程或删除目录：$full"
+        }
+        Remove-Item -Recurse -Force -LiteralPath $full
+    }
 }
 
 function Copy-GpuPluginSource([string]$Destination) {
@@ -144,7 +151,7 @@ function Copy-GpuPluginSource([string]$Destination) {
     if (-not $full.StartsWith($StagingRoot + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) {
         throw "Refusing to create source mirror outside staging: $full"
     }
-    if (Test-Path -LiteralPath $full) { Remove-Item -Recurse -Force -LiteralPath $full }
+    if (Test-Path -LiteralPath $full) { Remove-BuildTree $full }
     & $basePython -I -S (Join-Path $RepoRoot "build/tools/export_cuda_source.py") --repo-root $RepoRoot --output-dir $full --source-cache (Join-Path $CacheRoot "sources")
     if ($LASTEXITCODE -ne 0) { throw "Public CUDA source export failed." }
 }
@@ -170,7 +177,7 @@ function Write-LocalCandidateSourceNotice([string]$Destination) {
     $snapshotRoot = Join-Path $StagingRoot ".build/source-snapshot"
     $sourceRoot = Join-Path $StagingRoot "source"
     Copy-Item -Force -LiteralPath (Join-Path $StagingRoot "LICENSES/RELEASE_EVIDENCE.json") -Destination (Join-Path $sourceRoot "LICENSES/RELEASE_EVIDENCE.json")
-    & $basePython -I -S (Join-Path $RepoRoot "build/tools/source_snapshot.py") --repo-root $RepoRoot --mirror-source $sourceRoot --output-dir $snapshotRoot
+    & $basePython -I -S (Join-Path $RepoRoot "build/tools/source_snapshot.py") --repo-root $RepoRoot --about $PluginManifestPath --mirror-source $sourceRoot --output-dir $snapshotRoot
     if ($LASTEXITCODE -ne 0) { throw "Current CUDA source snapshot failed." }
     foreach ($name in @("source-snapshot.zip", "source-snapshot.json", "source-provenance.json")) { Copy-Item -LiteralPath (Join-Path $snapshotRoot $name) -Destination $Destination }
     $commit = (& git -C $RepoRoot rev-parse HEAD).Trim()
@@ -340,7 +347,7 @@ elseif (-not (Test-Path -LiteralPath $VendorRoot)) {
 
 # ===================== 2. 插件源码 =====================
 
-& $basePython -I -S (Join-Path $RepoRoot "build/tools/source_snapshot.py") --repo-root $RepoRoot --plugin-dir $PluginRoot
+& $basePython -I -S (Join-Path $RepoRoot "build/tools/source_snapshot.py") --repo-root $RepoRoot --about $PluginManifestPath --plugin-dir $PluginRoot
 if ($LASTEXITCODE -ne 0) { throw "Current public CUDA source copy failed." }
 Copy-Item -Force -LiteralPath (Join-Path $RepoRoot "build\requirements-gpu-plugin-windows-cu126.lock") `
     -Destination (Join-Path $PluginRoot "runtime-requirements.lock")
@@ -394,9 +401,20 @@ if (Test-Path -LiteralPath $excludedCudaDll) {
     Write-Host "Excluded unlisted CUDA binary: $excludedCudaDll"
 }
 
+$cudaWorkerSource = Resolve-BuildPath (Join-Path $RepoRoot "build/windows/CudaWorker")
+$cudaWorkerBuild = Resolve-BuildPath (Join-Path $StagingRoot ".build/cuda_worker")
+$cudaWorkerTarget = Resolve-BuildPath (Join-Path $PluginRoot "UmiOCR-CudaWorker.exe")
+if (Test-Path -LiteralPath $cudaWorkerBuild) { throw "Use a new CUDA worker build directory: $cudaWorkerBuild" }
+if (Test-Path -LiteralPath $cudaWorkerTarget) { throw "CUDA worker output already exists: $cudaWorkerTarget" }
+cmake.exe -S $cudaWorkerSource -B $cudaWorkerBuild -G "Visual Studio 18 2026" -A x64 "-DCMAKE_SYSTEM_VERSION=10.0.28000.0" "-DUMIOCR_VERSION=$Version"
+if ($LASTEXITCODE -ne 0) { throw "CUDA worker configure failed." }
+cmake.exe --build $cudaWorkerBuild --config Release --parallel --target UmiOCR-CudaWorker
+if ($LASTEXITCODE -ne 0) { throw "CUDA worker build failed." }
+$cudaWorkerBinary = Resolve-BuildPath (Join-Path $cudaWorkerBuild "Release/UmiOCR-CudaWorker.exe")
+if (-not (Test-Path -LiteralPath $cudaWorkerBinary -PathType Leaf)) { throw "CUDA worker executable is missing: $cudaWorkerBinary" }
+Copy-Item -LiteralPath $cudaWorkerBinary -Destination $cudaWorkerTarget
+
 # ===================== 6. 依赖闭包锁 =====================
-# 只对原生二进制（dll / pyd）做哈希：它们是完整性与安全性的关键，
-# 逐个哈希上万个 .py 既拖慢构建也拖慢用户端校验。
 
 & $basePython -B -I -S (Join-Path $RepoRoot "build/tools/freeze_gpu_runtime.py") $PluginRoot
 if ($LASTEXITCODE -ne 0) { throw "GPU native closure lock generation failed." }
@@ -504,7 +522,7 @@ else {
     Copy-Item -LiteralPath (Join-Path $RepoRoot "SOURCE-CODE.md") -Destination $StagingRoot
     Set-Content -Encoding utf8 -LiteralPath (Join-Path $StagingRoot "VERSION") -Value $Version
     $snapshotRoot = Join-Path $StagingRoot ".build/source-snapshot"
-    & $basePython -I -S (Join-Path $RepoRoot "build/tools/source_snapshot.py") --repo-root $RepoRoot --mirror-source (Join-Path $StagingRoot "source") --output-dir $snapshotRoot
+    & $basePython -I -S (Join-Path $RepoRoot "build/tools/source_snapshot.py") --repo-root $RepoRoot --about $PluginManifestPath --mirror-source (Join-Path $StagingRoot "source") --output-dir $snapshotRoot
     if ($LASTEXITCODE -ne 0) { throw "Public CUDA source snapshot failed." }
     foreach ($name in @("source-snapshot.zip", "source-snapshot.json", "source-provenance.json")) {
         Copy-Item -LiteralPath (Join-Path $snapshotRoot $name) -Destination $StagingRoot

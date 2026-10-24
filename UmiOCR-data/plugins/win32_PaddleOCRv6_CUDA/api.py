@@ -15,10 +15,10 @@ import json
 import os
 import queue
 import subprocess
-import sys
 import tempfile
 import threading
 import time
+from copy import deepcopy
 from pathlib import Path
 
 from .config import PRESETS
@@ -29,6 +29,7 @@ from .config import PRESETS
 # itself may resolve the path when locating its vendor files.
 PLUGIN_DIR = Path(__file__).parent
 WORKER = PLUGIN_DIR / "worker.py"
+WORKER_LAUNCHER = PLUGIN_DIR / "UmiOCR-CudaWorker.exe"
 DEVICE_RE = __import__("re").compile(r"^gpu:(\d+)$")
 
 
@@ -48,18 +49,8 @@ class _WorkerClient:
             # as its reader thread was being torn down; never let that stale
             # line satisfy the new worker's ``start`` request.
             self.responses = queue.Queue()
-            # In a packaged Umi-OCR process ``sys.executable`` is the launcher
-            # (Umi-OCR.exe), not the portable Python interpreter.  Launching
-            # ``Umi-OCR.exe -u worker.py`` would start another GUI instance
-            # instead of the JSON-lines worker.  Prefer the release's sibling
-            # runtime/python.exe when it is present; development/test hosts
-            # continue to use their current interpreter.
-            worker_python = Path(sys.executable)
-            bundled_python = PLUGIN_DIR.parents[1] / "runtime" / (
-                "python.exe" if os.name == "nt" else "python"
-            )
-            if bundled_python.is_file():
-                worker_python = bundled_python
+            if not WORKER.is_file() or not WORKER_LAUNCHER.is_file():
+                raise FileNotFoundError("CUDA worker 原生入口或脚本缺失，请完整安装匹配的插件。")
             creationflags = getattr(subprocess, "CREATE_NO_WINDOW", 0) if os.name == "nt" else 0
             self.stderr_file = tempfile.NamedTemporaryFile(
                 prefix="umi-ocr-cuda-worker-", suffix=".log", delete=False
@@ -68,7 +59,7 @@ class _WorkerClient:
             environment["PYTHONUTF8"] = "1"
             environment["PYTHONIOENCODING"] = "utf-8"
             self.process = subprocess.Popen(
-                [str(worker_python), "-X", "utf8", "-u", str(WORKER)],
+                [str(WORKER_LAUNCHER)],
                 cwd=str(PLUGIN_DIR),
                 env=environment,
                 stdin=subprocess.PIPE,
@@ -91,28 +82,35 @@ class _WorkerClient:
             return response
 
     def _read(self, stream, responses):
-        # Bind the reader to one process generation.  A late stop response
-        # from the old stream must never enter a newly allocated response queue.
-        if stream is None:
-            return
+        # 读线程只持有当前代次的队列，旧进程的EOF不能污染重启后的响应。
+        error = "GPU worker response stream closed; inspect the worker diagnostic log"
         try:
-            for line in stream:
-                try:
-                    responses.put(json.loads(line))
-                except Exception as exc:
-                    responses.put({"ok": False, "error": f"invalid worker response: {exc}"})
-        except (OSError, ValueError):
-            # stop() may close the stream while this daemon reader is waiting.
-            return
+            if stream is not None:
+                for line in stream:
+                    try:
+                        responses.put(json.loads(line))
+                    except (ValueError, TypeError) as exc:
+                        responses.put({"ok": False, "error": f"invalid worker response: {exc}"})
+        except (OSError, ValueError) as exc:
+            error = f"GPU worker response stream failed: {exc}"
+        finally:
+            responses.put({"ok": False, "error": error})
 
     def request(self, payload, timeout):
         with self.lock:
-            if not self.process or self.process.poll() is not None or not self.process.stdin:
+            if not self.process or not self.process.stdin:
                 raise RuntimeError("GPU worker process is not running")
-            self.process.stdin.write(json.dumps(payload, ensure_ascii=False) + "\n")
-            self.process.stdin.flush()
+            wait = max(1.0, float(timeout))
+            if self.process.poll() is not None:
+                wait = min(wait, 1.0)
+            else:
+                try:
+                    self.process.stdin.write(json.dumps(payload, ensure_ascii=False) + "\n")
+                    self.process.stdin.flush()
+                except OSError:
+                    wait = min(wait, 1.0)
             try:
-                response = self.responses.get(timeout=max(1.0, float(timeout)))
+                response = self.responses.get(timeout=wait)
             except queue.Empty as exc:
                 self.stop()
                 raise TimeoutError("GPU worker did not answer before the configured timeout") from exc
@@ -123,10 +121,8 @@ class _WorkerClient:
     def stop(self):
         process = self.process
         self.process = None
-        if process is None:
-            return
         try:
-            if process.poll() is None and process.stdin:
+            if process is not None and process.poll() is None and process.stdin:
                 try:
                     process.stdin.write(json.dumps({"op": "stop"}) + "\n")
                     process.stdin.flush()
@@ -138,12 +134,13 @@ class _WorkerClient:
                     process.kill()
                     process.wait(timeout=5)
         finally:
-            for stream in (process.stdin, process.stdout):
-                try:
-                    if stream:
-                        stream.close()
-                except OSError:
-                    pass
+            if process is not None:
+                for stream in (process.stdin, process.stdout):
+                    try:
+                        if stream:
+                            stream.close()
+                    except OSError:
+                        pass
             if self.stderr_file:
                 try:
                     self.stderr_file.close()
@@ -167,6 +164,7 @@ class Api:
         self._last_used_at = None
         self._last_error = ""
         self._last_timing = {}
+        self._startup = {}
 
     @staticmethod
     def _normalize_config(argd):
@@ -213,9 +211,11 @@ class Api:
         with self._lock:
             if config == self._config and self._worker.process and self._worker.process.poll() is None:
                 return ""
+            self._startup = {}
             try:
                 self._validate_config(config)
-                self._worker.start(config, timeout=180)
+                response = self._worker.start(config, timeout=180)
+                self._startup = deepcopy(response.get("startup", {}))
                 self._config = config
                 self._last_used_at = time.monotonic()
                 self._last_error = ""
@@ -223,6 +223,7 @@ class Api:
             except Exception as exc:
                 self._worker.stop()
                 self._config = None
+                self._startup = {}
                 self._last_error = f"[Error] PP-OCRv6 CUDA worker 启动失败：{exc}"
                 return self._last_error
 
@@ -270,6 +271,7 @@ class Api:
             "error": self._last_error,
             "lastTiming": dict(self._last_timing),
             "architecture": "separate-worker-stdio-ipc",
+            "startup": deepcopy(self._startup) if loaded else {},
         }
 
     def release(self):
@@ -277,6 +279,7 @@ class Api:
             was_active = bool(self._config or self._worker.process)
             self._worker.stop()
             self._config = None
+            self._startup = {}
             self._last_timing = {}
             self._last_used_at = None
             self._last_error = ""
@@ -315,8 +318,9 @@ class Api:
 
 
 def health(argd=None):
+    ready = WORKER.is_file() and WORKER_LAUNCHER.is_file()
     return {
-        "ok": WORKER.is_file(),
-        "message": "GPU OCR 使用独立 worker；CUDA/Paddle 仅在 worker 进程中加载。" if WORKER.is_file() else "缺少 GPU worker.py。",
-        "details": {"worker": str(WORKER), "architecture": "separate-worker-stdio-ipc"},
+        "ok": ready,
+        "message": "GPU OCR 使用原生 UTF-8 独立 worker；CUDA/Paddle 仅在 worker 进程中加载。" if ready else "缺少 GPU worker.py 或原生启动入口，请完整安装插件。",
+        "details": {"worker": str(WORKER), "launcher": str(WORKER_LAUNCHER), "architecture": "separate-worker-stdio-ipc"},
     }

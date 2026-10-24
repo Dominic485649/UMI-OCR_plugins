@@ -1,21 +1,18 @@
 {
   "schema_version": 1,
-  "verification_date": "2026-10-22",
+  "verification_date": "2026-10-24",
   "evidence": {
     "artifact_path": "UmiOCR-data/plugins/win32_PaddleOCRv6_CUDA/gpu-e2e-evidence.json",
-    "SHA256": "28ae9716e8ed6294159357f442be0b876c1f439149df2c548d33c731ac22697a"
+    "SHA256": "7609f5299680d6ab6892ccce41613554fb8aad27cc2a01d2b713d83e13a654ce"
   },
   "source_mirror_evidence": {
     "artifact_path": "source/UmiOCR-data/plugins/win32_PaddleOCRv6_CUDA/gpu-e2e-evidence.json",
-    "SHA256": "28ae9716e8ed6294159357f442be0b876c1f439149df2c548d33c731ac22697a"
+    "SHA256": "7609f5299680d6ab6892ccce41613554fb8aad27cc2a01d2b713d83e13a654ce"
   },
-  "source_binding_valid": true,
+  "source_binding_valid": false,
   "external_source_channel": {
     "mode": "external-source-channel",
-    "notice": {
-      "artifact_path": "SOURCE-CODE.md",
-      "SHA256": "d999f663bf7493c7527621ed68d6f00a2c901de2bacab65ee806ac52dd35ae39"
-    },
+    "notice": null,
     "repository": null,
     "commit": null,
     "tag": null,
@@ -27,7 +24,7 @@
   },
   "runtime_lock_reverified": {
     "artifact_path": "UmiOCR-data/plugins/win32_PaddleOCRv6_CUDA/runtime.lock.json",
-    "SHA256": "19a2c680a4fbe5346762c8dd62ee69fb9f93db62222d09de7a67997dc1b9e642"
+    "SHA256": "e4884b6a28d7d06908df054814bb329e1555590af4e3c99c0b3426ed41abc829"
   },
   "expected_model_initialization": [
     "PP-LCNet_x1_0_doc_ori",
@@ -39,29 +36,29 @@
   "record": {
     "test_type": "real_gpu_ocr_workflows_e2e",
     "status": "PASS",
-    "tested_at": "2026-10-21T18:23:34.957499+00:00",
+    "tested_at": "2026-10-14T01:49:16.128008+00:00",
     "device": "gpu:0",
     "architecture": {
       "type": "separate-worker-stdio-ipc",
       "host_loaded_proprietary_modules": [],
       "ipc_payload": "JSON-lines path/base64 -> JSON OCR result"
     },
-    "plugin_runtime_lock_sha256": "19a2c680a4fbe5346762c8dd62ee69fb9f93db62222d09de7a67997dc1b9e642",
+    "plugin_runtime_lock_sha256": "dd3858a2e15589b6a071e79ec755d01670dcb3079fc8ec939c5e933642b5b297",
     "plugin_source_sha256": {
       "__init__.py": "ce911c7da3e3616a6b979bc6085af4f2a6b9de9d00ec221b42dd5691f4c9850d",
-      "api.py": "b256bd241a3f2791f3e09dfe4e9da1731e3b87ddc9ab07478f6939b1a18c1ce7",
+      "api.py": "5fd074c64b165ec16fcd43bc905b45abd99a1daaa03b0a69b3566e40ceab4fba",
       "config.py": "e4ffb99b451082d1a40f57837c3ef315fcdb38119ffea43a435611c135de3eac",
       "coordinates.py": "5f082318184b15266caf8a34113295a4377d54b0467f9b594e68ed811a5d72ff",
       "health.py": "687234287a880168787c82a5fcfe525dd05da752439ff8d73424a113f51344b9",
-      "worker.py": "c139736b21b93afa49226e698ae596bb7197e71926f14d984234c014c050b04d"
+      "worker.py": "cc8c6cf10bda817b76938a717a901497250281e27cd9005e99fc0873d2b16c01"
     },
     "workflow_test": {
       "path": "tests/test_ocr_workflows.py",
       "SHA256": "b2eeab87fb105ff865d11e4afa661e4b7030b011570dc45b486e96c61141ccca"
     },
     "workflow_log": {
-      "file": "gpu-workflows-initial.log",
-      "SHA256": "fb7a024aff47a5a1b2cfd63b1bba0a2a03905265e4428f554d5d0898676f1213"
+      "file": "300-gpu-workflows-final.log",
+      "SHA256": "e7292e35e4f8d517c22b209cb70017d23e35393e11a5074fbb4999e8f9a89a0f"
     },
     "model_initialization": [
       "PP-LCNet_x1_0_doc_ori",
@@ -78,6 +75,8 @@
       "CUDA-only failure paths"
     ]
   },
-  "status": "PASS",
-  "blockers": []
+  "status": "BLOCK",
+  "blockers": [
+    "GPU OCR E2E evidence is missing, malformed, stale, or does not prove the five-model CUDA path after FFmpeg/cusolverMg exclusion and a verified source delivery channel."
+  ]
 }

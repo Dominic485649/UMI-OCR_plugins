@@ -157,6 +157,38 @@ def _configure_stdio():
             reconfigure(encoding="utf-8", errors=stream.errors)
 
 
+def startup_info(config):
+    import ctypes
+    from ctypes import wintypes
+
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel32.GetACP.restype = wintypes.UINT
+    kernel32.GetModuleFileNameW.argtypes = (wintypes.HMODULE, wintypes.LPWSTR, wintypes.DWORD)
+    kernel32.GetModuleFileNameW.restype = wintypes.DWORD
+    code_page = int(kernel32.GetACP())
+    if code_page != 65001 or not sys.flags.utf8_mode:
+        raise RuntimeError("CUDA worker 必须由原生 UTF-8 入口启动；需要 Windows 10 1903 或更新系统。")
+    buffer = ctypes.create_unicode_buffer(32768)
+    length = kernel32.GetModuleFileNameW(sys.dllhandle, buffer, len(buffer))
+    if not length or length >= len(buffer):
+        raise OSError("无法确认实际 Python DLL 路径。")
+    models = []
+    if config["docOrientation"]:
+        models.append("PP-LCNet_x1_0_doc_ori")
+    if config["useDocUnwarping"]:
+        models.append("UVDoc")
+    if config["useTextlineOrientation"]:
+        models.append("PP-LCNet_x1_0_textline_ori")
+    models.extend((f"{config['detModel']}_det", f"{config['recModel']}_rec"))
+    return {
+        "pid": os.getpid(), "native_code_page": code_page,
+        "python_utf8_mode": bool(sys.flags.utf8_mode),
+        "stdin_encoding": sys.stdin.encoding, "stdout_encoding": sys.stdout.encoding,
+        "python_version": sys.version.split()[0], "python_dll": buffer.value,
+        "executable": sys.executable, "model_names": models, "device": config["device"],
+    }
+
+
 def main():
     global _engine, _config
     _configure_stdio()
@@ -168,8 +200,9 @@ def main():
                 stop_engine()
                 started = time.perf_counter_ns()
                 _config = dict(request.get("config") or {})
+                startup = startup_info(_config)
                 _engine = create_engine(_config)
-                reply({"ok": True, "status": "loaded", "model_initialization_ms": (time.perf_counter_ns() - started) / 1_000_000})
+                reply({"ok": True, "status": "loaded", "model_initialization_ms": (time.perf_counter_ns() - started) / 1_000_000, "startup": startup})
             elif op in {"run_path", "run_bytes"}:
                 if _engine is None:
                     raise RuntimeError("worker engine is not initialized")

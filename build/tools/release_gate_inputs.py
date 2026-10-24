@@ -8,11 +8,13 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import os
 import re
 import subprocess
 import sys
+import tarfile
 from pathlib import Path
 
 PLUGIN_ID = "win32_PaddleOCRv6_CUDA"
@@ -29,6 +31,12 @@ METADATA_NAMES = {
 }
 MANUAL_CHECKS = {"full_desktop_capture", "manual_hdr_acceptance", "mixed_monitor_hdr_sdr"}
 AUTOMATED_CHECKS = {"base_tests", "combined_tests", "gui", "tray", "gpu_workflows", "gpu_workflow_log"}
+STARTUP_SCOPE = "cuda-startup-hotfix"
+STARTUP_AUTOMATED_CHECKS = {"startup_unit_tests", "gpu_startup_matrix"}
+STARTUP_TEST_SOURCES = {
+    "tests/test_release_gate_inputs.py", "tests/test_release_evidence_status.py",
+    "tests/test_finalize_release.py", "tests/test_gpu_startup_evidence.py",
+}
 
 
 def digest(path: Path) -> str:
@@ -334,7 +342,152 @@ def _gpu_record(path: Path, staging: Path, metadata: Path, automated: dict) -> N
         raise ValueError("GPU workflow log binding is missing or stale")
 
 
+def startup_evidence_module():
+    # Import only the adjacent verifier, never code from a tested installation.
+    spec = importlib.util.spec_from_file_location(
+        "umi_gpu_startup_evidence", Path(__file__).with_name("gpu_startup_evidence.py")
+    )
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def verify_startup_evidence(record, kind: str, binding: dict, staging: Path) -> dict:
+    if kind != "gpu" or not isinstance(record, dict) or record.get("validation_scope") != STARTUP_SCOPE:
+        raise ValueError("cuda-startup-hotfix is only valid for the explicitly named GPU scope")
+    automated = record.get("automated_evidence")
+    if not isinstance(automated, dict) or set(automated) != STARTUP_AUTOMATED_CHECKS:
+        raise ValueError("The startup scope needs exactly startup unit tests and the real GPU startup matrix")
+    path, _ = evidence_file(automated["gpu_startup_matrix"])
+    try:
+        return startup_evidence_module().verify_startup_matrix(path, staging, binding)
+    except (OSError, TypeError, KeyError, AttributeError, tarfile.TarError) as exc:
+        raise ValueError("Cannot verify actual startup-only evidence") from exc
+
+
+def _startup_unit_tests(reference, binding, staging):
+    path, public = evidence_file(reference)
+    record = read_json(path)
+    if (not isinstance(record, dict) or type(record.get("schema_version")) is not int or record["schema_version"] != 1 or
+            record.get("test_type") != "cuda_startup_hotfix_unit_tests" or record.get("status") != "PASS" or
+            not _same_binding(record.get("binding"), binding)):
+        raise ValueError("Source/payload-bound startup unit-test evidence is missing")
+    source_root = artifact_metadata_root(staging, "gpu") / "source"
+    expected = {name: digest(source_root / name) for name in STARTUP_TEST_SOURCES}
+    if record.get("test_source_sha256") != expected:
+        raise ValueError("Startup unit tests are not the current corresponding test source")
+    runs = record.get("runs")
+    if not isinstance(runs, list) or len(runs) != 2:
+        raise ValueError("Both normal and -O startup unit-test runs are required")
+    seen, logs = set(), []
+    for run in runs:
+        if (not isinstance(run, dict) or type(run.get("optimization")) is not int or run["optimization"] not in {0, 1} or
+                run["optimization"] in seen or type(run.get("exit_code")) is not int or run["exit_code"] != 0):
+            raise ValueError("Startup unit tests did not pass both normal and -O execution")
+        seen.add(run["optimization"])
+        log, log_public = evidence_file(run.get("log"))
+        text = log.read_text("utf-8-sig", errors="strict")
+        if (not re.search(r"(?m)^Ran [1-9][0-9]* tests? in ", text) or not re.search(r"(?m)^OK\s*$", text) or
+                re.search(r"(?m)^(?:FAILED(?:\s|:)|FAIL:|ERROR:)", text)):
+            raise ValueError("Actual startup unit-test output does not record a successful suite")
+        logs.append({"optimization": run["optimization"], "log": log_public})
+    return {**public, "runs": logs, "test_source_sha256": expected}
+
+
+def _verify_startup_current_source(record, kind, binding, staging, authorized):
+    if kind != "gpu" or not authorized or not _same_binding(record.get("binding"), binding):
+        raise ValueError("The startup exception requires GPU/current binding and explicit publication authorization")
+    if record.get("status") != "ACCEPTED_WITH_LIMITATIONS" or record.get("gpu_ocr_e2e") != "NOT_RUN":
+        raise ValueError("The startup hotfix must preserve ACCEPTED_WITH_LIMITATIONS and current OCR NOT_RUN")
+    manual = record.get("manual_checks")
+    if not isinstance(manual, dict) or set(manual) != MANUAL_CHECKS or any(value != "NOT_RUN" for value in manual.values()):
+        raise ValueError("The startup scope must not invent new manual/HDR successes")
+    untested = record.get("unverified_scenarios")
+    if (not isinstance(untested, list) or not untested or
+            any(not isinstance(item, str) or not item.strip() for item in untested) or
+            not any("ocr" in item.lower() and any(word in item.lower() for word in ("未", "not", "untested")) for item in untested)):
+        raise ValueError("The current untested OCR scope must be explicitly disclosed")
+    startup = verify_startup_evidence(record, kind, binding, staging)
+    automated = record["automated_evidence"]
+    units = _startup_unit_tests(automated["startup_unit_tests"], binding, staging)
+    acceptance = record.get("user_acceptance")
+    if not isinstance(acceptance, dict):
+        raise ValueError("Current program, release-note and untested-OCR publication approval is missing")
+    for field in ("source", "program_review_quote", "release_notes_quote", "limitations_disclosure_quote", "publication_quote"):
+        if not isinstance(acceptance.get(field), str) or not acceptance[field].strip():
+            raise ValueError("The current user's original review/limitations/publication text is missing")
+    if (acceptance.get("validation_scope") != STARTUP_SCOPE or acceptance.get("release_version") != "3.0.4" or
+            not _same_binding(acceptance.get("binding"), binding) or
+            any(acceptance.get(name) is not True for name in ("program_review_approved", "release_notes_approved", "publish_with_untested_ocr")) or
+            not _same_binding(acceptance.get("evidence_binding"), automated["gpu_startup_matrix"])):
+        raise ValueError("The current 3.0.4 program/notes/untested-OCR approval is not bound to this evidence")
+    disclosure = acceptance["limitations_disclosure_quote"].lower()
+    if "ocr" not in disclosure or not any(word in disclosure for word in ("未", "not_run", "not run", "untested")):
+        raise ValueError("The approval must disclose untested OCR, not a historical HDR-success quote")
+    for field in ("program_review_quote", "release_notes_quote", "publication_quote"):
+        quote = acceptance[field].lower()
+        if re.search(r"不(?:同意|批准|通过|允许|可以|能发布)|未(?:同意|批准|通过)|拒绝|暂不|do not|don't|not\s+(?:approved?|accept|release|publish)|decline|reject", quote):
+            raise ValueError("A refusal or withheld approval cannot authorize the current hotfix")
+    for field, nouns in (("program_review_quote", ("程序", "program", "candidate")), ("release_notes_quote", ("文案", "release notes"))):
+        quote = acceptance[field].lower()
+        if not any(word in quote for word in nouns) or not any(word in quote for word in ("同意", "通过", "approved", "approve", "accept")):
+            raise ValueError("The current program and release notes need separate explicit review approval")
+    publication = acceptance["publication_quote"].lower()
+    if (not any(word in publication for word in ("发布", "release", "publish")) or
+            not any(word in publication for word in ("同意", "批准", "可以", "允许", "approve", "proceed", "publish it", "release it", "go ahead"))):
+        raise ValueError("The current user's original publication approval is missing")
+    confirmation, public_confirmation = evidence_file(acceptance.get("record"))
+    notes, public_notes = evidence_file(acceptance.get("release_notes"))
+    text = confirmation.read_text("utf-8-sig", errors="strict")
+    required_text = [acceptance[name] for name in ("program_review_quote", "release_notes_quote", "limitations_disclosure_quote", "publication_quote")]
+    required_text += ["3.0.4", STARTUP_SCOPE, binding["payload"]["sha256"], binding["source"]["sha256"],
+                      digest(notes), automated["gpu_startup_matrix"]["sha256"]]
+    if any(item not in text for item in required_text):
+        raise ValueError("The original current-review record lacks its decision or artifact/notes/evidence context")
+    if re.search(r"(?:[A-Za-z]:[\\\\/]|\\\\\\\\|/(?:home|Users)/)", acceptance["source"]):
+        raise ValueError("The public confirmation locator must not expose a host filesystem path")
+    public_acceptance = {name: acceptance[name] for name in (
+        "source", "validation_scope", "release_version", "binding", "program_review_approved", "release_notes_approved",
+        "publish_with_untested_ocr", "program_review_quote", "release_notes_quote", "limitations_disclosure_quote", "publication_quote",
+    )}
+    public_acceptance.update({"record": public_confirmation, "release_notes": public_notes,
+                              "evidence_binding": startup["evidence"]})
+    return {"status": "ACCEPTED_WITH_LIMITATIONS", "verified": True, "publication_authorized": True,
+            "validation_scope": STARTUP_SCOPE, "artifact_kind": "gpu", "release_version": "3.0.4", "binding": binding,
+            "automated_evidence": {"startup_unit_tests": units, "gpu_startup_matrix": startup["evidence"]},
+            "gpu_worker_startup": startup, "gpu_ocr_e2e": "NOT_RUN", "manual_checks": manual,
+            "unverified_scenarios": untested, "user_acceptance": public_acceptance, "blockers": []}
+
+
+def verified_startup_exception(current, startup=None) -> bool:
+    """One named NOT_RUN exception, never a blanket component-status waiver."""
+    if not isinstance(current, dict):
+        return False
+    accepted = current.get("user_acceptance", {})
+    actual = current.get("gpu_worker_startup")
+    if startup is not None and not _same_binding(startup, actual):
+        return False
+    return (current.get("validation_scope") == STARTUP_SCOPE and current.get("artifact_kind") == "gpu" and
+            current.get("release_version") == "3.0.4" and current.get("status") == "ACCEPTED_WITH_LIMITATIONS" and
+            current.get("verified") is True and current.get("publication_authorized") is True and
+            current.get("gpu_ocr_e2e") == "NOT_RUN" and isinstance(actual, dict) and
+            actual.get("status") == "PASS" and actual.get("verified") is True and actual.get("validation_scope") == STARTUP_SCOPE and
+            actual.get("test_type") == "verified_gpu_startup_matrix" and actual.get("plugin_version") == "3.0.4" and
+            actual.get("host_version") == "3.0.3" and actual.get("host_startup", {}).get("verified") is True and
+            actual.get("baselines", {}).get("verified") is True and actual.get("native_manifest", {}).get("verified") is True and
+            isinstance(actual.get("cases"), list) and len(actual["cases"]) == 4 and
+            actual.get("gpu_ocr_e2e") == "NOT_RUN" and actual.get("public_release_allowed") is False and
+            _same_binding(actual.get("binding"), current.get("binding")) and isinstance(accepted, dict) and
+            accepted.get("validation_scope") == STARTUP_SCOPE and accepted.get("release_version") == "3.0.4" and
+            _same_binding(accepted.get("binding"), current.get("binding")) and
+            all(accepted.get(name) is True for name in ("program_review_approved", "release_notes_approved", "publish_with_untested_ocr")))
+
+
 def verify_current_source(record, kind: str, binding: dict, staging: Path, authorized: bool) -> dict:
+    if isinstance(record, dict) and record.get("validation_scope", "full") != "full":
+        if record.get("validation_scope") != STARTUP_SCOPE:
+            raise ValueError("Unknown current-source validation scope")
+        return _verify_startup_current_source(record, kind, binding, staging, authorized)
     if not isinstance(record, dict) or record.get("status") not in {"PASS", "ACCEPTED_WITH_LIMITATIONS"}:
         raise ValueError("current_source_e2e is missing, blocked, or has an unsupported status")
     if not authorized or not _same_binding(record.get("binding"), binding):
@@ -455,7 +608,7 @@ def validate_release_gates(path: Path | None, staging: Path, kind: str, previous
     ):
         try:
             result[name] = verifier()
-        except (OSError, ValueError, TypeError, KeyError, subprocess.SubprocessError) as exc:
+        except (OSError, ValueError, TypeError, KeyError, AttributeError, tarfile.TarError, subprocess.SubprocessError) as exc:
             result[name]["blockers"] = [str(exc) if isinstance(exc, ValueError) else "Cannot verify real release-gate evidence."]
     return result
 

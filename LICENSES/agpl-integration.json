@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "verification_date": "2026-10-22",
+  "verification_date": "2026-10-24",
   "project_license_facts": {
     "root_LICENSE": {
       "license": "MIT",
@@ -41,7 +41,7 @@
       "worker_present_in_artifact": true,
       "manifest_vendor_dirs_empty": true,
       "manifest_dll_dirs_empty": true,
-      "manifest_process_boundary": true,
+      "manifest_process_boundary": false,
       "host_has_no_proprietary_runtime_imports": true,
       "host_starts_subprocess": true,
       "host_uses_json_ipc": true,
@@ -52,7 +52,7 @@
   "agpl_network_interaction_obligation": "For any modified AGPL-covered deployment that lets users interact remotely, AGPLv3 section 13 requires a prominent offer of Corresponding Source. The release source mirror is separately audited; proprietary NVIDIA binaries are not asserted to be AGPL-covered source.",
   "system_library_claim": "not made",
   "additional_permission": "not used; the process boundary avoids a linking exception request",
-  "status": "PASS",
+  "status": "BLOCK",
   "resolution": "The NVIDIA/Paddle stack is confined to an independent worker executable/process. The AGPL-covered host (including its separately packaged PyMuPDF dependency) receives only stable JSON IPC data; the worker has its own runtime/vendor manifest and source mirror.",
-  "blocker": null
+  "blocker": "The declared independent GPU worker boundary is incomplete: manifest_process_boundary"
 }

@@ -60,6 +60,7 @@ class FinalizeFixtures(unittest.TestCase):
         self.version = "3.0.3"
         self.about = {"version": {"major": 3, "minor": 0, "patch": 3, "prerelease": "", "prereleaseNumber": 0}}
         write(self.repo / "UmiOCR-data/about.json", self.about)
+        write(self.repo / "UmiOCR-data/plugins" / finalizer.gates.PLUGIN_ID / "umi-plugin.json", {"version": self.version})
         write(self.repo / "build/sources-windows-cu126.lock.json", {})
         trusted = (
             "build/windows/Finalize-Release.ps1", "build/windows/Audit-Package.ps1",
@@ -462,6 +463,32 @@ class FreezeFinalizeTests(FinalizeFixtures):
         current = finalizer.inspect_product(self.repo, root, "gpu")
         finalizer.archive_matches(Path(result["archive"]), current[3], current[4])
 
+    def test_gpu_version_is_independent_of_unchanged_host_version(self):
+        root, _ = self.gpu("independent-304")
+        metadata = root / "LICENSES/plugins" / finalizer.gates.PLUGIN_ID
+        manifest = json.loads((root / cuda.PLUGIN / "umi-plugin.json").read_bytes())
+        manifest["version"] = "3.0.4"
+        write(root / cuda.PLUGIN / "umi-plugin.json", manifest)
+        write(self.repo / "UmiOCR-data/plugins" / finalizer.gates.PLUGIN_ID / "umi-plugin.json", manifest)
+        write(metadata / "VERSION", "3.0.4\n")
+        summary = finalizer.inspect_product(self.repo, root, "gpu")[2]
+        self.assertEqual(summary["release_version"], "3.0.4")
+        self.assertEqual(json.loads((self.repo / "UmiOCR-data/about.json").read_bytes()), self.about)
+        manifest["version"] = "3.0.5"
+        write(self.repo / "UmiOCR-data/plugins" / finalizer.gates.PLUGIN_ID / "umi-plugin.json", manifest)
+        with self.assertRaisesRegex(finalizer.FinalizationError, "product kind"):
+            finalizer.inspect_product(self.repo, root, "gpu")
+
+    def test_only_one_new_derived_license_report_is_mutable(self):
+        self.assertIn("gpu-startup-evidence.json", finalizer.DERIVED_REPORTS)
+        root = self.base("startup-report-mutability")
+        before = finalizer.inspect_product(self.repo, root, "base")[2]
+        write(root / "LICENSES/gpu-startup-evidence.json", {"status": "BLOCK"})
+        self.assertEqual(finalizer.inspect_product(self.repo, root, "base")[2], before)
+        for relative in ("source/build/windows/CudaWorker/worker_main.cpp", "UmiOCR-data/UmiOCR-CudaWorker.exe"):
+            write(root / relative, b"not an exempt source/EXE\n")
+            self.assertNotEqual(finalizer.inspect_product(self.repo, root, "base")[2], before)
+
     def test_missing_receipt_and_wrong_identity_authorization_or_binding_never_archive(self):
         root = self.base()
         frozen = self.freeze(root)
@@ -710,6 +737,79 @@ class FreezeFinalizeTests(FinalizeFixtures):
         nested = {Path("build/tools/non-public/finalize_release.py"), Path("tests/non-public/test_finalize_release.py")}
         with patch.object(exporter, "files_for_repo", return_value=selected + list(nested)):
             self.assertFalse(nested & set(exporter.selected_sources(ROOT)))
+
+
+class StartupFinalizeReportTests(unittest.TestCase):
+    """Only already-verified fixture receipts; no real archive or application."""
+    def setUp(self):
+        module = load("finalize_startup_input_fixtures", ROOT / "tests/test_release_gate_inputs.py")
+        self.context = module.StartupGateTests("test_complete_scoped_acceptance_keeps_ocr_not_run_and_public_paths_private")
+        self.context.setUp()
+        self.addCleanup(self.context.doCleanups)
+        self.fixture = self.context.fixture
+        self.current = self.context.verify()
+        self.receipt = self.fixture.audit / "release-gates.json"
+        write(self.receipt, {"fixture_only": True})
+        self.report = {
+            "artifact_kind": "gpu", "public_prerelease_allowed": True, "local_candidate": False, "validation_errors": [],
+            "release_gate_input": {"name": self.receipt.name, "sha256": finalizer.gates.digest(self.receipt)},
+            "source_delivery": {"status": "PASS", "verified": True}, "current_source_e2e": self.current,
+            "gpu_worker_startup": self.current["gpu_worker_startup"],
+            "gates": {name: "PASS" for name in ("runtime_vendor", "paddle_models", "cuda", "cudnn", "opencv", "ffmpeg", "mpl", "agpl_nvidia", "cpu_ocr", "document_models", "source_delivery", "gpu_worker_startup")},
+        }
+        self.report["gates"].update({"current_source_e2e": "ACCEPTED_WITH_LIMITATIONS", "gpu_ocr_e2e": "NOT_RUN"})
+
+    def check(self, kind="gpu"):
+        write(self.fixture.metadata / "LICENSES/RELEASE_EVIDENCE.json", self.report)
+        finalizer.check_report(self.fixture.metadata, kind, self.fixture.binding, self.receipt, finalizer.gates.digest(self.receipt))
+
+    def test_complete_current_startup_scope_accepts_only_named_ocr_not_run(self):
+        self.check()
+        self.assertEqual(self.report["gates"]["gpu_ocr_e2e"], "NOT_RUN")
+        self.assertFalse(self.current["gpu_worker_startup"]["public_release_allowed"])
+
+    def test_arbitrary_other_not_run_component_or_missing_scope_gate_never_archives(self):
+        original = copy.deepcopy(self.report)
+        for name in ("runtime_vendor", "paddle_models", "cuda", "cudnn", "opencv", "ffmpeg", "mpl", "agpl_nvidia", "cpu_ocr", "document_models", "gpu_worker_startup"):
+            self.report = copy.deepcopy(original)
+            self.report["gates"][name] = "NOT_RUN"
+            with self.assertRaises(finalizer.FinalizationError, msg=name):
+                self.check()
+        self.report = copy.deepcopy(original)
+        self.report["gates"].pop("gpu_worker_startup")
+        with self.assertRaises(finalizer.FinalizationError):
+            self.check()
+
+    def test_default_full_non_gpu_or_no_current_approval_cannot_borrow_startup_exception(self):
+        original = copy.deepcopy(self.report)
+        for field, value in (("validation_scope", "full"), ("validation_scope", "other"), ("publication_authorized", False), ("verified", False), ("gpu_ocr_e2e", "PASS")):
+            self.report = copy.deepcopy(original)
+            self.report["current_source_e2e"][field] = value
+            with self.assertRaises(finalizer.FinalizationError, msg=field):
+                self.check()
+        self.report = copy.deepcopy(original)
+        self.report["artifact_kind"] = "base"
+        with self.assertRaises(finalizer.FinalizationError):
+            self.check("base")
+        self.report = copy.deepcopy(original)
+        self.report["current_source_e2e"]["user_acceptance"]["release_notes_approved"] = False
+        with self.assertRaises(finalizer.FinalizationError):
+            self.check()
+
+    def test_current_source_block_stale_binding_or_missing_raw_matrix_does_not_authorize(self):
+        original = copy.deepcopy(self.report)
+        for mutation in ("source", "binding", "startup", "ocr-pass"):
+            self.report = copy.deepcopy(original)
+            if mutation == "source":
+                self.report["source_delivery"]["status"] = "BLOCK"
+            elif mutation == "binding":
+                self.report["current_source_e2e"]["binding"] = {}
+            elif mutation == "startup":
+                self.report["gpu_worker_startup"] = {"status": "PASS"}
+            else:
+                self.report["gates"]["gpu_ocr_e2e"] = "PASS"
+            with self.assertRaises(finalizer.FinalizationError, msg=mutation):
+                self.check()
 
 
 class PowerShellEntryTests(FinalizeFixtures):

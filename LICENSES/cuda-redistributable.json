@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "verification_date": "2026-10-22",
+  "verification_date": "2026-10-24",
   "license_type": "proprietary",
   "license": "NVIDIA CUDA Toolkit EULA",
   "applicable_cuda_version": "12.6",
@@ -320,9 +320,45 @@
   ],
   "pe_import_table_scan": {
     "scanner": "stdlib PE normal/delay import-table parser; every MZ file below the artifact root is parsed",
-    "files_examined": 228,
-    "pe_files_scanned": 228,
+    "files_examined": 232,
+    "pe_files_scanned": 232,
     "import_tables": [
+      {
+        "artifact_path": ".build/cuda_worker/CMakeFiles/4.4.4/CMakeDetermineCompilerABI_CXX.bin",
+        "SHA256": "d5654d45974d7413d24373cd7c95af60ba7f21013f1d32732d52d7852a9a8efd",
+        "normal_imports": [
+          "kernel32.dll",
+          "ucrtbased.dll",
+          "vcruntime140d.dll"
+        ],
+        "delay_imports": []
+      },
+      {
+        "artifact_path": ".build/cuda_worker/CMakeFiles/4.4.4/CompilerIdCXX/CompilerIdCXX.exe",
+        "SHA256": "52b39db292b5f0ead3dc3169bd6e626010b58fa77a119495b829d1c78abca11f",
+        "normal_imports": [
+          "kernel32.dll",
+          "ucrtbased.dll",
+          "vcruntime140d.dll"
+        ],
+        "delay_imports": []
+      },
+      {
+        "artifact_path": ".build/cuda_worker/Release/UmiOCR-CudaWorker.exe",
+        "SHA256": "9703abc86d5780bfb25bd9ad9da07337dc825c0a6b2a39a9fa76f9df40197a15",
+        "normal_imports": [
+          "kernel32.dll"
+        ],
+        "delay_imports": []
+      },
+      {
+        "artifact_path": "UmiOCR-data/plugins/win32_PaddleOCRv6_CUDA/UmiOCR-CudaWorker.exe",
+        "SHA256": "9703abc86d5780bfb25bd9ad9da07337dc825c0a6b2a39a9fa76f9df40197a15",
+        "normal_imports": [
+          "kernel32.dll"
+        ],
+        "delay_imports": []
+      },
       {
         "artifact_path": "UmiOCR-data/plugins/win32_PaddleOCRv6_CUDA/vendor/ada92cb5d92a588d1b93__mypyc.cp313-win_amd64.pyd",
         "SHA256": "58c25c988641247cc153a987d1080dceb65c3a5cea68be96f0ac5b29c700ab05",

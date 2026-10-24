@@ -42,7 +42,7 @@ DERIVED_REPORTS = frozenset({
     "runtime-vendor-lock.json", "model-rights.json", "cuda-redistributable.json",
     "cudnn-redistributable.json", "opencv-artifact.json", "ffmpeg-build.json",
     "mpl-components.json", "agpl-integration.json", "cpu-document-gates.json",
-    "gpu-e2e-evidence.json", "source-delivery.json", "current-source-e2e.json",
+    "gpu-e2e-evidence.json", "gpu-startup-evidence.json", "source-delivery.json", "current-source-e2e.json",
     "RELEASE_EVIDENCE.json", "RELEASE_EVIDENCE.md",
 })
 SOURCE_RECORDS = ("source-snapshot.zip", "source-snapshot.json", "source-provenance.json")
@@ -170,8 +170,9 @@ def inspect_product(repo, root, kind, *, validate_source=False):
             raise FinalizationError("The base product must not contain plugin metadata")
         document = gates.read_json(root / "UmiOCR-data/about.json")
     version = identity_version(document)
-    if version != identity_version(gates.read_json(repo / "UmiOCR-data/about.json")):
-        raise FinalizationError("Product version does not match the current repository")
+    repository_identity = (repo / "UmiOCR-data/plugins" / gates.PLUGIN_ID / "umi-plugin.json") if kind == "gpu" else (repo / "UmiOCR-data/about.json")
+    if version != identity_version(gates.read_json(repository_identity)):
+        raise FinalizationError("Product version does not match the current repository's product kind")
     required = {"COPYING", "LICENSE", "SOURCE-CODE.md", "VERSION", "source", "LICENSES", *SOURCE_RECORDS}
     allowed = required | {"NOTICE.md", "source-export.json"}
     if kind == "base":
@@ -378,12 +379,22 @@ def check_report(metadata, kind, binding, release_gates, receipt_hash):
     statuses = report.get("gates")
     required = {"runtime_vendor", "paddle_models", "cuda", "cudnn", "opencv", "ffmpeg", "mpl",
                 "agpl_nvidia", "cpu_ocr", "document_models", *gates.RELEASE_GATES}
+    startup_scope = current.get("validation_scope") == gates.STARTUP_SCOPE
     if kind == "gpu":
         required.add("gpu_ocr_e2e")
+    if startup_scope:
+        required.add("gpu_worker_startup")
+        if (kind != "gpu" or not gates.verified_startup_exception(current, report.get("gpu_worker_startup")) or
+                not isinstance(statuses, dict) or statuses.get("gpu_worker_startup") != "PASS" or
+                statuses.get("gpu_ocr_e2e") != "NOT_RUN"):
+            raise FinalizationError("The startup-only archival exception is missing current approval or exact scope evidence")
+    elif current.get("validation_scope", "full") != "full":
+        raise FinalizationError("Unknown finalization validation scope")
     if (not isinstance(statuses, dict) or set(statuses) != required or
             statuses.get("source_delivery") != source["status"] or
             statuses.get("current_source_e2e") != current["status"] or
-            any(status not in {"PASS", "NOT_INCLUDED"} for name, status in statuses.items() if name not in gates.RELEASE_GATES)):
+            any(status not in {"PASS", "NOT_INCLUDED"} for name, status in statuses.items()
+                if name not in gates.RELEASE_GATES and not (startup_scope and name == "gpu_ocr_e2e" and status == "NOT_RUN"))):
         raise FinalizationError("A recorded component/publication gate is blocked")
 
 

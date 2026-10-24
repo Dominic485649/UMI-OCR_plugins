@@ -626,7 +626,36 @@ def verify_nvidia(staging: Path, vendor: Path):
     }
 
 
-def verify_cudnn(staging: Path, vendor: Path):
+def _material_functionality(staging, startup_evidence=None):
+    if startup_evidence is not None:
+        baseline = startup_evidence.get("baselines", {})
+        history = baseline.get("historical_functionality", {})
+        valid = (startup_evidence.get("status") == "PASS" and startup_evidence.get("verified") is True and
+                 startup_evidence.get("validation_scope") == release_gate_inputs.STARTUP_SCOPE and
+                 baseline.get("verified") is True and baseline.get("unchanged_ocr", {}).get("verified") is True and
+                 set(baseline.get("unchanged_closures", {})) == {"vendor", "models"} and
+                 history.get("verified") is True and history.get("release_version") == "3.0.3" and
+                 history.get("official_archive_sha256") == "be8bd1f8d20181500370cc5a64cb867514478a45bc0f897c63a3ebde96ce4485")
+        return valid, history if valid else None
+    plugin = staging / "UmiOCR-data/plugins" / release_gate_inputs.PLUGIN_ID
+    path = plugin / "gpu-e2e-evidence.json"
+    if not path.is_file() or not (plugin / "runtime.lock.json").is_file():
+        return False, None
+    raw = release_gate_inputs.read_json(path)
+    sources = {item.relative_to(plugin).as_posix(): sha256(item) for item in plugin.rglob("*.py")
+               if not {"vendor", "models", "__pycache__"} & set(item.relative_to(plugin).parts)}
+    valid = (isinstance(raw, dict) and raw.get("test_type") == "real_gpu_ocr_workflows_e2e" and raw.get("status") == "PASS" and
+             re.fullmatch(r"gpu:[0-9]+", str(raw.get("device", ""))) is not None and
+             raw.get("plugin_source_sha256") == sources and bool(sources) and
+             raw.get("plugin_runtime_lock_sha256") == sha256(plugin / "runtime.lock.json") and
+             raw.get("architecture", {}).get("type") == "separate-worker-stdio-ipc" and
+             raw.get("architecture", {}).get("host_loaded_proprietary_modules") == [] and
+             raw.get("model_initialization") == list(CPU_MODELS) and
+             {"batch OCR", "document PDF OCR", "CUDA-only failure paths"} <= set(raw.get("exercised_paths", [])))
+    return valid, file_record(path, staging) if valid else None
+
+
+def verify_cudnn(staging: Path, vendor: Path, startup_evidence: dict | None = None):
     files = []
     root = vendor / "nvidia" / "cudnn"
     package_root = next(iter(vendor.glob("nvidia_cudnn_cu12-*.dist-info")), None)
@@ -650,12 +679,12 @@ def verify_cudnn(staging: Path, vendor: Path):
         )
     sla_snapshot = metadata_path(staging, CUDNN_SLA_SNAPSHOT)
     eula_text = sla_snapshot.read_text("utf-8", errors="replace") if sla_snapshot.is_file() else ""
-    raw_e2e = staging / "UmiOCR-data" / "plugins" / "win32_PaddleOCRv6_CUDA" / "gpu-e2e-evidence.json"
     manifest_path = staging / "UmiOCR-data" / "plugins" / "win32_PaddleOCRv6_CUDA" / "umi-plugin.json"
     manifest_data = load_json(manifest_path) if manifest_path.is_file() else {}
     process_boundary = ((manifest_data.get("runtime") or {}).get("process_boundary") or {}) if isinstance(manifest_data, dict) else {}
+    material_functionality, functionality_evidence = _material_functionality(staging, startup_evidence)
     requirements_satisfied = {
-        "material_additional_functionality": bool(manifest_path.is_file() and raw_e2e.is_file() and load_json(raw_e2e).get("status") == "PASS"),
+        "material_additional_functionality": material_functionality,
         "redistributable_portions_only_accessed_by_application": (
             process_boundary.get("type") == "separate-worker-stdio-ipc"
             and (manifest_data.get("runtime") or {}).get("vendor_dirs") == []
@@ -687,6 +716,7 @@ def verify_cudnn(staging: Path, vendor: Path):
             "Distribution terms remain consistent with the NVIDIA agreement.",
         ],
         "distribution_requirements_satisfied": requirements_satisfied,
+        "material_additional_functionality_evidence": functionality_evidence,
         "redistributable_scope_check": {"only_runtime_dll_or_so": only_runtime_files, "non_runtime_files_excluded": True},
         "files": files,
         "status": "PASS" if files and license_file and license_file.is_file() and snapshot_ok and only_runtime_files and all(requirements_satisfied.values()) else "BLOCK",
@@ -915,7 +945,16 @@ def external_source_channel(staging: Path, repo: Path | None = None):
     }
 
 
-def verify_gpu_e2e(staging: Path, plugin: Path, models: dict, repo: Path | None = None):
+def verify_gpu_e2e(staging: Path, plugin: Path, models: dict, repo: Path | None = None, startup_evidence: dict | None = None):
+    if startup_evidence is not None:
+        valid = (startup_evidence.get("validation_scope") == release_gate_inputs.STARTUP_SCOPE and
+                 startup_evidence.get("status") == "PASS" and startup_evidence.get("verified") is True and
+                 startup_evidence.get("gpu_ocr_e2e") == "NOT_RUN" and startup_evidence.get("public_release_allowed") is False)
+        return {"schema_version": 1, "verification_date": VERIFY_DATE,
+                "validation_scope": release_gate_inputs.STARTUP_SCOPE, "status": "NOT_RUN" if valid else "BLOCK",
+                "evidence": startup_evidence.get("evidence"), "binding": startup_evidence.get("binding"),
+                "reason": "Only real worker startup/clean exit was retested. Historical 3.0.3 OCR is not a current OCR PASS.",
+                "blockers": [] if valid else ["The startup-only scope conditions were not verified."]}
     path = plugin / "gpu-e2e-evidence.json"
     source_path = metadata_path(staging, "source") / "UmiOCR-data" / "plugins" / plugin.name / path.name
     payload = load_json(path) if path.is_file() else {}
@@ -1156,14 +1195,14 @@ def verify_mpl(staging: Path, vendor: Path, source_lock, cache_root: Path | None
     }
 
 
-def verify_agpl(staging: Path, repo: Path, plugin: Path):
+def verify_agpl(staging: Path, repo: Path, plugin: Path, startup_evidence: dict | None = None):
     copying = repo / "COPYING"
     mit = repo / "LICENSE"
     about = repo / "UmiOCR-data" / "about.json"
     combined = metadata_path(staging, "LICENSES") / "COMBINED_DISTRIBUTION.md"
     manifest = plugin / "umi-plugin.json"
     controller = repo / "UmiOCR-data" / "py_src" / "plugins_controller" / "plugins_controller.py"
-    api = repo / "UmiOCR-data" / "plugins" / "win32_PaddleOCRv6_CUDA" / "api.py"
+    api = (plugin / "api.py") if startup_evidence is not None else (repo / "UmiOCR-data" / "plugins" / "win32_PaddleOCRv6_CUDA" / "api.py")
     worker = plugin / "worker.py"
     manifest_data = load_json(manifest) if manifest.is_file() else {}
     runtime = manifest_data.get("runtime") if isinstance(manifest_data, dict) else {}
@@ -1175,11 +1214,18 @@ def verify_agpl(staging: Path, repo: Path, plugin: Path):
         token for token in ("import paddle", "from paddle", "import cv2", "from cv2", "paddleocr", "os.add_dll_directory")
         if token in api_text
     )
+    native_launcher = plugin / "UmiOCR-CudaWorker.exe"
+    native_boundary = (isinstance(startup_evidence, dict) and startup_evidence.get("status") == "PASS" and
+                       startup_evidence.get("verified") is True and startup_evidence.get("validation_scope") == release_gate_inputs.STARTUP_SCOPE and
+                       startup_evidence.get("native_manifest", {}).get("verified") is True and
+                       native_launcher.is_file() and startup_evidence["native_manifest"].get("launcher_sha256") == sha256(native_launcher))
     worker_boundary_checks = {
         "worker_present_in_artifact": worker.is_file(),
         "manifest_vendor_dirs_empty": runtime.get("vendor_dirs") in ([], None),
         "manifest_dll_dirs_empty": runtime.get("dll_dirs") in ([], None),
-        "manifest_process_boundary": boundary.get("type") == "separate-worker-stdio-ipc" and boundary.get("entry") == "worker.py",
+        "manifest_process_boundary": boundary.get("type") == "separate-worker-stdio-ipc" and (
+            boundary.get("entry") == "worker.py" or native_boundary and boundary.get("entry") == "UmiOCR-CudaWorker.exe"
+        ),
         "host_has_no_proprietary_runtime_imports": not host_forbidden_imports,
         "host_starts_subprocess": "subprocess.Popen" in api_text,
         "host_uses_json_ipc": "json.dumps" in api_text and "JSON-lines" in api_text,
@@ -2111,6 +2157,7 @@ def report_markdown(kind: str, gates: dict[str, dict], evidence_prefix: str = "L
         "opencv": "opencv-artifact.json",
         "ffmpeg": "ffmpeg-build.json",
         "gpu_ocr_e2e": "gpu-e2e-evidence.json",
+        "gpu_worker_startup": "gpu-startup-evidence.json",
         "mpl": "mpl-components.json",
         "agpl_nvidia": "agpl-integration.json",
         "cpu_ocr": "cpu-document-gates.json",
@@ -2122,15 +2169,16 @@ def report_markdown(kind: str, gates: dict[str, dict], evidence_prefix: str = "L
         lines.append(f"| {name} | {entry.get('status', 'BLOCK')} | `{evidence_prefix}/{evidence[name]}` |")
     lines.extend([
         "", "A PASS records only the verified artifact-specific condition. It does not resolve another gate.",
-        "ACCEPTED_WITH_LIMITATIONS, when present only for current_source_e2e, retains NOT_RUN manual scenarios and the original, source/payload-bound user publication decision. It is not a manual-test PASS.",
+        "ACCEPTED_WITH_LIMITATIONS is limited to current_source_e2e. It preserves the actual NOT_RUN scenarios and the original source/payload-bound user decision; it never invents manual, HDR or OCR success.",
+        "Only validation_scope=cuda-startup-hotfix for CUDA 3.0.4 with the unchanged official host 3.0.3 baseline may retain gpu_ocr_e2e=NOT_RUN alongside independently verified gpu_worker_startup=PASS and current program/notes/untested-OCR approval. Other component gates are not waived.",
         "These artifact-derived publication reports are generated after source publication; they are not asserted to be present in the canonical source commit.",
     ])
     return "\n".join(lines) + "\n"
 
 
 def public_release_allowed(gates: dict[str, dict]) -> bool:
-    # A missing publication gate is a block, not an absent product. Only the
-    # current-source manual coverage gate has a narrowly authorized exception.
+    # No generic NOT_RUN waiver. Only one current, approved GPU startup scope
+    # may preserve gpu_ocr_e2e=NOT_RUN; every other component stays fail-closed.
     source = gates.get("source_delivery", {})
     current = gates.get("current_source_e2e", {})
     if source.get("status") != "PASS" or source.get("verified") is not True:
@@ -2139,15 +2187,55 @@ def public_release_allowed(gates: dict[str, dict]) -> bool:
         return False
     if current.get("status") not in {"PASS", "ACCEPTED_WITH_LIMITATIONS"}:
         return False
+    startup_scope = current.get("validation_scope") == release_gate_inputs.STARTUP_SCOPE
+    if startup_scope:
+        ocr, startup = gates.get("gpu_ocr_e2e", {}), gates.get("gpu_worker_startup", {})
+        if (not release_gate_inputs.verified_startup_exception(current, startup) or
+                ocr.get("status") != "NOT_RUN" or ocr.get("validation_scope") != release_gate_inputs.STARTUP_SCOPE or
+                not release_gate_inputs._same_binding(ocr.get("binding"), current.get("binding"))):
+            return False
+    elif current.get("validation_scope", "full") != "full":
+        return False
     return all(
-        entry.get("status") in {"PASS", "NOT_INCLUDED"}
+        entry.get("status") in {"PASS", "NOT_INCLUDED"} or (startup_scope and name == "gpu_ocr_e2e" and entry.get("status") == "NOT_RUN")
         for name, entry in gates.items()
         if name not in release_gate_inputs.RELEASE_GATES
     )
 
 
+def requested_startup_evidence(path, staging, kind):
+    """Retain startup diagnostics even before the separate publication consent.
+
+    A successful single-purpose test never authorizes publication. The normal
+    release-gates validator still independently requires current public source
+    and the user's actual current program/notes/untested-OCR approval.
+    """
+    if path is None or kind != "gpu":
+        return None
+    try:
+        document = release_gate_inputs.read_json(path)
+    except (OSError, ValueError, TypeError):
+        # The ordinary release-gates validator records the input failure. Do
+        # not change the default full path or resurrect an old startup waiver.
+        return None
+    current = document.get("current_source_e2e", {}) if isinstance(document, dict) else {}
+    if not isinstance(current, dict) or current.get("validation_scope") != release_gate_inputs.STARTUP_SCOPE:
+        return None
+    try:
+        version, binding, _ = release_gate_inputs.artifact_inputs(staging, kind)
+        if (kind != "gpu" or document.get("artifact_kind") != "gpu" or document.get("release_version") != version or
+                not release_gate_inputs._same_binding(current.get("binding"), binding)):
+            raise ValueError("Startup scope artifact kind/version/binding is invalid")
+        return release_gate_inputs.verify_startup_evidence(current, kind, binding, staging)
+    except (OSError, ValueError, TypeError, KeyError, AttributeError, tarfile.TarError) as exc:
+        return {"schema_version": 1, "validation_scope": release_gate_inputs.STARTUP_SCOPE,
+                "status": "BLOCK", "verified": False, "public_release_allowed": False,
+                "blockers": [str(exc) if isinstance(exc, ValueError) else "Cannot verify startup-only evidence."]}
+
+
 def verify(staging: Path, repo: Path, kind: str, cache_root: Path | None, cpu_staging: Path | None = None, release_gates: Path | None = None):
     errors: list[str] = []
+    startup_evidence = requested_startup_evidence(release_gates, staging, kind)
     metadata = release_gate_inputs.checked_metadata_root(staging, kind)
     licenses = metadata / "LICENSES"
     previous = {}
@@ -2199,12 +2287,12 @@ def verify(staging: Path, repo: Path, kind: str, cache_root: Path | None, cpu_st
             runtime = verify_runtime_vendor(staging, plugin, vendor, errors)
             models = verify_models(staging, plugin, source_lock, apache_path, errors)
             cuda = verify_nvidia(staging, vendor)
-            cudnn = verify_cudnn(staging, vendor)
+            cudnn = verify_cudnn(staging, vendor, startup_evidence=startup_evidence)
             ffmpeg = verify_ffmpeg(staging, plugin, source_lock, cache_root)
             opencv = verify_opencv(staging, vendor)
             mpl = verify_mpl(staging, vendor, source_lock, cache_root)
-            agpl = verify_agpl(staging, repo, plugin)
-            gpu_e2e = verify_gpu_e2e(staging, plugin, models, repo)
+            agpl = verify_agpl(staging, repo, plugin, startup_evidence=startup_evidence)
+            gpu_e2e = verify_gpu_e2e(staging, plugin, models, repo, startup_evidence=startup_evidence)
         else:
             vendor = staging / "UmiOCR-data" / "site-packages"
             if not vendor.is_dir():
@@ -2233,6 +2321,8 @@ def verify(staging: Path, repo: Path, kind: str, cache_root: Path | None, cpu_st
     }
     if kind == "gpu":
         gates["gpu_ocr_e2e"] = gpu_e2e
+        if startup_evidence is not None:
+            gates["gpu_worker_startup"] = startup_evidence
     release_checks = release_gate_inputs.validate_release_gates(
         release_gates, staging, kind, previous
     )
@@ -2251,6 +2341,8 @@ def verify(staging: Path, repo: Path, kind: str, cache_root: Path | None, cpu_st
     }
     if kind == "gpu":
         outputs["gpu-e2e-evidence.json"] = gpu_e2e
+        if startup_evidence is not None:
+            outputs["gpu-startup-evidence.json"] = startup_evidence
     outputs.update({
         "source-delivery.json": release_checks["source_delivery"],
         "current-source-e2e.json": release_checks["current_source_e2e"],
@@ -2267,6 +2359,9 @@ def verify(staging: Path, repo: Path, kind: str, cache_root: Path | None, cpu_st
         "local_candidate": not all(entry.get("verified") is True for entry in release_checks.values()),
         **release_checks,
     }
+    if kind == "gpu" and startup_evidence is not None:
+        report["gpu_worker_startup"] = startup_evidence
+        report["gpu_ocr_e2e"] = gpu_e2e
     if "current_source_validation" in previous:
         # Preserve the scoped historical automatic evidence, not its authority
         # to close a newly reconstructed publication gate.

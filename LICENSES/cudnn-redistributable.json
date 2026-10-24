@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "verification_date": "2026-10-22",
+  "verification_date": "2026-10-24",
   "package": "nvidia-cudnn-cu12",
   "version": "9.9.0.52",
   "license_type": "proprietary",
@@ -24,11 +24,12 @@
     "Distribution terms remain consistent with the NVIDIA agreement."
   ],
   "distribution_requirements_satisfied": {
-    "material_additional_functionality": true,
+    "material_additional_functionality": false,
     "redistributable_portions_only_accessed_by_application": true,
     "nvidia_proprietary_notices_intact": true,
     "distribution_terms_consistent_with_sla": true
   },
+  "material_additional_functionality_evidence": null,
   "redistributable_scope_check": {
     "only_runtime_dll_or_so": true,
     "non_runtime_files_excluded": true
@@ -155,6 +156,8 @@
       "modification_status": "unmodified"
     }
   ],
-  "status": "PASS",
-  "blockers": []
+  "status": "BLOCK",
+  "blockers": [
+    "cuDNN runtime/SLA evidence or a concrete distribution-requirement check is missing."
+  ]
 }

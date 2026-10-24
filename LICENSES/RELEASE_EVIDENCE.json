@@ -1,19 +1,19 @@
 {
   "schema_version": 1,
-  "verification_date": "2026-10-22",
+  "verification_date": "2026-10-24",
   "artifact_kind": "gpu",
   "gates": {
     "runtime_vendor": "PASS",
     "paddle_models": "PASS",
     "cuda": "PASS",
-    "cudnn": "PASS",
+    "cudnn": "BLOCK",
     "opencv": "PASS",
     "ffmpeg": "NOT_INCLUDED",
     "mpl": "PASS",
-    "agpl_nvidia": "PASS",
+    "agpl_nvidia": "BLOCK",
     "cpu_ocr": "NOT_INCLUDED",
     "document_models": "NOT_INCLUDED",
-    "gpu_ocr_e2e": "PASS",
+    "gpu_ocr_e2e": "BLOCK",
     "source_delivery": "BLOCK",
     "current_source_e2e": "BLOCK"
   },
@@ -23,7 +23,7 @@
   "source_delivery": {
     "status": "BLOCK",
     "verified": false,
-    "previous_recorded_status": "BLOCK",
+    "previous_recorded_status": null,
     "blockers": [
       "A fresh --release-gates input and successful verification are required."
     ]
@@ -31,7 +31,7 @@
   "current_source_e2e": {
     "status": "BLOCK",
     "verified": false,
-    "previous_recorded_status": "BLOCK",
+    "previous_recorded_status": null,
     "blockers": [
       "A fresh --release-gates input and successful verification are required."
     ]
