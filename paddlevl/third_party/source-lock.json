@@ -1,0 +1,49 @@
+{
+  "scope": "实际本组件共有的MPL来源，不含本体Qt或模型",
+  "files": [
+    {
+      "name": "certifi-2026.6.17.tar.gz",
+      "url": "https://files.pythonhosted.org/packages/c9/c7/424b75da314c1045981bd9777432fad05a9e0c69daa4ed7e308bbaffe405/certifi-2026.6.17.tar.gz",
+      "size": 134594,
+      "sha256": "024c88eeec92ca068db80f02b8b07c9cef7b9fe261d1d535abfd5abd6f6af432",
+      "component": "certifi",
+      "version": "2026.6.17",
+      "upstream_repository": "https://github.com/certifi/python-certifi",
+      "upstream_revision": "d0ac52f3d93a514224197c7efb66c41b1beae5d1",
+      "license": "MPL-2.0"
+    },
+    {
+      "name": "tqdm-4.68.4.tar.gz",
+      "url": "https://files.pythonhosted.org/packages/ae/5f/57ff8b434839e70dab45601284ea413e947a63799891b7553e5960a793a8/tqdm-4.68.4.tar.gz",
+      "size": 792418,
+      "sha256": "19829c9673638f2a0b8617da4cdcb927e831cd88bcfcb6e78d42a4d1af131520",
+      "component": "tqdm",
+      "version": "4.68.4",
+      "upstream_repository": "https://github.com/tqdm/tqdm",
+      "upstream_revision": "53d096e77c28005b4f9fe1e9d6274ae311bf87e7",
+      "license": "MPL-2.0 AND MIT"
+    },
+    {
+      "name": "validate_pyproject-0.25.tar.gz",
+      "url": "https://files.pythonhosted.org/packages/e7/d8/45a82408619c306d0083afcf6142617201b2647a82e9a7d4c902e837274c/validate_pyproject-0.25.tar.gz",
+      "size": 118662,
+      "sha256": "e68c12d1cb0d8ddc269ffc42875a81727ddb7865000aa6d2f77d833b55c53f0b",
+      "component": "validate-pyproject",
+      "version": "0.25",
+      "upstream_repository": "https://github.com/abravalheri/validate-pyproject",
+      "upstream_revision": "4b2e70d08cb2ccd26d1fba73588de41c7a5d50b7",
+      "license": "MPL-2.0"
+    },
+    {
+      "name": "setuptools-83.0.0.tar.gz",
+      "url": "https://files.pythonhosted.org/packages/34/26/f5d29e25ffdb535afef2d35cdb55b325298f96debd670da4c325e08d70f4/setuptools-83.0.0.tar.gz",
+      "size": 1154254,
+      "sha256": "025bccbbf0fa05b6192bc64ae1e7b16e001fd6d6d4d5de03c97b1c1ade523bef",
+      "component": "setuptools",
+      "version": "83.0.0",
+      "upstream_repository": "https://github.com/pypa/setuptools",
+      "upstream_revision": "6519f728c6f23c992df81a5691ef7655184a20eb",
+      "license": "MIT"
+    }
+  ]
+}

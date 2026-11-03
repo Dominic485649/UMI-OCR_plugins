@@ -1,0 +1,2588 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8">
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/">
+<meta content="The Release Notes for the CUDA Toolkit." name="description">
+<meta content="[CUDA Tegra Toolkit, CUDA Toolkit Development, CUDA Toolkit libraries, CUDA Toolkit release, CUDA Toolkit installation, CUDA Toolkit issues, CUDA Toolkit core files, CUDA Toolkit resolved issues, CUDA Toolkit known issues, CUDA Toolkit documentation]" name="keywords">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CUDA Toolkit 13.4 Update 2 - Release Notes — Release Notes 13.4 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css">
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css">
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css">
+      <link rel="stylesheet" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css">
+      <link rel="stylesheet" href="../_static/omni-style.css" type="text/css">
+      <link rel="stylesheet" href="../_static/api-styles.css" type="text/css">
+    <link rel="shortcut icon" href="../_static/favicon.ico">
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/mermaid-init.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+        <script src="../_static/geoip/geoip.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html">
+    <link rel="search" title="Search" href="search.html">
+    <link rel="prev" title="Contents" href="contents.html"> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+            <a href="contents.html">
+            <img src="../_static/Logo_and_CUDA.png" class="logo" alt="Logo">
+          </a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs">
+    <input type="hidden" name="check_keywords" value="yes">
+    <input type="hidden" name="area" value="default">
+  </form>
+</div>
+        </div>
+<div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. Overview</a></li>
+<li class="toctree-l1">
+<a class="reference internal" href="#cuda-platform">2. CUDA Platform</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#cuda-toolkit-major-components">2.1. CUDA Toolkit Major Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cuda-driver">2.2. CUDA Driver</a></li>
+<li class="toctree-l2">
+<a class="reference internal" href="#new-features">2.3. New Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">2.3.1. CUDA Platform</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cuda-developer-tools">2.3.2. CUDA Developer Tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cuda-compiler">2.3.3. CUDA Compiler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cuda-c-core-libraries-cccl">2.3.4. CUDA C++ Core Libraries (CCCL)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cuda-python">2.3.5. CUDA Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cuda-tile">2.3.6. CUDA Tile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cuda-tile-ir">2.3.7. CUDA Tile IR</a></li>
+</ul>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="#resolved-issues">2.4. Resolved Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#general-cuda">2.4.1. General CUDA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">2.4.2. CUDA Compiler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cuda-tools">2.4.3. CUDA Tools</a></li>
+</ul>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="#known-issues">2.5. Known Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">2.5.1. CUDA Platform</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">2.5.2. CUDA Compiler</a></li>
+</ul>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="#deprecated-or-dropped-features">2.6. Deprecated or Dropped Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id5">2.6.1. CUDA Platform</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#architectures">2.6.2. Architectures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#operating-systems">2.6.3. Operating Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cuda-toolchains">2.6.4. CUDA Toolchains</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1">
+<a class="reference internal" href="#cuda-libraries">3. CUDA Libraries</a><ul>
+<li class="toctree-l2">
+<a class="reference internal" href="#cublas-library">3.1. cuBLAS Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cublas-release-13-4-update-1">3.1.1. cuBLAS: Release 13.4 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cublas-release-13-4">3.1.2. cuBLAS: Release 13.4</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cublas-release-13-3-update-1">3.1.3. cuBLAS: Release 13.3 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cublas-release-13-3">3.1.4. cuBLAS: Release 13.3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cublas-release-13-2-update-2">3.1.5. cuBLAS: Release 13.2 Update 2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cublas-release-13-2-update-1">3.1.6. cuBLAS: Release 13.2 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cublas-release-13-2">3.1.7. cuBLAS: Release 13.2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cublas-release-13-1-update-1">3.1.8. cuBLAS: Release 13.1 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cublas-release-13-1">3.1.9. cuBLAS: Release 13.1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cublas-release-13-0-update-2">3.1.10. cuBLAS: Release 13.0 Update 2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cublas-release-13-0-update-1">3.1.11. cuBLAS: Release 13.0 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cublas-release-13-0">3.1.12. cuBLAS: Release 13.0</a></li>
+</ul>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="#cufft-library">3.2. cuFFT Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cufft-release-13-4">3.2.1. cuFFT: Release 13.4</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cufft-release-13-3-update-1">3.2.2. cuFFT: Release 13.3 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cufft-release-13-3">3.2.3. cuFFT: Release 13.3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cufft-release-13-2">3.2.4. cuFFT: Release 13.2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cufft-release-13-1">3.2.5. cuFFT: Release 13.1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cufft-release-13-0-update-1">3.2.6. cuFFT: Release 13.0 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cufft-release-13-0">3.2.7. cuFFT: Release 13.0</a></li>
+</ul>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="#cusolver-library">3.3. cuSOLVER Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cusolver-release-13-4-update-2">3.3.1. cuSOLVER: Release 13.4 Update 2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cusolver-release-13-4-update-1">3.3.2. cuSOLVER: Release 13.4 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cusolver-release-13-4">3.3.3. cuSOLVER: Release 13.4</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cusolver-release-13-3-update-1">3.3.4. cuSOLVER: Release 13.3 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cusolver-release-13-3">3.3.5. cuSOLVER: Release 13.3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cusolver-release-13-2-update-1">3.3.6. cuSOLVER: Release 13.2 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cusolver-release-13-2">3.3.7. cuSOLVER: Release 13.2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cusolver-release-13-1">3.3.8. cuSOLVER: Release 13.1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cusolver-release-13-0-update-1">3.3.9. cuSOLVER: Release 13.0 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cusolver-release-13-0">3.3.10. cuSOLVER: Release 13.0</a></li>
+</ul>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="#cusparse-library">3.4. cuSPARSE Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cusparse-release-13-4">3.4.1. cuSPARSE: Release 13.4</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cusparse-release-13-3-update-1">3.4.2. cuSPARSE: Release 13.3 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cusparse-release-13-3">3.4.3. cuSPARSE: Release 13.3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cusparse-release-13-2-update-1">3.4.4. cuSPARSE: Release 13.2 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cusparse-release-13-2">3.4.5. cuSPARSE: Release 13.2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cusparse-release-13-1-update-1">3.4.6. cuSPARSE: Release 13.1 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cusparse-release-13-1">3.4.7. cuSPARSE: Release 13.1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cusparse-release-13-0-update-1">3.4.8. cuSPARSE: Release 13.0 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cusparse-release-13-0">3.4.9. cuSPARSE: Release 13.0</a></li>
+</ul>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="#math-library">3.5. Math Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cuda-math-release-13-4">3.5.1. CUDA Math: Release 13.4</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cuda-math-release-13-3">3.5.2. CUDA Math: Release 13.3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cuda-math-release-13-2-update-1">3.5.3. CUDA Math: Release 13.2 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cuda-math-release-13-2">3.5.4. CUDA Math: Release 13.2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cuda-math-release-13-0">3.5.5. CUDA Math: Release 13.0</a></li>
+</ul>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="#nvjpeg-library">3.6. nvJPEG Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#nvjpeg-release-13-4-update-1">3.6.1. nvJPEG: Release 13.4 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nvjpeg-release-13-3-update-1">3.6.2. nvJPEG: Release 13.3 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nvjpeg-release-13-3">3.6.3. nvJPEG: Release 13.3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nvjpeg-release-13-2-update-2">3.6.4. nvJPEG: Release 13.2 Update 2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nvjpeg-release-13-2-update-1">3.6.5. nvJPEG: Release 13.2 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nvjpeg-release-13-1-update-1">3.6.6. nvJPEG: Release 13.1 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nvjpeg-release-13-1">3.6.7. nvJPEG: Release 13.1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nvjpeg-release-13-0-update-1">3.6.8. nvJPEG: Release 13.0 Update 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nvjpeg-release-13-0">3.6.9. nvJPEG: Release 13.0</a></li>
+</ul>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="#npp-library">3.7. NPP Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#npp-release-13-4">3.7.1. NPP: Release 13.4</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#npp-release-13-1">3.7.2. NPP: Release 13.1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#npp-release-13-0">3.7.3. NPP: Release 13.0</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1">
+<a class="reference internal" href="#notices">4. Notices</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#notice">4.1. Notice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#opencl">4.2. OpenCL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#trademarks">4.3. Trademarks</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="contents.html">Release Notes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+
+
+  
+
+<li>
+<a href="../index.html" class="icon icon-home"></a> »</li>
+  
+<li>CUDA Toolkit 13.4 Update 2 - Release Notes</li>
+
+      <li class="wy-breadcrumbs-aside">
+      </li>
+<li class="wy-breadcrumbs-aside">
+
+
+  <span>v13.4 |</span>
+
+
+
+  <a href="../pdf/CUDA_Toolkit_Release_Notes.pdf" class="reference external">PDF</a>
+
+
+
+  <span>|</span>
+
+
+
+  <a href="https://developer.nvidia.com/cuda-toolkit-archive" class="reference external">Archive</a>
+
+
+  <span> </span>
+</li>
+
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p class="rubric-h1 rubric">CUDA Toolkit 13.4 Update 2 - Release Notes</p>
+<section id="overview">
+<h1>
+<span class="section-number">1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a>
+</h1>
+<p>Welcome to the release notes for NVIDIA® CUDA® Toolkit 13.4 Update 2. This release includes enhancements and fixes across the CUDA Toolkit and its libraries.</p>
+<p>This documentation is organized into two main sections:</p>
+<ul>
+<li>
+<p><strong>CUDA Platform</strong></p>
+<p>Focuses on the core CUDA infrastructure including component versions, driver compatibility, compiler/runtime features, issues, and deprecations.</p>
+</li>
+<li>
+<p><strong>CUDA Libraries</strong></p>
+<p>Covers the specialized computational libraries with their feature updates, performance improvements, API changes, and version history across CUDA 13.x releases.</p>
+</li>
+</ul>
+</section>
+<section id="cuda-platform">
+<h1>
+<span class="section-number">2. </span>CUDA Platform<a class="headerlink" href="#cuda-platform" title="Permalink to this headline"></a>
+</h1>
+<section id="cuda-toolkit-major-components">
+<h2>
+<span class="section-number">2.1. </span>CUDA Toolkit Major Components<a class="headerlink" href="#cuda-toolkit-major-components" title="Permalink to this headline"></a>
+</h2>
+<blockquote>
+<div>
+<p>For CUDA 13.4 Update 2, the table below indicates the versions:</p>
+</div>
+</blockquote>
+<table class="small table-no-stripes longtable docutils align-default" id="id6">
+<caption>
+<span class="caption-number">Table 1 </span><span class="caption-text">CUDA 13.4 Update 2 Component Versions</span><a class="headerlink" href="#id6" title="Permalink to this table"></a>
+</caption>
+<colgroup>
+<col style="width: 22%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 28%">
+<col style="width: 22%">
+</colgroup>
+<thead>
+<tr class="row-odd">
+<th class="head" colspan="2"><p>Component Name</p></th>
+<th class="head"><p>Version Information</p></th>
+<th class="head"><p>Supported Architectures</p></th>
+<th class="head"><p>Supported Platforms</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even">
+<td rowspan="4"><p>CUDA C++ Core Compute Libraries</p></td>
+<td><p>Thrust</p></td>
+<td><p>3.4.3</p></td>
+<td rowspan="4"><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td rowspan="4"><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-odd">
+<td><p>CUB</p></td>
+<td><p>3.4.3</p></td>
+</tr>
+<tr class="row-even">
+<td><p>libcu++</p></td>
+<td><p>3.4.3</p></td>
+</tr>
+<tr class="row-odd">
+<td><p>Cooperative Groups</p></td>
+<td><p>13.3.4.3.1</p></td>
+</tr>
+<tr class="row-even">
+<td colspan="2"><p>CUDA Compatibility Package (Orin)</p></td>
+<td><p>13.4.47145772</p></td>
+<td><p>arm64-sbsa</p></td>
+<td><p>Linux</p></td>
+</tr>
+<tr class="row-odd">
+<td colspan="2"><p>CUDA Application Compiler (crt)</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-even">
+<td colspan="2"><p>CUDA Compilation Optimizer (ctadvisor)</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-odd">
+<td colspan="2"><p>CUDA Runtime (cudart)</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-even">
+<td colspan="2"><p>CUDA culibos</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa</p></td>
+<td><p>Linux</p></td>
+</tr>
+<tr class="row-odd">
+<td colspan="2"><p>CUDA cuobjdump</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-even">
+<td colspan="2"><p>CUPTI</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-odd">
+<td colspan="2"><p>CUDA cuxxfilt (demangler)</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-even">
+<td colspan="2"><p>CUDA Documentation</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-odd">
+<td colspan="2"><p>CUDA GDB</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa</p></td>
+<td><p>Linux</p></td>
+</tr>
+<tr class="row-even">
+<td colspan="2"><p>CUDA NVCC</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-odd">
+<td colspan="2"><p>CUDA nvdisasm</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-even">
+<td colspan="2"><p>CUDA NVML Headers</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-odd">
+<td colspan="2"><p>CUDA nvprune</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-even">
+<td colspan="2"><p>CUDA NVRTC</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-odd">
+<td colspan="2"><p>CUDA NVTX</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-even">
+<td colspan="2"><p>CUDA OpenCL</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-odd">
+<td colspan="2"><p>CUDA Profiler API</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-even">
+<td colspan="2"><p>CUDA Sandbox dev</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa</p></td>
+<td><p>Linux</p></td>
+</tr>
+<tr class="row-odd">
+<td colspan="2"><p>CUDA Compute Sanitizer API</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-even">
+<td colspan="2"><p>CUDA TILE-IR AS</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-odd">
+<td colspan="2"><p>CUDA cuBLAS</p></td>
+<td><p>13.8.0.4</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-even">
+<td colspan="2"><p>CUDA cuDLA</p></td>
+<td><p>13.4.92</p></td>
+<td><p>arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-odd">
+<td colspan="2"><p>CUDA cuFFT</p></td>
+<td><p>12.4.0.43</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-even">
+<td colspan="2"><p>CUDA cuFile</p></td>
+<td><p>1.19.1.55</p></td>
+<td><p>x86_64, arm64-sbsa</p></td>
+<td><p>Linux</p></td>
+</tr>
+<tr class="row-odd">
+<td colspan="2"><p>CUDA cuobjclient</p></td>
+<td><p>1.3.1.55</p></td>
+<td><p>x86_64, arm64-sbsa</p></td>
+<td><p>Linux</p></td>
+</tr>
+<tr class="row-even">
+<td colspan="2"><p>CUDA cuRAND</p></td>
+<td><p>10.4.4.72</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-odd">
+<td colspan="2"><p>CUDA cuSOLVER</p></td>
+<td><p>12.3.5.3</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-even">
+<td colspan="2"><p>CUDA cuSPARSE</p></td>
+<td><p>12.8.6.72</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-odd">
+<td colspan="2"><p>CUDA NPP</p></td>
+<td><p>13.2.0.58</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-even">
+<td colspan="2"><p>CUDA nvFatbin</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-odd">
+<td colspan="2"><p>CUDA nvJitLink</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-even">
+<td colspan="2"><p>CUDA nvJPEG</p></td>
+<td><p>13.2.3.58</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-odd">
+<td colspan="2"><p>CUDA nvptxcompiler</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-even">
+<td colspan="2"><p>CUDA nvvm</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-odd">
+<td colspan="2"><p>Nsight Compute</p></td>
+<td><p>2026.3.1.2</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-even">
+<td colspan="2"><p>Nsight Systems</p></td>
+<td><p>2026.3.2.476</p></td>
+<td><p>x86_64, arm64-sbsa, arm64 (Windows)</p></td>
+<td><p>Linux, Windows</p></td>
+</tr>
+<tr class="row-odd">
+<td colspan="2"><p>Nsight Visual Studio Edition (VSE)</p></td>
+<td><p>2026.3.0.26187</p></td>
+<td><p>x86_64, arm64 (Windows)</p></td>
+<td><p>Windows</p></td>
+</tr>
+<tr class="row-even">
+<td colspan="2"><p>Visual Studio Integration</p></td>
+<td><p>13.4.92</p></td>
+<td><p>x86_64, arm64 (Windows)</p></td>
+<td><p>Windows</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cuda-driver">
+<h2>
+<span class="section-number">2.2. </span>CUDA Driver<a class="headerlink" href="#cuda-driver" title="Permalink to this headline"></a>
+</h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The NVIDIA driver is <strong>no longer bundled</strong> with the CUDA Toolkit – on Windows starting with CUDA 13.1, and on Linux starting with CUDA 13.4. Download and install the appropriate driver from the official <a class="reference external" href="https://www.nvidia.com/drivers">NVIDIA Driver Downloads</a> page.</p>
+</div>
+<p>Running a CUDA application requires a system with at least one CUDA-capable GPU and a driver that is compatible with the CUDA Toolkit. For more information about various GPU products that are CUDA-capable, visit <a class="reference external" href="https://developer.nvidia.com/cuda/gpus">https://developer.nvidia.com/cuda/gpus</a>.</p>
+<p>The NVIDIA driver branch corresponding to each CUDA Toolkit release is shown below. Update releases within a CUDA minor version use the same driver branch.</p>
+<table class="small table-no-stripes colwidths-given docutils align-default" id="id7">
+<caption>
+<span class="caption-number">Table 2 </span><span class="caption-text">CUDA Toolkit and Corresponding Driver Branch</span><a class="headerlink" href="#id7" title="Permalink to this table"></a>
+</caption>
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="row-odd">
+<th class="head"><p>CUDA Toolkit</p></th>
+<th class="head"><p>Corresponding Driver Branch</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even">
+<td><p>CUDA 13.4</p></td>
+<td><p>R615</p></td>
+</tr>
+<tr class="row-odd">
+<td><p>CUDA 13.3</p></td>
+<td><p>R610</p></td>
+</tr>
+<tr class="row-even">
+<td><p>CUDA 13.2</p></td>
+<td><p>R595</p></td>
+</tr>
+<tr class="row-odd">
+<td><p>CUDA 13.1</p></td>
+<td><p>R590</p></td>
+</tr>
+<tr class="row-even">
+<td><p>CUDA 13.0</p></td>
+<td><p>R580</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Existing CUDA 13.x applications run on drivers &gt;=580 under CUDA minor version
+compatibility. CUDA 13.4 new features and newly enabled platforms require an R615
+or later driver that supports them. The Windows driver for the RTX Spark device
+is 616.41 or later.</p>
+</div>
+<p>The CUDA driver is backward compatible: applications compiled against a particular CUDA Toolkit version continue to work on subsequent (later) driver releases. In addition, CUDA minor version compatibility allows applications to run on a driver older than the corresponding driver branch, within the ranges shown below. The installed driver must meet or exceed the minimum required version for the CUDA Toolkit. For details, see the <a class="reference external" href="https://docs.nvidia.com/deploy/cuda-compatibility/index.html">CUDA Compatibility Guide</a> and <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html#cuda-compatibility-and-upgrades">CUDA Compatibility and Upgrades</a>.</p>
+<table class="small table-no-stripes docutils align-default" id="id8">
+<caption>
+<span class="caption-number">Table 3 </span><span class="caption-text">CUDA Toolkit and Minimum Required Driver Version for CUDA Minor Version Compatibility</span><a class="headerlink" href="#id8" title="Permalink to this table"></a>
+</caption>
+<colgroup>
+<col style="width: 23%">
+<col style="width: 30%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="row-odd">
+<th class="head"><p>CTK Version</p></th>
+<th class="head" colspan="2"><p>Driver Range for Minor Version Compatibility</p></th>
+</tr>
+<tr class="row-even">
+<th class="head"></th>
+<th class="head"><p>Min</p></th>
+<th class="head"><p>Max</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd">
+<td><p>13.x</p></td>
+<td><p>&gt;= 580</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even">
+<td><p>12.x</p></td>
+<td><p>&gt;= 525</p></td>
+<td><p>&lt; 580</p></td>
+</tr>
+<tr class="row-odd">
+<td><p>11.x</p></td>
+<td><p>&gt;= 450</p></td>
+<td><p>&lt; 525</p></td>
+</tr>
+</tbody>
+</table>
+<p>CUDA 11.0 shipped with earlier driver versions. Minor-version compatibility across the CUDA 11.x family requires driver version 450.80.02 or later on Linux, or 452.39 or later on Windows.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+Older CUDA versions (12.9 and earlier)<div class="sd-summary-down docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-down" viewbox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg>
+</div>
+<div class="sd-summary-up docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-up" viewbox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg>
+</div>
+</summary><div class="sd-summary-content sd-card-body docutils">
+<table class="small table-no-stripes longtable colwidths-given docutils align-default" id="id9">
+<caption>
+<span class="caption-number">Table 4 </span><span class="caption-text">Corresponding Driver Versions (CUDA 12.9 and earlier)</span><a class="headerlink" href="#id9" title="Permalink to this table"></a>
+</caption>
+<colgroup>
+<col style="width: 40%">
+<col style="width: 30%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="row-odd">
+<th class="head"><p class="sd-card-text">CUDA Toolkit</p></th>
+<th class="head" colspan="2"><p class="sd-card-text">Corresponding Driver Version</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even">
+<td></td>
+<td><p class="sd-card-text">Linux x86_64 Driver Version</p></td>
+<td><p class="sd-card-text">Windows x86_64 Driver Version</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 12.9 Update 1</p></td>
+<td><p class="sd-card-text">&gt;=575.57.08</p></td>
+<td><p class="sd-card-text">&gt;=576.57</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 12.9 GA</p></td>
+<td><p class="sd-card-text">&gt;=575.51.03</p></td>
+<td><p class="sd-card-text">&gt;=576.02</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 12.8 Update 1</p></td>
+<td><p class="sd-card-text">&gt;=570.124.06</p></td>
+<td><p class="sd-card-text">&gt;=572.61</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 12.8 GA</p></td>
+<td><p class="sd-card-text">&gt;=570.26</p></td>
+<td><p class="sd-card-text">&gt;=570.65</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 12.6 Update 3</p></td>
+<td><p class="sd-card-text">&gt;=560.35.05</p></td>
+<td><p class="sd-card-text">&gt;=561.17</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 12.6 Update 2</p></td>
+<td><p class="sd-card-text">&gt;=560.35.03</p></td>
+<td><p class="sd-card-text">&gt;=560.94</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 12.6 Update 1</p></td>
+<td><p class="sd-card-text">&gt;=560.35.03</p></td>
+<td><p class="sd-card-text">&gt;=560.94</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 12.6 GA</p></td>
+<td><p class="sd-card-text">&gt;=560.28.03</p></td>
+<td><p class="sd-card-text">&gt;=560.76</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 12.5 Update 1</p></td>
+<td><p class="sd-card-text">&gt;=555.42.06</p></td>
+<td><p class="sd-card-text">&gt;=555.85</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 12.5 GA</p></td>
+<td><p class="sd-card-text">&gt;=555.42.02</p></td>
+<td><p class="sd-card-text">&gt;=555.85</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 12.4 Update 1</p></td>
+<td><p class="sd-card-text">&gt;=550.54.15</p></td>
+<td><p class="sd-card-text">&gt;=551.78</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 12.4 GA</p></td>
+<td><p class="sd-card-text">&gt;=550.54.14</p></td>
+<td><p class="sd-card-text">&gt;=551.61</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 12.3 Update 1</p></td>
+<td><p class="sd-card-text">&gt;=545.23.08</p></td>
+<td><p class="sd-card-text">&gt;=546.12</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 12.3 GA</p></td>
+<td><p class="sd-card-text">&gt;=545.23.06</p></td>
+<td><p class="sd-card-text">&gt;=545.84</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 12.2 Update 2</p></td>
+<td><p class="sd-card-text">&gt;=535.104.05</p></td>
+<td><p class="sd-card-text">&gt;=537.13</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 12.2 Update 1</p></td>
+<td><p class="sd-card-text">&gt;=535.86.09</p></td>
+<td><p class="sd-card-text">&gt;=536.67</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 12.2 GA</p></td>
+<td><p class="sd-card-text">&gt;=535.54.03</p></td>
+<td><p class="sd-card-text">&gt;=536.25</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 12.1 Update 1</p></td>
+<td><p class="sd-card-text">&gt;=530.30.02</p></td>
+<td><p class="sd-card-text">&gt;=531.14</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 12.1 GA</p></td>
+<td><p class="sd-card-text">&gt;=530.30.02</p></td>
+<td><p class="sd-card-text">&gt;=531.14</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 12.0 Update 1</p></td>
+<td><p class="sd-card-text">&gt;=525.85.12</p></td>
+<td><p class="sd-card-text">&gt;=528.33</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 12.0 GA</p></td>
+<td><p class="sd-card-text">&gt;=525.60.13</p></td>
+<td><p class="sd-card-text">&gt;=527.41</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 11.8 GA</p></td>
+<td><p class="sd-card-text">&gt;=520.61.05</p></td>
+<td><p class="sd-card-text">&gt;=520.06</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 11.7 Update 1</p></td>
+<td><p class="sd-card-text">&gt;=515.48.07</p></td>
+<td><p class="sd-card-text">&gt;=516.31</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 11.7 GA</p></td>
+<td><p class="sd-card-text">&gt;=515.43.04</p></td>
+<td><p class="sd-card-text">&gt;=516.01</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 11.6 Update 2</p></td>
+<td><p class="sd-card-text">&gt;=510.47.03</p></td>
+<td><p class="sd-card-text">&gt;=511.65</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 11.6 Update 1</p></td>
+<td><p class="sd-card-text">&gt;=510.47.03</p></td>
+<td><p class="sd-card-text">&gt;=511.65</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 11.6 GA</p></td>
+<td><p class="sd-card-text">&gt;=510.39.01</p></td>
+<td><p class="sd-card-text">&gt;=511.23</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 11.5 Update 2</p></td>
+<td><p class="sd-card-text">&gt;=495.29.05</p></td>
+<td><p class="sd-card-text">&gt;=496.13</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 11.5 Update 1</p></td>
+<td><p class="sd-card-text">&gt;=495.29.05</p></td>
+<td><p class="sd-card-text">&gt;=496.13</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 11.5 GA</p></td>
+<td><p class="sd-card-text">&gt;=495.29.05</p></td>
+<td><p class="sd-card-text">&gt;=496.04</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 11.4 Update 4</p></td>
+<td><p class="sd-card-text">&gt;=470.82.01</p></td>
+<td><p class="sd-card-text">&gt;=472.50</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 11.4 Update 3</p></td>
+<td><p class="sd-card-text">&gt;=470.82.01</p></td>
+<td><p class="sd-card-text">&gt;=472.50</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 11.4 Update 2</p></td>
+<td><p class="sd-card-text">&gt;=470.57.02</p></td>
+<td><p class="sd-card-text">&gt;=471.41</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 11.4 Update 1</p></td>
+<td><p class="sd-card-text">&gt;=470.57.02</p></td>
+<td><p class="sd-card-text">&gt;=471.41</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 11.4.0 GA</p></td>
+<td><p class="sd-card-text">&gt;=470.42.01</p></td>
+<td><p class="sd-card-text">&gt;=471.11</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 11.3.1 Update 1</p></td>
+<td><p class="sd-card-text">&gt;=465.19.01</p></td>
+<td><p class="sd-card-text">&gt;=465.89</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 11.3.0 GA</p></td>
+<td><p class="sd-card-text">&gt;=465.19.01</p></td>
+<td><p class="sd-card-text">&gt;=465.89</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 11.2.2 Update 2</p></td>
+<td><p class="sd-card-text">&gt;=460.32.03</p></td>
+<td><p class="sd-card-text">&gt;=461.33</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 11.2.1 Update 1</p></td>
+<td><p class="sd-card-text">&gt;=460.32.03</p></td>
+<td><p class="sd-card-text">&gt;=461.09</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 11.2.0 GA</p></td>
+<td><p class="sd-card-text">&gt;=460.27.03</p></td>
+<td><p class="sd-card-text">&gt;=460.82</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 11.1.1 Update 1</p></td>
+<td><p class="sd-card-text">&gt;=455.32</p></td>
+<td><p class="sd-card-text">&gt;=456.81</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 11.1 GA</p></td>
+<td><p class="sd-card-text">&gt;=455.23</p></td>
+<td><p class="sd-card-text">&gt;=456.38</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 11.0.3 Update 1</p></td>
+<td><p class="sd-card-text">&gt;= 450.51.06</p></td>
+<td><p class="sd-card-text">&gt;= 451.82</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 11.0.2 GA</p></td>
+<td><p class="sd-card-text">&gt;= 450.51.05</p></td>
+<td><p class="sd-card-text">&gt;= 451.48</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 11.0.1 RC</p></td>
+<td><p class="sd-card-text">&gt;= 450.36.06</p></td>
+<td><p class="sd-card-text">&gt;= 451.22</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 10.2.89</p></td>
+<td><p class="sd-card-text">&gt;= 440.33</p></td>
+<td><p class="sd-card-text">&gt;= 441.22</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 10.1 (10.1.105 general release, and updates)</p></td>
+<td><p class="sd-card-text">&gt;= 418.39</p></td>
+<td><p class="sd-card-text">&gt;= 418.96</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 10.0.130</p></td>
+<td><p class="sd-card-text">&gt;= 410.48</p></td>
+<td><p class="sd-card-text">&gt;= 411.31</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 9.2 (9.2.148 Update 1)</p></td>
+<td><p class="sd-card-text">&gt;= 396.37</p></td>
+<td><p class="sd-card-text">&gt;= 398.26</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 9.2 (9.2.88)</p></td>
+<td><p class="sd-card-text">&gt;= 396.26</p></td>
+<td><p class="sd-card-text">&gt;= 397.44</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 9.1 (9.1.85)</p></td>
+<td><p class="sd-card-text">&gt;= 390.46</p></td>
+<td><p class="sd-card-text">&gt;= 391.29</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 9.0 (9.0.76)</p></td>
+<td><p class="sd-card-text">&gt;= 384.81</p></td>
+<td><p class="sd-card-text">&gt;= 385.54</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 8.0 (8.0.61 GA2)</p></td>
+<td><p class="sd-card-text">&gt;= 375.26</p></td>
+<td><p class="sd-card-text">&gt;= 376.51</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 8.0 (8.0.44)</p></td>
+<td><p class="sd-card-text">&gt;= 367.48</p></td>
+<td><p class="sd-card-text">&gt;= 369.30</p></td>
+</tr>
+<tr class="row-odd">
+<td><p class="sd-card-text">CUDA 7.5 (7.5.16)</p></td>
+<td><p class="sd-card-text">&gt;= 352.31</p></td>
+<td><p class="sd-card-text">&gt;= 353.66</p></td>
+</tr>
+<tr class="row-even">
+<td><p class="sd-card-text">CUDA 7.0 (7.0.28)</p></td>
+<td><p class="sd-card-text">&gt;= 346.46</p></td>
+<td><p class="sd-card-text">&gt;= 347.62</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</details></section>
+<section id="new-features">
+<span id="cuda-general-new-features"></span><h2>
+<span class="section-number">2.3. </span>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline"></a>
+</h2>
+<section id="id1">
+<h3>
+<span class="section-number">2.3.1. </span>CUDA Platform<a class="headerlink" href="#id1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li><p>None</p></li>
+</ul>
+</section>
+<section id="cuda-developer-tools">
+<h3>
+<span class="section-number">2.3.2. </span>CUDA Developer Tools<a class="headerlink" href="#cuda-developer-tools" title="Permalink to this headline"></a>
+</h3>
+<p>For details on new features, improvements, and bug fixes, see the changelogs for:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.nvidia.com/nsight-systems/ReleaseNotes/index.html">Nsight Systems</a>.</p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/nsight-visual-studio-edition/release-notes/index.html">Nsight Visual Studio Edition</a>.</p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/cupti/release-notes/release-notes.html">CUPTI</a>.</p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/nsight-compute/ReleaseNotes/index.html#whats-new">Nsight Compute</a>.</p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/compute-sanitizer/ReleaseNotes/index.html">Compute Sanitizer</a>.</p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/deploy/nvml-api/change-log.html#change-log">NVML</a>.</p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/cuda/cuda-gdb/index.html#release-notes">cuda-gdb</a>.</p></li>
+</ul>
+</section>
+<section id="cuda-compiler">
+<h3>
+<span class="section-number">2.3.3. </span>CUDA Compiler<a class="headerlink" href="#cuda-compiler" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li><p>PTX ISA 9.4 is supported. For new PTX features, see the
+<a class="reference external" href="https://docs.nvidia.com/cuda/parallel-thread-execution/#ptx-isa-version-9-4">PTX ISA 9.4 documentation</a>.</p></li>
+</ul>
+</section>
+<section id="cuda-c-core-libraries-cccl">
+<h3>
+<span class="section-number">2.3.4. </span>CUDA C++ Core Libraries (CCCL)<a class="headerlink" href="#cuda-c-core-libraries-cccl" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li><p>None</p></li>
+</ul>
+</section>
+<section id="cuda-python">
+<h3>
+<span class="section-number">2.3.5. </span>CUDA Python<a class="headerlink" href="#cuda-python" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li><p>None</p></li>
+</ul>
+</section>
+<section id="cuda-tile">
+<h3>
+<span class="section-number">2.3.6. </span>CUDA Tile<a class="headerlink" href="#cuda-tile" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li><p>None</p></li>
+</ul>
+</section>
+<section id="cuda-tile-ir">
+<h3>
+<span class="section-number">2.3.7. </span>CUDA Tile IR<a class="headerlink" href="#cuda-tile-ir" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li><p>None</p></li>
+</ul>
+</section>
+</section>
+<section id="resolved-issues">
+<h2>
+<span class="section-number">2.4. </span>Resolved Issues<a class="headerlink" href="#resolved-issues" title="Permalink to this headline"></a>
+</h2>
+<section id="general-cuda">
+<h3>
+<span class="section-number">2.4.1. </span>General CUDA<a class="headerlink" href="#general-cuda" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li><p>None</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>
+<span class="section-number">2.4.2. </span>CUDA Compiler<a class="headerlink" href="#id2" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li><p>None</p></li>
+</ul>
+</section>
+<section id="cuda-tools">
+<h3>
+<span class="section-number">2.4.3. </span>CUDA Tools<a class="headerlink" href="#cuda-tools" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li><p>None</p></li>
+</ul>
+</section>
+</section>
+<section id="known-issues">
+<h2>
+<span class="section-number">2.5. </span>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline"></a>
+</h2>
+<section id="id3">
+<h3>
+<span class="section-number">2.5.1. </span>CUDA Platform<a class="headerlink" href="#id3" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li><p>None</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>
+<span class="section-number">2.5.2. </span>CUDA Compiler<a class="headerlink" href="#id4" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li><p>None</p></li>
+</ul>
+</section>
+</section>
+<section id="deprecated-or-dropped-features">
+<h2>
+<span class="section-number">2.6. </span>Deprecated or Dropped Features<a class="headerlink" href="#deprecated-or-dropped-features" title="Permalink to this headline"></a>
+</h2>
+<section id="id5">
+<h3>
+<span class="section-number">2.6.1. </span>CUDA Platform<a class="headerlink" href="#id5" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li><p>Legacy Nsight Eclipse Edition plugins are no longer delivered in CUDA Toolkit packages beginning with CUDA 13.3.</p></li>
+<li><p>Python 3.10 support is deprecated across the CUDA Python 13.4 packages.</p></li>
+</ul>
+</section>
+<section id="architectures">
+<h3>
+<span class="section-number">2.6.2. </span>Architectures<a class="headerlink" href="#architectures" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li><p>CUDA 14.0 will move to Armv8.2-A as the minimum supported architecture for
+ARM64-SBSA.</p></li>
+</ul>
+</section>
+<section id="operating-systems">
+<h3>
+<span class="section-number">2.6.3. </span>Operating Systems<a class="headerlink" href="#operating-systems" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li><p>None</p></li>
+</ul>
+</section>
+<section id="cuda-toolchains">
+<h3>
+<span class="section-number">2.6.4. </span>CUDA Toolchains<a class="headerlink" href="#cuda-toolchains" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li><p>None</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="cuda-libraries">
+<h1>
+<span class="section-number">3. </span>CUDA Libraries<a class="headerlink" href="#cuda-libraries" title="Permalink to this headline"></a>
+</h1>
+<p>This section covers CUDA Libraries release notes for 13.x releases.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Documentation will be updated to accurately reflect supported C++ standard libraries for CUDA Math Libraries.</p>
+</div>
+<section id="cublas-library">
+<h2>
+<span class="section-number">3.1. </span>cuBLAS Library<a class="headerlink" href="#cublas-library" title="Permalink to this headline"></a>
+</h2>
+<section id="cublas-release-13-4-update-1">
+<h3>
+<span class="section-number">3.1.1. </span>cuBLAS: Release 13.4 Update 1<a class="headerlink" href="#cublas-release-13-4-update-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li>
+<p>Emulated FP64 matrix multiplications:</p>
+<ul>
+<li><p>Improved ZGEMM peak performance by up to 25% on Rubin GPUs.</p></li>
+<li><p>When the per-handle workspace is insufficient, fixed-point FP64 emulation now allocates its temporary workspace from a cuBLAS-managed, per-device CUDA memory pool that retains memory across stream synchronizations. This avoids repeated allocation overhead without requiring users to tune the default memory pool.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p>When running NVIDIA Compute Sanitizer (versions up to CUDA Toolkit 13.4) with cuBLAS-linked workloads, the tool may report false-positive errors regarding invalid global reads or out-of-bounds (OOB) memory accesses inside cuBLAS accelerated kernels. This is a known issue caused by a limitation in Compute Sanitizer’s ability to accurately identify the PTX semantics of the asynchronous global-to-shared memory copy instruction <code class="docutils literal notranslate"><span class="pre">cp.async.cg.shared.global</span> <span class="pre">[dst],</span> <span class="pre">[src],</span> <span class="pre">cp-size,</span> <span class="pre">src-size</span></code> when <code class="docutils literal notranslate"><span class="pre">src-size</span> <span class="pre">&lt;</span> <span class="pre">cp-size</span></code>. In this specific scenario, where the number of bytes to copy exceeds the source buffer size, the hardware guarantees that the remaining bytes (<code class="docutils literal notranslate"><span class="pre">cp-size</span> <span class="pre">-</span> <span class="pre">src-size</span></code>) in the destination shared memory are automatically padded with zeros, ensuring that the memory access is neither invalid nor OOB. Hence, Compute Sanitizer reports for these specific cases can be safely ignored. <em>[6196059]</em></p></li>
+<li><p>cuBLASLt Grouped GEMM with per-batch tensor-wide scales causes an invalid memory access for groups where <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>, and <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">0</span></code>. As a workaround, always pass valid scale pointers for each group. This issue was introduced in CUDA Toolkit 13.1 (cuBLAS 13.2.0). <em>[CUB-10481]</em></p></li>
+<li><p>cuBLASLt Grouped GEMM operations can lead to incorrect results on Blackwell and Rubin GPUs. This issue was introduced in CUDA Toolkit 13.4 (cuBLAS 13.7.0). <em>[6798616]</em></p></li>
+<li><p>GEMM kernels can produce incorrect results on Hopper GPUs for FP16, BF16, and FP8 matrices when the process runs as an MPS client with <code class="docutils literal notranslate"><span class="pre">CUDA_MPS_ACTIVE_THREAD_PERCENTAGE</span></code> below 100. This affects only algorithms with <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_ID</span></code> equal to 66 with cluster configurations that use 4 or more CTAs. As a workaround, use cluster configurations with 1 or 2 CTAs in affected processes. This issue was introduced in CUDA Toolkit 12.6 Update 2 (cuBLAS 12.6.3). <em>[6862950]</em></p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed an issue where cuBLASLt Grouped GEMM operations with <code class="docutils literal notranslate"><span class="pre">CUBLAS_POINTER_MODE_HOST</span></code> could lead to incorrect results on Hopper GPUs when the number of waves was larger than 2. This issue was introduced in CUDA Toolkit 13.2 Update 1 (cuBLAS 13.4.0). <em>[6681084]</em></p></li>
+<li><p>Fixed an issue where cuBLASLt Grouped GEMM operations could lead to incorrect results on B300 and Rubin GPUs when the input matrices used the NVFP4 data type, the number of waves was larger than 3, and the algorithm attribute <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_STAGES_ID</span></code> was <code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_STAGES_768xAUTO</span></code>. This issue was introduced in CUDA Toolkit 13.4 (cuBLAS 13.7.0). <em>[6681084]</em></p></li>
+<li><p>Fixed an issue where <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul()</span></code> could return incorrect output when using split-K if the number of K splits (<code class="docutils literal notranslate"><span class="pre">SPLITK_NUM</span></code>) did not evenly divide the K dimension and the floor division of K / <code class="docutils literal notranslate"><span class="pre">SPLITK_NUM</span></code> was an exact multiple of the stage size. This affected only algorithms with <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_ID</span></code> equal to 66 on GPUs with compute capability 9.0, 10.x, and 11.x. This issue was introduced in CUDA Toolkit 12.6 Update 2 (cuBLAS 12.6.3). <em>[6580689]</em></p></li>
+<li><p>Fixed an issue where <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul()</span></code> could produce incorrect results on B300 and Rubin GPUs when the input matrices used the NVFP4 data type. This affected only algorithms with <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_ID</span></code> equal to 66 and the algorithm attribute <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_STAGES_ID</span></code> set to <code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_STAGES_768xAUTO</span></code>. This issue was introduced in CUDA Toolkit 13.3 (cuBLAS 13.5.1). <em>[CUB-10573]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cublas-release-13-4">
+<h3>
+<span class="section-number">3.1.2. </span>cuBLAS: Release 13.4<a class="headerlink" href="#cublas-release-13-4" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li>
+<p>Emulated FP64 matrix multiplications:</p>
+<ul>
+<li><p>Emulated FP64 matrix multiplications now leverage the Ozaki-II scheme when it provides a performance benefit over the Ozaki-I scheme; the Ozaki-II scheme is supported on NVIDIA Ampere and newer GPUs.</p></li>
+<li><p>On B200 and RTX PRO 6000 Blackwell Server Edition GPUs, this enables up to 175 and 45 TFLOPS of emulated DGEMM performance, respectively, and up to 295 and 70 TFLOPS of emulated ZGEMM performance, respectively, by leveraging the <a class="reference external" href="https://research.nvidia.com/publication/2026-06_2m-multiplication-algorithm-complex-matrices">2M algorithm</a>.</p></li>
+<li><p>Emulated FP64 matrix multiplications now support Rubin GPUs (compute capability 10.7), leveraging the Ozaki-I and Ozaki-II schemes and the new TI16 type via the <code class="docutils literal notranslate"><span class="pre">tcgen05.mma</span></code> instruction to achieve up to 212 TFLOPS of emulated DGEMM performance. Emulated ZGEMM can reach up to 301 TFLOPS, with further improvements to come.</p></li>
+</ul>
+</li>
+<li><p>cuBLASLt adds experimental support for an alternative scaling-factor layout for MXFP8 matmuls through the <code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_MATRIX_SCALE_VEC32_MN_K4_UE8M0</span></code> and <code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_MATRIX_SCALE_VEC128_MN_K4_UE8M0</span></code> scaling modes. For more information, see the <a class="reference external" href="https://docs.nvidia.com/cuda/cublas/index.html#d-block-scaling-factors-mn-x-k4-layout-experimental">cuBLAS documentation</a>.</p></li>
+<li><p>Added support for the NVIDIA Rubin (compute capability 10.7) GPU architecture.</p></li>
+<li><p>cuBLASLt Grouped GEMM performance is improved on Blackwell data center GPUs through dynamic scheduling of matrix computations. Improvements of up to 20% can be seen for Grouped GEMM calls with a large number of groups (for example, 32). <em>[5913842]</em> <em>[5992105]</em> <em>[CUB-9925]</em></p></li>
+</ul>
+</li>
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p>When running NVIDIA Compute Sanitizer (versions up to CUDA Toolkit 13.4) with cuBLAS-linked workloads, the tool may report false-positive errors regarding invalid global reads or out-of-bounds (OOB) memory accesses inside cuBLAS accelerated kernels. This is a known issue caused by a limitation in Compute Sanitizer’s ability to accurately identify the PTX semantics of the asynchronous global-to-shared memory copy instruction <code class="docutils literal notranslate"><span class="pre">cp.async.cg.shared.global</span> <span class="pre">[dst],</span> <span class="pre">[src],</span> <span class="pre">cp-size,</span> <span class="pre">src-size</span></code> when <code class="docutils literal notranslate"><span class="pre">src-size</span> <span class="pre">&lt;</span> <span class="pre">cp-size</span></code>. In this specific scenario, where the number of bytes to copy exceeds the source buffer size, the hardware guarantees that the remaining bytes (<code class="docutils literal notranslate"><span class="pre">cp-size</span> <span class="pre">-</span> <span class="pre">src-size</span></code>) in the destination shared memory are automatically padded with zeros, ensuring that the memory access is neither invalid nor OOB. Hence, Compute Sanitizer reports for these specific cases can be safely ignored. <em>[6196059]</em></p></li>
+<li><p>cuBLASLt Grouped GEMM with per-batch tensor-wide scales causes an invalid memory
+access for groups where <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>, and <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">0</span></code>. As a workaround, always
+pass valid scale pointers for each group. This issue was introduced in CUDA Toolkit 13.1
+(cuBLAS 13.2.0). <em>[CUB-10481]</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cublasLtMatmul()</span></code> can return incorrect output when using split-K if the number of K splits (<code class="docutils literal notranslate"><span class="pre">SPLITK_NUM</span></code>) does not evenly divide the K dimension and the floor division of K / <code class="docutils literal notranslate"><span class="pre">SPLITK_NUM</span></code> is an exact multiple of the stage size. This affects only algorithms with <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_ID</span></code> equal to 66 on GPUs with compute capability 9.0, 10.x, and 11.x. As a workaround, use <code class="docutils literal notranslate"><span class="pre">cublasLtMatmulAlgoConfigGetAttribute()</span></code> to query the number of K splits (<code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_SPLITK_NUM</span></code>) and the stage size (derived from <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_STAGES_ID</span></code>), then use <code class="docutils literal notranslate"><span class="pre">cublasLtMatmulAlgoConfigSetAttribute()</span></code> to set a value that evenly divides the K dimension, or for which K / <code class="docutils literal notranslate"><span class="pre">SPLITK_NUM</span></code> is not an exact multiple of the stage size. This issue was first introduced in CUDA Toolkit 12.6 Update 2 (cuBLAS 12.6.3). <em>[6580689]</em></p></li>
+<li><p>cuBLASLt Grouped GEMM operations with <code class="docutils literal notranslate"><span class="pre">CUBLAS_POINTER_MODE_HOST</span></code> can lead to incorrect results on Hopper GPUs when the number of waves is larger than 2. As a workaround, pass device alpha and beta using <code class="docutils literal notranslate"><span class="pre">CUBLAS_POINTER_MODE_DEVICE</span></code>. This issue was introduced in CUDA Toolkit 13.2 Update 1 (cuBLAS 13.4.0). <em>[6681084]</em></p></li>
+<li><p>cuBLASLt Grouped GEMM operations can lead to incorrect results on B300 and Rubin GPUs when the input matrices use the NVFP4 data type, the number of waves is larger than 3, and the algorithm attribute <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_STAGES_ID</span></code> is <code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_STAGES_768xAUTO</span></code>. As a workaround, skip such candidates when using <code class="docutils literal notranslate"><span class="pre">cublasLtMatmulAlgoGetHeuristic()</span></code>. <em>[6681084]</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cublasLtMatmul()</span></code> can produce incorrect results on B300 and Rubin GPUs when the input matrices use the NVFP4 data type. This affects only algorithms with <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_ID</span></code> equal to 66 and the algorithm attribute <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_STAGES_ID</span></code> is <code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_STAGES_768xAUTO</span></code>. <em>[CUB-10573]</em></p></li>
+<li><p>cuBLASLt Grouped GEMM operations can lead to incorrect results on Blackwell and Rubin GPUs. This issue was introduced in CUDA Toolkit 13.4 (cuBLAS 13.7.0). <em>[6798616]</em></p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Between CUDA Toolkit 13.3 Update 1 and 13.4, cuBLAS released an independent patch release (cuBLAS 13.6.1) that resolves several issues. Refer to the associated <a class="reference external" href="https://docs.nvidia.com/cuda/cublas-patch-release-notes/#cublas-patch-release-13-6-1">cuBLAS patch release notes</a> for details.</p></li>
+<li><p>Fixed an issue where <code class="docutils literal notranslate"><span class="pre">cublasLtMatmulAlgoGetHeuristic()</span></code> could return no algorithms, and <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul()</span></code> could return <code class="docutils literal notranslate"><span class="pre">CUBLAS_STATUS_NOT_SUPPORTED</span></code>, for some NVFP4 matmuls with NVFP4 output and the <code class="docutils literal notranslate"><span class="pre">CUBLASLT_EPILOGUE_BIAS</span></code> epilogue on GPUs with compute capability 12.x. <em>[CUB-10222]</em></p></li>
+<li><p>Fixed an issue where <code class="docutils literal notranslate"><span class="pre">cublasLtMatmulAlgoGetHeuristic()</span></code> returned <code class="docutils literal notranslate"><span class="pre">CUBLAS_STATUS_INTERNAL_ERROR</span></code> and invalidated an in-flight CUDA graph capture when called while a non-default blocking stream was being captured. This issue was introduced in CUDA Toolkit 13.3 (cuBLAS 13.5.1). <em>[6288786]</em></p></li>
+<li><p>Fixed an issue where <code class="docutils literal notranslate"><span class="pre">cublas&lt;t&gt;gemv()</span></code> with <code class="docutils literal notranslate"><span class="pre">trans</span></code> equal to <code class="docutils literal notranslate"><span class="pre">CUBLAS_OP_T</span></code> or <code class="docutils literal notranslate"><span class="pre">CUBLAS_OP_C</span></code> could perform an illegal memory access when the number of elements addressed by the output vector (<code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">*</span> <span class="pre">incy</span></code>) exceeded the 32-bit index range. <code class="docutils literal notranslate"><span class="pre">cublasZgemv()</span></code> could additionally return <code class="docutils literal notranslate"><span class="pre">CUBLAS_STATUS_NOT_SUPPORTED</span></code> when <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">*</span> <span class="pre">lda</span></code> exceeded that range. <em>[6207926]</em></p></li>
+<li><p>Fixed an issue where <code class="docutils literal notranslate"><span class="pre">cublasZgemv()</span></code> with <code class="docutils literal notranslate"><span class="pre">trans</span></code> equal to <code class="docutils literal notranslate"><span class="pre">CUBLAS_OP_C</span></code> and <code class="docutils literal notranslate"><span class="pre">incy</span></code> greater than 1 produced incorrect results when FP64 fixed-point emulation was enabled (<code class="docutils literal notranslate"><span class="pre">CUBLAS_FP64_EMULATED_FIXEDPOINT_MATH</span></code> with <code class="docutils literal notranslate"><span class="pre">CUBLAS_EMULATION_STRATEGY_EAGER</span></code>). <em>[6207926]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cublas-release-13-3-update-1">
+<h3>
+<span class="section-number">3.1.3. </span>cuBLAS: Release 13.3 Update 1<a class="headerlink" href="#cublas-release-13-3-update-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>The TMA-based kernel (Hopper and newer) now accelerates DSYMV in addition to the already-enabled SSYMV. The 16-byte alignment requirement for the <code class="docutils literal notranslate"><span class="pre">A</span></code> pointer was dropped for this kernel, and support for atomics was added through <code class="docutils literal notranslate"><span class="pre">cublasSetAtomicsMode()</span></code>. The geomean speedup across architectures and datatypes is 1.3x, and up to 5.9x.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p>Non-default epilogues are unintentionally allowed for <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul()</span></code> with int8 inputs using regular data ordering and scale type <code class="docutils literal notranslate"><span class="pre">CUDA_R_32F</span></code>. This is an undocumented and lightly tested feature that users are discouraged from using, and it is planned for removal in the next major release. <em>[CUB-10067]</em></p></li>
+<li><p>In cuBLASLt, the heuristics for the Grouped GEMM API return sub-optimal algorithms when the <code class="docutils literal notranslate"><span class="pre">C</span></code> and <code class="docutils literal notranslate"><span class="pre">D</span></code> matrices use <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ORDER_ROW</span></code> ordering. As a workaround, swap <code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_PREF_GROUPED_DESC_D_AVERAGE_ROWS</span></code> and <code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_PREF_GROUPED_DESC_D_AVERAGE_COLS</span></code> in the preferences before calling <code class="docutils literal notranslate"><span class="pre">cublasLtMatmulAlgoGetHeuristic()</span></code>. <em>[6335555]</em></p></li>
+<li><p>Multiple cuBLASLt Grouped GEMM operations reusing the same workspace on Hopper GPUs may lead to hangs or unspecified launch failures. This issue was introduced in CUDA Toolkit 13.2 Update 1 (cuBLAS 13.4.0). <em>[6456362]</em></p></li>
+<li><p>Calling <code class="docutils literal notranslate"><span class="pre">cublasLtMatmulAlgoGetHeuristic()</span></code> while a non-default blocking stream is being captured returns <code class="docutils literal notranslate"><span class="pre">CUBLAS_STATUS_INTERNAL_ERROR</span></code>. This issue was introduced in CUDA Toolkit 13.3 (cuBLAS 13.5.1). <em>[6288786]</em></p></li>
+<li><p>GEMV-like operations (e.g., <code class="docutils literal notranslate"><span class="pre">cublas&lt;t&gt;gemv()</span></code>, or <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul()</span></code> with M or N equal to 1) may return <code class="docutils literal notranslate"><span class="pre">CUBLAS_STATUS_NOT_SUPPORTED</span></code> for certain shapes and workspace configurations. This issue was introduced in CUDA Toolkit 13.3 (cuBLAS 13.5.1).</p></li>
+<li><p>Strided batched GEMM operations using broadcast operands may perform out-of-bounds memory reads on GPUs with compute capability 12.0 or 12.1 when an input matrix shared across batches (via zero or overlapping strides) is smaller than a few hundred KB. Numerical accuracy is unaffected, but these invalid accesses can trigger compute-sanitizer warnings or, in rare instances, illegal memory access errors. This issue was introduced in CUDA Toolkit 13.0 Update 2 (cuBLAS 13.1.0). <em>[6040940]</em> <em>[5996751]</em></p></li>
+<li><p>GEMM kernels on GPUs with compute capability 10.x or 12.x may access device alpha and beta pointers before calling <code class="docutils literal notranslate"><span class="pre">cudaGridDependencySynchronize()</span></code>. This can result in a WAR hazard if the preceding PDL kernel produces alpha and beta values on device after calling <code class="docutils literal notranslate"><span class="pre">cudaTriggerProgrammaticLaunchCompletion()</span></code>. This issue was introduced in CUDA Toolkit 13.0 Update 2 (cuBLAS 13.1.0). <em>[CUB-10409]</em></p></li>
+<li><p>GEMV-like operations (e.g., <code class="docutils literal notranslate"><span class="pre">cublas&lt;t&gt;gemv()</span></code>, or <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul()</span></code> with M or N equal to 1) may produce incorrect results on GPUs with compute capability 12.0 or 12.1 when the matrix is transposed, its non-accumulation dimension is greater than 3145680, and beta is not equal to 0. This issue was introduced in CUDA Toolkit 13.3 Update 1 (cuBLAS 13.6.0). <em>[CUB-10445]</em></p></li>
+<li><p>cuBLASLt Grouped GEMM operations with <code class="docutils literal notranslate"><span class="pre">CUBLAS_POINTER_MODE_HOST</span></code> can lead to incorrect results on Hopper GPUs when the number of waves is larger than 2. As a workaround, pass device alpha and beta using <code class="docutils literal notranslate"><span class="pre">CUBLAS_POINTER_MODE_DEVICE</span></code>. This issue was introduced in CUDA Toolkit 13.2 Update 1 (cuBLAS 13.4.0). <em>[6681084]</em></p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed an issue where <code class="docutils literal notranslate"><span class="pre">cublasXt&lt;t&gt;spmm()</span></code> could produce incorrect results with <code class="docutils literal notranslate"><span class="pre">m</span></code> greater than 46340. <em>[6155165]</em></p></li>
+<li><p>Fixed an issue where <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul()</span></code> could run an unsupported combination of data types: an FP32-like compute type with FP32 C and D and non-FP32 A and B, in which case A and B are incorrectly interpreted as FP32 matrices. <em>[CUB-9942]</em></p></li>
+<li><p>Fixed an issue where <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul()</span></code> returned <code class="docutils literal notranslate"><span class="pre">CUBLAS_STATUS_NOT_SUPPORTED</span></code> for FP8 Grouped GEMM problems with scale modes <code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_MATRIX_SCALE_VEC128_32F</span></code> and <code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_MATRIX_SCALE_BLK128x128_32F</span></code> on Hopper GPUs. <em>[CUB-10031]</em></p></li>
+<li><p>Fixed an issue where <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul()</span></code> with int8 inputs and scale type <code class="docutils literal notranslate"><span class="pre">CUDA_R_32I</span></code> would allow non-default epilogues on Blackwell GPUs with compute capability 10.x and return incorrect results. The correct behavior is to disallow all but the default epilogue, as documented. <em>[CUB-10066]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cublas-release-13-3">
+<h3>
+<span class="section-number">3.1.4. </span>cuBLAS: Release 13.3<a class="headerlink" href="#cublas-release-13-3" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Enabled memory-parsimonious tiling for FP64 emulated matrix multiplications. This improvement ensures that the workspace memory budget no longer exceeds 8 GB.</p></li>
+<li><p>Added support for CUDA Green contexts.</p></li>
+<li><p>Improved FP4 matrix multiplication performance on Blackwell Ultra GPUs by a geometric mean of 5% across a wide range of problems, with up to 7% speedup for some small problems.</p></li>
+<li><p>Improved TF32 matrix multiplication performance on Blackwell and Blackwell Ultra GPUs by a geometric mean of 27% across a wide range of problems and layouts, with up to 3.5x speedup for some small problems.</p></li>
+<li><p>Improved TF32 TN matrix multiplication performance on Hopper GPUs by a geometric mean of 11% across a wide range of problems, with up to 40% speedup for some small problems.</p></li>
+<li><p>Improved SYMV performance with TMA-based acceleration for Hopper, Blackwell, and Blackwell Ultra kernels with up to 27% geomean speedup.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p>Multiple cuBLASLt Grouped GEMM operations reusing the same workspace on Hopper GPUs may lead to hangs or unspecified launch failures. This issue was introduced in CUDA Toolkit 13.2 Update 1 (cuBLAS 13.4.0). <em>[6456362]</em></p></li>
+<li><p>cuBLASLt Grouped GEMM operations with <code class="docutils literal notranslate"><span class="pre">CUBLAS_POINTER_MODE_HOST</span></code> can lead to incorrect results on Hopper GPUs when the number of waves is larger than 2. As a workaround, pass device alpha and beta using <code class="docutils literal notranslate"><span class="pre">CUBLAS_POINTER_MODE_DEVICE</span></code>. This issue was introduced in CUDA Toolkit 13.2 Update 1 (cuBLAS 13.4.0). <em>[6681084]</em></p></li>
+<li><p>Calling <code class="docutils literal notranslate"><span class="pre">cublasLtMatmulAlgoGetHeuristic()</span></code> while a non-default blocking stream is being captured returns <code class="docutils literal notranslate"><span class="pre">CUBLAS_STATUS_INTERNAL_ERROR</span></code>. This issue was introduced in CUDA Toolkit 13.3 (cuBLAS 13.5.1). <em>[6288786]</em></p></li>
+<li><p>GEMV-like operations (e.g., <code class="docutils literal notranslate"><span class="pre">cublas&lt;t&gt;gemv()</span></code>, or <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul()</span></code> with M or N equal to 1) may return <code class="docutils literal notranslate"><span class="pre">CUBLAS_STATUS_NOT_SUPPORTED</span></code> for certain shapes and workspace configurations. This issue was introduced in CUDA Toolkit 13.3 (cuBLAS 13.5.1).</p></li>
+<li><p>Strided batched GEMM operations using broadcast operands may perform out-of-bounds memory reads on GPUs with compute capability 12.0 or 12.1 when an input matrix shared across batches (via zero or overlapping strides) is smaller than a few hundred KB. Numerical accuracy is unaffected, but these invalid accesses can trigger compute-sanitizer warnings or, in rare instances, illegal memory access errors. This issue was introduced in CUDA Toolkit 13.0 Update 2 (cuBLAS 13.1.0). <em>[6040940]</em> <em>[5996751]</em></p></li>
+<li><p>GEMM kernels on GPUs with compute capability 10.x or 12.x may access device alpha and beta pointers before calling <code class="docutils literal notranslate"><span class="pre">cudaGridDependencySynchronize()</span></code>. This can result in a WAR hazard if the preceding PDL kernel produces alpha and beta values on device after calling <code class="docutils literal notranslate"><span class="pre">cudaTriggerProgrammaticLaunchCompletion()</span></code>. This issue was introduced in CUDA Toolkit 13.0 Update 2 (cuBLAS 13.1.0). <em>[CUB-10409]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cublas-release-13-2-update-2">
+<h3>
+<span class="section-number">3.1.5. </span>cuBLAS: Release 13.2 Update 2<a class="headerlink" href="#cublas-release-13-2-update-2" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p>Multiple cuBLASLt Grouped GEMM operations reusing the same workspace on Hopper GPUs may lead to hangs or unspecified launch failures. This issue was introduced in CUDA Toolkit 13.2 Update 1 (cuBLAS 13.4.0). <em>[6456362]</em></p></li>
+<li><p>Strided batched GEMM operations using broadcast operands may perform out-of-bounds memory reads on GPUs with compute capability 12.0 or 12.1 when an input matrix shared across batches (via zero or overlapping strides) is smaller than a few hundred KB. Numerical accuracy is unaffected, but these invalid accesses can trigger compute-sanitizer warnings or, in rare instances, illegal memory access errors. This issue was introduced in CUDA Toolkit 13.0 Update 2 (cuBLAS 13.1.0). <em>[6040940]</em> <em>[5996751]</em></p></li>
+<li><p>GEMM kernels on GPUs with compute capability 10.x or 12.x may access device alpha and beta pointers before calling <code class="docutils literal notranslate"><span class="pre">cudaGridDependencySynchronize()</span></code>. This can result in a WAR hazard if the preceding PDL kernel produces alpha and beta values on device after calling <code class="docutils literal notranslate"><span class="pre">cudaTriggerProgrammaticLaunchCompletion()</span></code>. This issue was introduced in CUDA Toolkit 13.0 Update 2 (cuBLAS 13.1.0). <em>[CUB-10409]</em></p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed an issue where <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul()</span></code> ignored the tensor-wide scaling value specified by <code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_DESC_D_SCALE_POINTER</span></code> for NVFP4 matrix multiplications with NVFP4 output, resulting in incorrect results. This affected algorithms with <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_ID</span></code> equal to 66 on GPUs with compute capability 10.x and 11.x. This issue was introduced in CUDA Toolkit 13.2 Update 1 (cuBLAS 13.4.0). <em>[6059292]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cublas-release-13-2-update-1">
+<h3>
+<span class="section-number">3.1.6. </span>cuBLAS: Release 13.2 Update 1<a class="headerlink" href="#cublas-release-13-2-update-1" title="Permalink to this headline"></a>
+</h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>CUDA Toolkit 13.2 Update 1 contains a critical cuBLAS bug for an issue where <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul()</span></code> could ignore tensor-wide scaling for NVFP4 matrix multiplications, resulting in incorrect results. Please see the <a class="reference external" href="https://docs.nvidia.com/cuda/cublas-patch-release-notes/#cublas-patch-release-13-4-1">cuBLAS patch release notes</a> for an available cuBLAS patch (13.4.1) to resolve this issue.</p>
+</div>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Extended the experimental Grouped GEMM API in cuBLASLt to support NVFP4 inputs and bias epilogues on Blackwell GPUs with Compute Capability 10.x and 11.0. Grouped GEMM NVFP4 support currently uses only MMA tile sizes with K equal to 64.</p></li>
+<li><p>Extended the experimental Grouped GEMM API in cuBLASLt to support BF16, FP16, and FP8 input data types with BF16, FP16, and FP32 output data types on Hopper GPUs. For FP8 inputs, tensorwide scaling and block scaling (<code class="docutils literal notranslate"><span class="pre">VEC128</span></code> and <code class="docutils literal notranslate"><span class="pre">BLK128x128</span></code>) are supported.</p></li>
+<li><p>Improved Grouped GEMM performance on Blackwell GPUs, providing up to 20% higher performance for large problem sizes where the matrices exceed the L2 cache size.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">cublasLtMatmul()</span></code> ignores the tensor-wide scaling value provided by <code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_DESC_D_SCALE_POINTER</span></code> for NVFP4 matrix multiplications with NVFP4 output, leading to incorrect results. This affects algorithms with <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_ID</span></code> equal to 66 on GPUs with compute capability 10.x and 11.x. This issue was introduced in CUDA Toolkit 13.2 Update 1. <em>[6059292]</em></p></li>
+<li><p>Multiple cuBLASLt Grouped GEMM operations reusing the same workspace on Hopper GPUs may lead to hangs or unspecified launch failures. This issue was introduced in CUDA Toolkit 13.2 Update 1 (cuBLAS 13.4.0). <em>[6456362]</em></p></li>
+<li><p>cuBLASLt Grouped GEMM operations with <code class="docutils literal notranslate"><span class="pre">CUBLAS_POINTER_MODE_HOST</span></code> can lead to incorrect results on Hopper GPUs when the number of waves is larger than 2. As a workaround, pass device alpha and beta using <code class="docutils literal notranslate"><span class="pre">CUBLAS_POINTER_MODE_DEVICE</span></code>. This issue was introduced in CUDA Toolkit 13.2 Update 1 (cuBLAS 13.4.0). <em>[6681084]</em></p></li>
+<li><p>Strided batched GEMM operations using broadcast operands may perform out-of-bounds memory reads on GPUs with compute capability 12.0 or 12.1 when an input matrix shared across batches (via zero or overlapping strides) is smaller than a few hundred KB. Numerical accuracy is unaffected, but these invalid accesses can trigger compute-sanitizer warnings or, in rare instances, illegal memory access errors. This issue was introduced in CUDA Toolkit 13.0 Update 2 (cuBLAS 13.1.0). <em>[6040940]</em> <em>[5996751]</em></p></li>
+<li><p>GEMM kernels on GPUs with compute capability 10.x or 12.x may access device alpha and beta pointers before calling <code class="docutils literal notranslate"><span class="pre">cudaGridDependencySynchronize()</span></code>. This can result in a WAR hazard if the preceding PDL kernel produces alpha and beta values on device after calling <code class="docutils literal notranslate"><span class="pre">cudaTriggerProgrammaticLaunchCompletion()</span></code>. This issue was introduced in CUDA Toolkit 13.0 Update 2 (cuBLAS 13.1.0). <em>[CUB-10409]</em></p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed an issue in <code class="docutils literal notranslate"><span class="pre">cublasLtMatmulAlgoGetHeuristic()</span></code> that could result in no algorithm candidates being returned for Grouped GEMM on Blackwell GPUs. <em>[CUB-9657]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cublas-release-13-2">
+<h3>
+<span class="section-number">3.1.7. </span>cuBLAS: Release 13.2<a class="headerlink" href="#cublas-release-13-2" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Extended the experimental Grouped GEMM API in cuBLASLt to support MXFP8 inputs on GPUs with Compute Capability 10.x and 11.0.</p></li>
+<li><p>Added control over special-case handling in FP32 emulation via the environment variable
+<code class="docutils literal notranslate"><span class="pre">CUBLAS_EMULATION_SPECIAL_VALUES_SUPPORT_MASK</span></code>. Setting <code class="docutils literal notranslate"><span class="pre">CUBLAS_EMULATION_SPECIAL_VALUES_SUPPORT_MASK=0</span></code> can improve performance for applications that do not require preservation of infinity and NaN values, without requiring code changes.
+For more information, see the <code class="docutils literal notranslate"><span class="pre">cudaEmulationSpecialValuesSupport_t</span></code> documentation.</p></li>
+<li><p>Added FP64 fixed-point emulation support to the <code class="docutils literal notranslate"><span class="pre">cublas[D|Z]syrk</span></code>, <code class="docutils literal notranslate"><span class="pre">cublas[D|Z]syr2k</span></code>,
+<code class="docutils literal notranslate"><span class="pre">cublasZherk</span></code>, and <code class="docutils literal notranslate"><span class="pre">cublasZher2k</span></code> routines.
+When the math mode is set to <code class="docutils literal notranslate"><span class="pre">CUBLAS_FP64_EMULATED_FIXEDPOINT_MATH</span></code>, cuBLAS will automatically use FP64 emulation for sufficiently large SYRK and HERK problems.
+Current support is limited to GPUs with Compute Capability 10.0.</p></li>
+<li><p>Improved performance on RTX PRO 6000 GPUs, delivering up to 20% speedup for FP8, FP16/BF16, TF32, and INT8 precisions.</p></li>
+<li><p>Improved GEMM performance on DGX Spark systems for MXFP8 and NVFP4 data types in large M and N problem sizes, with up to 3× performance improvement for selected matrix shapes.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p>On Blackwell GPUs, FP64 fixed-point emulation kernels may produce incorrect results or experience data corruption when executed concurrently with third-party kernels that allocate tensor memory. <em>[CUB-9633]</em></p></li>
+<li><p>Strided batched GEMM operations using broadcast operands may perform out-of-bounds memory reads on GPUs with compute capability 12.0 or 12.1 when an input matrix shared across batches (via zero or overlapping strides) is smaller than a few hundred KB. Numerical accuracy is unaffected, but these invalid accesses can trigger compute-sanitizer warnings or, in rare instances, illegal memory access errors. This issue was introduced in CUDA Toolkit 13.0 Update 2 (cuBLAS 13.1.0). <em>[6040940]</em> <em>[5996751]</em></p></li>
+<li><p>GEMM kernels on GPUs with compute capability 10.x or 12.x may access device alpha and beta pointers before calling <code class="docutils literal notranslate"><span class="pre">cudaGridDependencySynchronize()</span></code>. This can result in a WAR hazard if the preceding PDL kernel produces alpha and beta values on device after calling <code class="docutils literal notranslate"><span class="pre">cudaTriggerProgrammaticLaunchCompletion()</span></code>. This issue was introduced in CUDA Toolkit 13.0 Update 2 (cuBLAS 13.1.0). <em>[CUB-10409]</em></p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed an issue in <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul</span></code> that could lead to incorrect results when it ran concurrently with another kernel that uses Tensor Memory. This issue only affected algorithms with <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_ID</span></code> equal to 66 on GPUs with Compute Capability 10.x and 11.x, and existed since cuBLAS 12.8. <em>[5807900]</em></p></li>
+<li><p>Fixed an issue in <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul</span></code> that could lead to incorrect results or invalid memory access errors for large leading dimensions, specifically when the product of the data type size and the leading dimension of a matrix exceeded the bounds of a signed 32 bit integer. This issue affected GPUs with Compute Capability 9.0, 10.x, or 11.0, existed since cuBLAS 12.6 Update 2, and only affected algorithms with <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_ID</span></code> equal to 66. <em>[CUB-9572]</em></p></li>
+<li><p>Fixed an issue in the cuBLASLt Matmul API that could cause FP8 kernels to hang on GPUs with Compute Capability 9.0 when <code class="docutils literal notranslate"><span class="pre">beta</span> <span class="pre">!=</span> <span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">scale_C</span> <span class="pre">=</span> <span class="pre">0</span></code>. This issue only affected algorithms with <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_ID</span></code> equal to 66. <em>[CUB-9627]</em></p></li>
+<li><p>Fixed an issue in the cuBLASLt Grouped GEMM API that ignored groups with <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">0</span></code>, leading to incorrect results. This issue existed since CUDA 13.1. <em>[CUB-9529]</em></p></li>
+<li><p>Fixed an issue in the cuBLASLt Matmul API that could cause incorrect results when C broadcasting was used (<code class="docutils literal notranslate"><span class="pre">LDC</span> <span class="pre">=</span> <span class="pre">0</span></code>). <em>[5845724]</em></p></li>
+<li><p>Added missing checks for matrix pointer alignment in the <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul</span></code> API. <em>[CUB-9577]</em> <em>[CUB-9599]</em> <em>[CUB-9585]</em></p></li>
+<li><p>Fixed an issue in <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul</span></code> that could lead to incorrect results for NVFP4 precision on B300 and GB300 GPUs when the <code class="docutils literal notranslate"><span class="pre">m</span></code> dimension was not a multiple of 64. <em>[CUB-9577]</em></p></li>
+<li><p>Fixed an issue in <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul</span></code> that could lead to incorrect results for NVFP4 precision on future GPUs, impacting future hardware compatibility. <em>[CUB-9570]</em></p></li>
+<li><p>Fixed an issue in GEMM and Matmul APIs with BF16 and FP16 inputs on DGX Spark and FP8 inputs on GeForce that could potentially cause illegal memory accesses. <em>[5846563]</em></p></li>
+<li><p>Fixed an issue in cuBLASLt to enable <code class="docutils literal notranslate"><span class="pre">CUBLASLT_EPILOGUE_BGRADA</span></code> and <code class="docutils literal notranslate"><span class="pre">CUBLASLT_EPILOGUE_BGRADB</span></code> epilogues when the C matrix <code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATRIX_LAYOUT_ORDER</span></code> was set to <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ORDER_ROW</span></code>. <em>[4617436]</em></p></li>
+<li><p>Fixed an integer overflow bug in complex, emulated FP64 matrix multiplication. The affected routines include <code class="docutils literal notranslate"><span class="pre">cublasZgemm</span></code>, <code class="docutils literal notranslate"><span class="pre">cublasZtrsm</span></code>, <code class="docutils literal notranslate"><span class="pre">cublasGemmEx</span></code>, and <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul</span></code>. The overflow occurred when <code class="docutils literal notranslate"><span class="pre">2*m*n</span> <span class="pre">+</span> <span class="pre">m</span></code> exceeded <code class="docutils literal notranslate"><span class="pre">UINT_MAX</span></code>, where <code class="docutils literal notranslate"><span class="pre">m</span></code> is the number of rows of <code class="docutils literal notranslate"><span class="pre">op(A)</span></code> and C, and <code class="docutils literal notranslate"><span class="pre">n</span></code> is the number of columns of <code class="docutils literal notranslate"><span class="pre">op(B)</span></code> and C. <em>[5720478]</em></p></li>
+<li><p>Improved GB200 and B200 performance for MXFP8 and NVFP4 precisions when <code class="docutils literal notranslate"><span class="pre">M</span></code> and <code class="docutils literal notranslate"><span class="pre">N</span></code> were less than or equal to 32. <em>[CUB-9646]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cublas-release-13-1-update-1">
+<h3>
+<span class="section-number">3.1.8. </span>cuBLAS: Release 13.1 Update 1<a class="headerlink" href="#cublas-release-13-1-update-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p>The cuBLASLt Grouped GEMM API ignores groups with <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">0</span></code>, which can lead to incorrect results. As a workaround, initialize output matrices <code class="docutils literal notranslate"><span class="pre">D</span></code> with <code class="docutils literal notranslate"><span class="pre">beta*C</span></code> for all groups, and then compute Grouped GEMM as <code class="docutils literal notranslate"><span class="pre">D</span> <span class="pre">+=</span> <span class="pre">A*B</span></code> so the result for groups with <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">0</span></code> is computed properly. This issue applies to the experimental cuBLASLt Grouped GEMM API introduced in CUDA 13.1. <em>[CUB-9529]</em></p></li>
+<li><p>Complex FP64 GEMM routines using fixed-point emulation can produce incorrect results when matrix dimensions are large enough that <code class="docutils literal notranslate"><span class="pre">m*n</span> <span class="pre">&gt;</span> <span class="pre">2^31</span></code> due to integer overflow in an address calculation. <em>[5720478]</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cublasLtMatmul()</span></code> may produce incorrect results when run concurrently with another kernel that uses Tensor Memory. This issue affects only algorithms with <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_ID</span></code> equal to 66 on GPUs with compute capability 10.x and 11.x, and has existed since cuBLAS 12.8. <em>[5807900]</em></p></li>
+<li><p>Strided batched GEMM operations using broadcast operands may perform out-of-bounds memory reads on GPUs with compute capability 12.0 or 12.1 when an input matrix shared across batches (via zero or overlapping strides) is smaller than a few hundred KB. Numerical accuracy is unaffected, but these invalid accesses can trigger compute-sanitizer warnings or, in rare instances, illegal memory access errors. This issue was introduced in CUDA Toolkit 13.0 Update 2 (cuBLAS 13.1.0). <em>[6040940]</em> <em>[5996751]</em></p></li>
+<li><p>cuBLAS GEMM kernels on GPUs with compute capability 10.x or 12.x may access device alpha and beta pointers before calling <code class="docutils literal notranslate"><span class="pre">cudaGridDependencySynchronize()</span></code>. This can result in a WAR hazard if the preceding PDL kernel produces alpha and beta values on device after calling <code class="docutils literal notranslate"><span class="pre">cudaTriggerProgrammaticLaunchCompletion()</span></code>. This issue was introduced in CUDA Toolkit 13.0 Update 2 (cuBLAS 13.1.0). <em>[CUB-10409]</em></p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed an issue where fixed point emulation with 7 mantissa bits or less could trigger unspecified launch failures. <em>[5692684]</em></p></li>
+<li><p>Fixed an issue where <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul</span></code> with FP8 arguments and <code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_MATRIX_SCALE_SCALAR_32F</span></code> scaling mode (default) incorrectly required scaling factor addresses to be 16-byte aligned. This issue existed since cuBLAS 12.9. <em>[5728938]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cublas-release-13-1">
+<h3>
+<span class="section-number">3.1.9. </span>cuBLAS: Release 13.1<a class="headerlink" href="#cublas-release-13-1" title="Permalink to this headline"></a>
+</h3>
+<ul>
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li>
+<p>Introduced experimental support for grouped GEMM in cuBLASLt. Users can create a matrix with grouped layout using <code class="docutils literal notranslate"><span class="pre">cublasLtGroupedMatrixLayoutCreate</span></code> or <code class="docutils literal notranslate"><span class="pre">cublasLtGroupedMatrixLayoutInit</span></code>, where matrix shapes are passed as
+device arrays. <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul</span></code> now accepts matrices with grouped layout, in which case matrices are passed as a device array of pointers, where each pointer is a separate matrix that represents a group with its own shapes. Initial support covers A/B types FP8 (E4M3/E5M2), FP16, and
+BF16, with C/D types FP16, BF16, and FP32; column-major only, default epilogue, 16-byte alignment; requires GPUs with compute capability 10.x or 11.0.</p>
+<p>In addition, the following experimental features were added as part of
+grouped GEMM:</p>
+<ul class="simple">
+<li><p>Per-batch tensor-wide scaling for FP8 inputs, enabled by the new <code class="docutils literal notranslate"><span class="pre">cublasLtMatmulDescAttributes_t</span></code> entry <code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_MATRIX_SCALE_PER_BATCH_SCALAR_32F</span></code>.</p></li>
+<li><p>Per-batch device-side alpha and beta, enabled by the new <code class="docutils literal notranslate"><span class="pre">cublasLtMatmulDescAttributes_t</span></code> entries <code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_DESC_ALPHA_BATCH_STRIDE</span></code> and <code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_DESC_BETA_BATCH_STRIDE</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Improved performance on NVIDIA DGX Spark for CFP32 GEMMs. <em>[5514146]</em></p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">sm_121</span></code> DriveOS support.</p></li>
+<li><p>Improved performance on Blackwell (<code class="docutils literal notranslate"><span class="pre">sm_100</span></code> and <code class="docutils literal notranslate"><span class="pre">sm_103</span></code>) via heuristics tuning for FP32 GEMMs whose shapes satisfy <code class="docutils literal notranslate"><span class="pre">M,</span> <span class="pre">N</span> <span class="pre">&gt;&gt;</span> <span class="pre">K</span></code>. <em>[CUB-8572]</em></p></li>
+<li><p>Improved performance of FP16, FP32, and CFP32 GEMMs on Blackwell Thor.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul class="simple">
+<li><p>Fixed missing memory initialization in <code class="docutils literal notranslate"><span class="pre">cublasCreate()</span></code> that could result in emulation environment variables being ignored. <em>[CUB-9302]</em></p></li>
+<li><p>Removed unnecessary overhead related to loading kernels on GPUs with compute capability 10.3. <em>[5547886]</em></p></li>
+<li><p>Fixed FP8 matmuls potentially failing to launch on multi-device Blackwell GeForce systems. <em>[CUB-9487]</em></p></li>
+<li><p>Added stricter checks for in-place matmul to prevent invalid use cases (<code class="docutils literal notranslate"><span class="pre">C</span> <span class="pre">==</span> <span class="pre">D</span></code> is allowed if and only if <code class="docutils literal notranslate"><span class="pre">Cdesc</span> <span class="pre">==</span> <span class="pre">Ddesc</span></code>). As a side effect, users are no longer able to use <code class="docutils literal notranslate"><span class="pre">D</span></code> as a dummy pointer for <code class="docutils literal notranslate"><span class="pre">C</span></code> when using
+<code class="docutils literal notranslate"><span class="pre">CUBLASLT_POINTER_MODE_DEVICE</span></code> with <code class="docutils literal notranslate"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0</span></code>. However, a distinct dummy pointer may still be passed. The stricter checking was added in CUDA Toolkit 13.0 Update 2. <em>[5471880]</em></p></li>
+<li><p>Fixed <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul</span></code> with <code class="docutils literal notranslate"><span class="pre">INT8</span></code> inputs, <code class="docutils literal notranslate"><span class="pre">INT32</span></code> accumulation, and <code class="docutils literal notranslate"><span class="pre">INT32</span></code> outputs potentially returning <code class="docutils literal notranslate"><span class="pre">CUBLAS_STATUS_NOT_SUPPORTED</span></code> when dimension <code class="docutils literal notranslate"><span class="pre">N</span></code> is larger than 65,536 or when batch count is larger than 1. <em>[5541380]</em></p></li>
+<li><p>Added validation for batched matmul to reject invalid configurations where the batch counts differ (<code class="docutils literal notranslate"><span class="pre">Adesc</span></code> batch count != <code class="docutils literal notranslate"><span class="pre">Bdesc</span></code> batch count). <em>[5645772]</em></p></li>
+</ul>
+</li>
+<li>
+<p><strong>Known Issues</strong></p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">Grouped</span> <span class="pre">GEMM</span></code> cuBLASLt API ignores groups with <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">0</span></code>, which can lead to incorrect results. As a workaround, initialize each output matrix <code class="docutils literal notranslate"><span class="pre">D</span></code> with <code class="docutils literal notranslate"><span class="pre">beta</span> <span class="pre">*</span> <span class="pre">C</span></code> for all groups before the call, then compute Grouped GEMM as <code class="docutils literal notranslate"><span class="pre">D</span> <span class="pre">+=</span> <span class="pre">A</span> <span class="pre">*</span> <span class="pre">B</span></code> so that the result for groups with <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">0</span></code> is preserved.
+This issue applies to the experimental Grouped GEMM cuBLASLt API released in CUDA 13.1. <em>[CUB-9529]</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cublasLtMatmul()</span></code> may produce incorrect results when run concurrently with another kernel that uses Tensor Memory. This issue affects only algorithms with <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_ID</span></code> equal to 66 on GPUs with compute capability 10.x and 11.x, and has existed since cuBLAS 12.8. <em>[5807900]</em></p></li>
+<li><p>Strided batched GEMM operations using broadcast operands may perform out-of-bounds memory reads on GPUs with compute capability 12.0 or 12.1 when an input matrix shared across batches (via zero or overlapping strides) is smaller than a few hundred KB. Numerical accuracy is unaffected, but these invalid accesses can trigger compute-sanitizer warnings or, in rare instances, illegal memory access errors. This issue was introduced in CUDA Toolkit 13.0 Update 2 (cuBLAS 13.1.0). <em>[6040940]</em> <em>[5996751]</em></p></li>
+<li><p>cuBLAS GEMM kernels on GPUs with compute capability 10.x or 12.x may access device alpha and beta pointers before calling <code class="docutils literal notranslate"><span class="pre">cudaGridDependencySynchronize()</span></code>. This can result in a WAR hazard if the preceding PDL kernel produces alpha and beta values on device after calling <code class="docutils literal notranslate"><span class="pre">cudaTriggerProgrammaticLaunchCompletion()</span></code>. This issue was introduced in CUDA Toolkit 13.0 Update 2 (cuBLAS 13.1.0). <em>[CUB-10409]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cublas-release-13-0-update-2">
+<h3>
+<span class="section-number">3.1.10. </span>cuBLAS: Release 13.0 Update 2<a class="headerlink" href="#cublas-release-13-0-update-2" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Enabled opt-in fixed-point emulation for FP64 matmuls (D/ZGEMM) which improves performance and power-efficiency. The implementation follows the <a class="reference external" href="https://doi.org/10.1177/10943420241239588">Ozaki-1 Scheme</a> and leverages an automatic dynamic precision framework to ensure FP64-level accuracy. See <a class="reference external" href="https://docs.nvidia.com/cuda/cublas/index.html#fixed-point">here</a> for more details on fixed-point emulation along with the <a class="reference external" href="https://docs.nvidia.com/cuda/cublas/index.html#floating-point-emulation-support-overview">table</a> of supported compute-capabilities and the <a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/master/cuBLAS/Emulation">CUDA library samples</a> for example usages.</p></li>
+<li><p>Improved performance on NVIDIA <a class="reference external" href="https://www.nvidia.com/en-us/products/workstations/dgx-spark/">DGX Spark</a> for FP16/BF16 and FP8 GEMMs.</p></li>
+<li><p>Added support for <a class="reference external" href="https://docs.nvidia.com/cuda/cublas/#bf16x9">BF16x9 FP32 emulation</a> to <code class="docutils literal notranslate"><span class="pre">cublas[SC]syr[2]k</span></code> and <code class="docutils literal notranslate"><span class="pre">cublasCher[2]k</span></code> routines. With the math mode set to <code class="docutils literal notranslate"><span class="pre">CUBLAS_FP32_EMULATED_BF16X9_MATH</span></code>, for large enough problems, cuBLAS will automatically dispatch SYRK and HERK to BF16x9-accelerated algorithms.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed undefined behavior caused by dereferencing a <code class="docutils literal notranslate"><span class="pre">nullptr</span></code> when passing an uninitialized matrix layout descriptor for <code class="docutils literal notranslate"><span class="pre">Cdesc</span></code> in <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul</span></code>. <em>[CUB-8911]</em></p></li>
+<li><p>Improved performance of <code class="docutils literal notranslate"><span class="pre">cublas[SCDZ]syr[2]k</span></code> and <code class="docutils literal notranslate"><span class="pre">cublas[CZ]her[2]k</span></code> on Hopper GPUs when dimension <code class="docutils literal notranslate"><span class="pre">N</span></code> is large. <em>[CUB-8293]</em> <em>[5384826]</em></p></li>
+</ul>
+</li>
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">cublasLtMatmul</span></code> with INT8 inputs, INT32 accumulation, and INT32 outputs might return <code class="docutils literal notranslate"><span class="pre">CUBLAS_STATUS_NOT_SUPPORTED</span></code> when dimension <code class="docutils literal notranslate"><span class="pre">N</span></code> is larger than 65,536 or when the batch count is larger than 1. The issue has existed since CUDA Toolkit 13.0 Update 1 and will be fixed in a later release. <em>[5541380]</em></p></li>
+<li><p>FP8 matmuls may fail to launch on multi-device Blackwell GeForce systems. As a workaround, run a separate process per device. <em>[CUB-9487]</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cublasLtMatmul()</span></code> may produce incorrect results when run concurrently with another kernel that uses Tensor Memory. This issue affects only algorithms with <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_ID</span></code> equal to 66 on GPUs with compute capability 10.x and 11.x, and has existed since cuBLAS 12.8. <em>[5807900]</em></p></li>
+<li><p>Strided batched GEMM operations using broadcast operands may perform out-of-bounds memory reads on GPUs with compute capability 12.0 or 12.1 when an input matrix shared across batches (via zero or overlapping strides) is smaller than a few hundred KB. Numerical accuracy is unaffected, but these invalid accesses can trigger compute-sanitizer warnings or, in rare instances, illegal memory access errors. This issue was introduced in CUDA Toolkit 13.0 Update 2 (cuBLAS 13.1.0). <em>[6040940]</em> <em>[5996751]</em></p></li>
+<li><p>cuBLAS GEMM kernels on GPUs with compute capability 10.x or 12.x may access device alpha and beta pointers before calling <code class="docutils literal notranslate"><span class="pre">cudaGridDependencySynchronize()</span></code>. This can result in a WAR hazard if the preceding PDL kernel produces alpha and beta values on device after calling <code class="docutils literal notranslate"><span class="pre">cudaTriggerProgrammaticLaunchCompletion()</span></code>. This issue was introduced in CUDA Toolkit 13.0 Update 2 (cuBLAS 13.1.0). <em>[CUB-10409]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cublas-release-13-0-update-1">
+<h3>
+<span class="section-number">3.1.11. </span>cuBLAS: Release 13.0 Update 1<a class="headerlink" href="#cublas-release-13-0-update-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li>
+<p>Improved performance:</p>
+<ul>
+<li><p>Block-scaled FP4 GEMMs on NVIDIA Blackwell and Blackwell Ultra GPUs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SYMV</span></code> on NVIDIA Blackwell GPUs <em>[5171345]</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cublasLtMatmul</span></code> for small cases when run concurrently with other CUDA kernels <em>[5238629]</em></p></li>
+<li><p>TF32 GEMMs on Thor GPUs <em>[5313616]</em></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/cuda/cuda-programming-guide/04-special-topics/programmatic-dependent-launch.html#programmatic-dependent-launch-and-synchronization">Programmatic Dependent Launch (PDL)</a>
+is now supported in some cuBLAS kernels for architectures <code class="docutils literal notranslate"><span class="pre">sm_90</span></code> and above, decreasing kernel launch latencies when executed alongside other PDL kernels.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed an issue where some <code class="docutils literal notranslate"><span class="pre">cublasSsyrkx</span></code> kernels produced incorrect results when <code class="docutils literal notranslate"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0</span></code> on NVIDIA Blackwell GPUs. <em>[CUB-8846]</em></p></li>
+<li>
+<p>Resolved issues in <code class="docutils literal notranslate"><span class="pre">cublasLtMatmul</span></code> with INT8 inputs, INT32 accumulation, and INT32 outputs where:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">cublasLtMatmul</span></code> could have produced incorrect results when A and B matrices used regular ordering (<code class="docutils literal notranslate"><span class="pre">CUBLASLT_ORDER_COL</span></code> or <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ORDER_ROW</span></code>). <em>[CUB-8874]</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cublasLtMatmul</span></code> could have been run with unsupported configurations of <code class="docutils literal notranslate"><span class="pre">alpha</span></code>/<code class="docutils literal notranslate"><span class="pre">beta</span></code>, which must be 0 or 1. <em>[CUB-8873]</em></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">cublasLtMatmul()</span></code> may produce incorrect results when run concurrently with another kernel that uses Tensor Memory. This issue affects only algorithms with <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_ID</span></code> equal to 66 on GPUs with compute capability 10.x and 11.x, and has existed since cuBLAS 12.8. <em>[5807900]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cublas-release-13-0">
+<h3>
+<span class="section-number">3.1.12. </span>cuBLAS: Release 13.0<a class="headerlink" href="#cublas-release-13-0" title="Permalink to this headline"></a>
+</h3>
+<ul>
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li>
+<p>The <code class="docutils literal notranslate"><span class="pre">cublasGemmEx</span></code>, <code class="docutils literal notranslate"><span class="pre">cublasGemmBatchedEx</span></code>, and <code class="docutils literal notranslate"><span class="pre">cublasGemmStridedBatchedEx</span></code> functions now accept <code class="docutils literal notranslate"><span class="pre">CUBLAS_GEMM_AUTOTUNE</span></code> as a valid value for the <code class="docutils literal notranslate"><span class="pre">algo</span></code> parameter. When this option is used, the library benchmarks a selection of available algorithms internally and chooses the optimal one based on the given problem configuration. The selected algorithm is cached within the current <code class="docutils literal notranslate"><span class="pre">cublasHandle_t</span></code>, so subsequent calls with the same problem descriptor will reuse the cached configuration for improved performance.</p>
+<p>This is an experimental feature. Users are encouraged to transition to the cuBLASLt API, which provides fine-grained control over algorithm selection through the heuristics API and includes support for additional data types such as FP8 and block-scaled formats, as well as kernel fusion. (See autotuning example in <a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/master/cuBLASLt/LtSgemmSimpleAutoTuning">cuBLASLt</a>).</p>
+</li>
+<li><p>Improved performance of BLAS Level 3 non-GEMM kernels (SYRK, HERK, TRMM, SYMM, HEMM) for FP32 and CF32 precisions on NVIDIA Blackwell GPUs.</p></li>
+<li><p>This release adds support for <code class="docutils literal notranslate"><span class="pre">sm_110</span></code> GPUs for arm64-sbsa on Linux.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul class="simple">
+<li><p>Fixed an issue where some <code class="docutils literal notranslate"><span class="pre">cublasZtrmm()</span></code> kernels produced incorrect results when M is equal to 1 and <code class="docutils literal notranslate"><span class="pre">side</span></code> is <code class="docutils literal notranslate"><span class="pre">CUBLAS_SIDE_RIGHT</span></code> on NVIDIA Ada and Blackwell GeForce-class GPUs. <em>[5452663]</em></p></li>
+</ul>
+</li>
+<li>
+<p><strong>Known Issues</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cublasLtMatmul</span></code> previously ignored user-specified auxiliary (Aux) data types for ReLU epilogues and defaulted to using a bitmask. The correct behavior is now enforced: an error is returned if an invalid Aux data type is specified for ReLU epilogues. <em>[CUB-7984]</em></p></li>
+<li><p>Some <code class="docutils literal notranslate"><span class="pre">cublasSsyrkx()</span></code> kernels produce incorrect results when beta is equal to 0 on Blackwell GPUs. <em>[CUB-8846]</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cublasLtMatmul()</span></code> may produce incorrect results when run concurrently with another kernel that uses Tensor Memory. This issue affects only algorithms with <code class="docutils literal notranslate"><span class="pre">CUBLASLT_ALGO_CONFIG_ID</span></code> equal to 66 on GPUs with compute capability 10.x and 11.x, and has existed since cuBLAS 12.8. <em>[5807900]</em></p></li>
+</ul>
+</li>
+<li>
+<p><strong>Deprecations</strong></p>
+<ul class="simple">
+<li><p>The experimental feature for atomic synchronization along the rows
+(<code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_DESC_ATOMIC_SYNC_NUM_CHUNKS_D_ROWS</span></code>) and columns
+(<code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_DESC_ATOMIC_SYNC_NUM_CHUNKS_D_COLS</span></code>) of the output matrix which was deprecated in 12.8 has now been <strong>removed</strong>.</p></li>
+<li>
+<p>Starting with this release, cuBLAS will return <code class="docutils literal notranslate"><span class="pre">CUBLAS_STATUS_NOT_SUPPORTED</span></code>
+if any of the following descriptor attributes are set but the corresponding
+scale is not supported:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_DESC_A_SCALE_POINTER</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_DESC_B_SCALE_POINTER</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_DESC_D_SCALE_POINTER</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_DESC_D_OUT_SCALE_POINTER</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUBLASLT_MATMUL_DESC_EPILOGUE_AUX_SCALE_POINTER</span></code></p></li>
+</ul>
+</li>
+<li><p>Previously, this restriction applied only to <a class="reference external" href="https://docs.nvidia.com/cuda/cublas/#narrow-precision-data-types-usage">non-narrow precision</a> matmuls.
+It now also applies to narrow precision matmuls when a scale is set
+for a non-narrow precision tensor.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="cufft-library">
+<h2>
+<span class="section-number">3.2. </span>cuFFT Library<a class="headerlink" href="#cufft-library" title="Permalink to this headline"></a>
+</h2>
+<section id="cufft-release-13-4">
+<h3>
+<span class="section-number">3.2.1. </span>cuFFT: Release 13.4<a class="headerlink" href="#cufft-release-13-4" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Added new plan property <code class="docutils literal notranslate"><span class="pre">NVFFT_PLAN_PROPERTY_INT64_BLUESTEIN_ONLY</span></code> to enforce
+Bluestein-only kernels.</p></li>
+<li><p>Added new plan property <code class="docutils literal notranslate"><span class="pre">NVFFT_PLAN_PROPERTY_INT64_DISABLE_FMA</span></code> to disable fused
+multiply-add contraction when using LTO kernels.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Added alignment checks that prevent unaligned memory access when using user-provided
+work areas.</p></li>
+<li><p>Fixed a correctness issue in real-side LTO callback kernels for R2C and C2R transforms.
+This issue was first identified in CUDA Toolkit 13.3 Update 1.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cufft-release-13-3-update-1">
+<h3>
+<span class="section-number">3.2.2. </span>cuFFT: Release 13.3 Update 1<a class="headerlink" href="#cufft-release-13-3-update-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p>An issue identified in CUDA 13.3 affects the correctness of real-side LTO callback kernels for R2C and C2R transforms. It affects only even sizes above certain large thresholds (8192 or greater in single precision, or 4096 or greater in double precision) whose length has a largest prime factor of at least 127.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cufft-release-13-3">
+<h3>
+<span class="section-number">3.2.3. </span>cuFFT: Release 13.3<a class="headerlink" href="#cufft-release-13-3" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Expanded LTO support to include transform sizes divisible by primes larger than 127, along with increased callback support.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed an issue where <code class="docutils literal notranslate"><span class="pre">cufftXtQueryPlan</span></code> could result in floating-point exceptions when querying multi-GPU plans that are not single-batch one-dimensional FFTs. <em>[5923044]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cufft-release-13-2">
+<h3>
+<span class="section-number">3.2.4. </span>cuFFT: Release 13.2<a class="headerlink" href="#cufft-release-13-2" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Using cuFFT link-time optimized (LTO) kernels now requires NVRTC.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Deprecations</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">cufftDebug</span></code> is deprecated and will be removed in a future release.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cufft-release-13-1">
+<h3>
+<span class="section-number">3.2.5. </span>cuFFT: Release 13.1<a class="headerlink" href="#cufft-release-13-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Improved performance for transforms whose sizes are powers of 2, 3, 5, and 7 on Blackwell GPUs, in both single and double precision.</p></li>
+<li><p>Improved performance for selected power-of-two sizes in 2D and 3D transforms, in both single and double precision.</p></li>
+<li><p>Introduced an experimental cuFFT device API that provides host functions to query or generate device function code and exposes database metadata through a C++ header for use with the cuFFTDx library.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed a correctness issue, identified in CUDA 13.0, that affected a very specific subset of kernels: half- and bfloat16-precision strided R2C and C2R FFTs of size 1.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cufft-release-13-0-update-1">
+<h3>
+<span class="section-number">3.2.6. </span>cuFFT: Release 13.0 Update 1<a class="headerlink" href="#cufft-release-13-0-update-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p>In CUDA 13.0, a correctness issue affects a specific subset of kernels, namely half and bfloat precision size 1 strided R2C and C2R kernels. A fix will be included in a future CUDA release.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cufft-release-13-0">
+<h3>
+<span class="section-number">3.2.7. </span>cuFFT: Release 13.0<a class="headerlink" href="#cufft-release-13-0" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li>
+<p>Added new error codes:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUFFT_MISSING_DEPENDENCY</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUFFT_NVRTC_FAILURE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUFFT_NVJITLINK_FAILURE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUFFT_NVSHMEM_FAILURE</span></code></p></li>
+</ul>
+</li>
+<li><p>Introduced <code class="docutils literal notranslate"><span class="pre">CUFFT_PLAN_NULL</span></code>, a value that can be assigned to a <code class="docutils literal notranslate"><span class="pre">cufftHandle</span></code> to indicate a null handle. It is safe to call <code class="docutils literal notranslate"><span class="pre">cufftDestroy</span></code> on a null handle.</p></li>
+<li><p>Improved performance for single-precision C2C multi-dimensional FFTs and large power-of-2 FFTs.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p>An issue identified in CUDA 13.0 affects the correctness of a specific subset of cuFFT kernels, specifically half-precision and bfloat16 size-1 strided R2C and C2R transforms. A fix will be included in a future CUDA release.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Deprecations</strong></p>
+<ul>
+<li><p>Removed support for Maxwell, Pascal, and Volta GPUs, corresponding to compute capabilities earlier than Turing.</p></li>
+<li>
+<p>Removed legacy cuFFT error codes:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUFFT_INCOMPLETE_PARAMETER_LIST</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUFFT_PARSE_ERROR</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUFFT_LICENSE_ERROR</span></code></p></li>
+</ul>
+</li>
+<li><p>Removed the <code class="docutils literal notranslate"><span class="pre">libcufft_static_nocallback.a</span></code> static library. Users should link against <code class="docutils literal notranslate"><span class="pre">libcufft_static.a</span></code> instead, as both are functionally equivalent.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="cusolver-library">
+<h2>
+<span class="section-number">3.3. </span>cuSOLVER Library<a class="headerlink" href="#cusolver-library" title="Permalink to this headline"></a>
+</h2>
+<section id="cusolver-release-13-4-update-2">
+<h3>
+<span class="section-number">3.3.1. </span>cuSOLVER: Release 13.4 Update 2<a class="headerlink" href="#cusolver-release-13-4-update-2" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed an issue where the cuSOLVER Linux libraries, <code class="docutils literal notranslate"><span class="pre">libcusolver.so.12</span></code> and <code class="docutils literal notranslate"><span class="pre">libcusolverMg.so.12</span></code>, exported unversioned symbols. The libraries now export versioned symbols again. This issue was introduced in CUDA Toolkit 13.4 Update 1. <em>[6800056]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cusolver-release-13-4-update-1">
+<h3>
+<span class="section-number">3.3.2. </span>cuSOLVER: Release 13.4 Update 1<a class="headerlink" href="#cusolver-release-13-4-update-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">cusolverDnXgesvd</span></code> now computes singular vectors with a hybrid blocked update by default, in which the Givens rotations of the bidiagonal SVD are computed on the host and applied on the device. The previous classical LASR update remains available as <code class="docutils literal notranslate"><span class="pre">CUSOLVER_ALG_1</span></code> via <code class="docutils literal notranslate"><span class="pre">cusolverDnSetAdvOptions</span></code>. Best performance of the default path is attained with pinned host memory.</p></li>
+<li><p>A two-stage symmetric eigenvalue decomposition is now available for <code class="docutils literal notranslate"><span class="pre">cusolverDnXsyevd</span></code>, reducing the dense symmetric matrix to tridiagonal form through an intermediate banded form (<code class="docutils literal notranslate"><span class="pre">sytrd_sy2sb</span></code> + <code class="docutils literal notranslate"><span class="pre">sytrd_sb2st</span></code>). The default algorithm (<code class="docutils literal notranslate"><span class="pre">CUSOLVER_ALG_0</span></code>) now selects automatically between the one-stage and two-stage paths based on the problem size, architecture, and math mode; <code class="docutils literal notranslate"><span class="pre">CUSOLVER_ALG_2</span></code> forces the two-stage path and <code class="docutils literal notranslate"><span class="pre">CUSOLVER_ALG_1</span></code> forces the one-stage path.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p>On Linux, <code class="docutils literal notranslate"><span class="pre">libcusolver.so.12</span></code> and <code class="docutils literal notranslate"><span class="pre">libcusolverMg.so.12</span></code>, including their stub libraries, export unversioned symbols in this release. Linking an executable against a shared library that was built with an earlier cuSOLVER release, and that therefore references versioned symbols, fails. As a workaround, link with <code class="docutils literal notranslate"><span class="pre">-Wl,--allow-shlib-undefined</span></code>, or use cuSOLVER 12.3.2.15 from CUDA Toolkit 13.4. This issue is resolved in CUDA Toolkit 13.4 Update 2. <em>[6800056]</em></p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed a hang when cuSOLVERDn routines were used inside a CUDA Green Context. The handle cached the physical device SM count at <code class="docutils literal notranslate"><span class="pre">cusolverDnCreate</span></code> time, so persistent kernels launched more CTAs than the green context could schedule and the spin-wait barriers never completed. <em>[4256378]</em></p></li>
+<li><p>Fixed an integer overflow in the internal pivot handling of <code class="docutils literal notranslate"><span class="pre">cusolverDnXgetrf</span></code> and <code class="docutils literal notranslate"><span class="pre">cusolverDnXgetrf64</span></code> when the column offset times the leading dimension exceeded the <code class="docutils literal notranslate"><span class="pre">INT32_MAX</span></code> range, which could cause incorrect results or invalid memory accesses for matrices with large leading dimensions. <em>[5411488]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cusolver-release-13-4">
+<h3>
+<span class="section-number">3.3.3. </span>cuSOLVER: Release 13.4<a class="headerlink" href="#cusolver-release-13-4" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Further reduced device workspace for <code class="docutils literal notranslate"><span class="pre">cusolverDnXgesvd</span></code> when singular vectors are
+requested and the input matrix is tall-and-skinny (<code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">&gt;</span> <span class="pre">n</span></code>).</p></li>
+<li><p>Reduced device workspace for <code class="docutils literal notranslate"><span class="pre">cusolverDnXgeev</span></code> by optimizing the Householder
+reflector accumulation (ORGHR) stage, enabling computation of larger eigenvalue
+problems within available GPU memory.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">cusolverDnXsytrf</span></code> and <code class="docutils literal notranslate"><span class="pre">cusolverDnXsytrf_bufferSize</span></code>, which provide a 64-bit generic API for computing LDL<sup>T</sup> and UDU<sup>T</sup> factorizations in symmetric indefinite linear systems.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">cusolverDnXhetrf</span></code> and <code class="docutils literal notranslate"><span class="pre">cusolverDnXhetrf_bufferSize</span></code>, which provide a 64-bit generic API for computing LDL<sup>H</sup> and UDU<sup>H</sup> factorizations in Hermitian indefinite linear systems, with support for the <code class="docutils literal notranslate"><span class="pre">CUDA_C_32F</span></code> and <code class="docutils literal notranslate"><span class="pre">CUDA_C_64F</span></code> data types.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">cusolverDnXhetrs</span></code> and <code class="docutils literal notranslate"><span class="pre">cusolverDnXhetrs_bufferSize</span></code>, which provide a 64-bit generic API for solving linear systems of the form AX = B using the factorization obtained via <code class="docutils literal notranslate"><span class="pre">cusolverDnXhetrf</span></code>, supporting the <code class="docutils literal notranslate"><span class="pre">CUDA_C_32F</span></code> and <code class="docutils literal notranslate"><span class="pre">CUDA_C_64F</span></code> data types.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed an issue where <code class="docutils literal notranslate"><span class="pre">cusolverDnXgetrf</span></code> silently discarded a NaN value in the input
+matrix instead of propagating it to the factored output. <em>[5849138]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cusolver-release-13-3-update-1">
+<h3>
+<span class="section-number">3.3.4. </span>cuSOLVER: Release 13.3 Update 1<a class="headerlink" href="#cusolver-release-13-3-update-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Improved <code class="docutils literal notranslate"><span class="pre">cusolverDnXgetrf</span></code> performance with pivoting for <code class="docutils literal notranslate"><span class="pre">sm_90</span></code>, <code class="docutils literal notranslate"><span class="pre">sm_100</span></code>, <code class="docutils literal notranslate"><span class="pre">sm_103</span></code>, and <code class="docutils literal notranslate"><span class="pre">sm_120</span></code>.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed an issue where <code class="docutils literal notranslate"><span class="pre">cusolverDn{C/Z}sytrf()</span></code> and <code class="docutils literal notranslate"><span class="pre">cusolverDn{C/Z}sytrs()</span></code> with <code class="docutils literal notranslate"><span class="pre">devIpiv</span> <span class="pre">==</span> <span class="pre">nullptr</span></code> could treat the complex symmetric input as Hermitian instead of symmetric, which could lead to incorrect results for complex symmetric problems. The documented symmetric factorization and solve behaviors have been restored.</p></li>
+<li><p>Fixed accuracy issues on ill-conditioned and rank-deficient matrices for <code class="docutils literal notranslate"><span class="pre">cusolverDnXgesvdp</span></code> and <code class="docutils literal notranslate"><span class="pre">cusolverDnXpolar</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cusolver-release-13-3">
+<h3>
+<span class="section-number">3.3.5. </span>cuSOLVER: Release 13.3<a class="headerlink" href="#cusolver-release-13-3" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Improved <code class="docutils literal notranslate"><span class="pre">cusolverDnXgeev</span></code> performance when computing eigenvectors by moving eigenvector post-processing from the host to the device.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">cusolverDn{C,Z}sytrf</span></code> and <code class="docutils literal notranslate"><span class="pre">cusolverDnXsytrs</span></code> APIs assume that the complex input matrix <code class="docutils literal notranslate"><span class="pre">A</span></code> is Hermitian instead of symmetric when <code class="docutils literal notranslate"><span class="pre">devIpiv</span></code> is set to <code class="docutils literal notranslate"><span class="pre">NULL</span></code>. This issue exists starting with CUDA Toolkit 13.1. <em>[5797471]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cusolver-release-13-2-update-1">
+<h3>
+<span class="section-number">3.3.6. </span>cuSOLVER: Release 13.2 Update 1<a class="headerlink" href="#cusolver-release-13-2-update-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Improved performance of <code class="docutils literal notranslate"><span class="pre">cusolverDnXgeqrf()</span></code> and <code class="docutils literal notranslate"><span class="pre">cusolverDn&lt;S,D,C,Z&gt;geqrf()</span></code> on <code class="docutils literal notranslate"><span class="pre">sm_90</span></code>, <code class="docutils literal notranslate"><span class="pre">sm_100</span></code>, <code class="docutils literal notranslate"><span class="pre">sm_103</span></code>, and <code class="docutils literal notranslate"><span class="pre">sm_120</span></code> for matrices with <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">&lt;=</span> <span class="pre">65536</span></code>.</p></li>
+<li><p>Added the new public 64-bit interface <code class="docutils literal notranslate"><span class="pre">cusolverDnXpolar()</span></code>, which exposes the QDWH algorithm implementation for polar decomposition in cuSOLVERDn.</p></li>
+<li><p>Added the new public 64-bit interface <code class="docutils literal notranslate"><span class="pre">cusolverDnXstedc()</span></code>, which computes the eigenvalues and, optionally, eigenvectors of a symmetric tridiagonal matrix using the divide-and-conquer method.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cusolver-release-13-2">
+<h3>
+<span class="section-number">3.3.7. </span>cuSOLVER: Release 13.2<a class="headerlink" href="#cusolver-release-13-2" title="Permalink to this headline"></a>
+</h3>
+<ul>
+<li>
+<p><strong>New Features</strong></p>
+<ul class="simple">
+<li><p>Added FP64 fixed-point emulation support to cuSOLVERDn. The following new APIs are available:</p></li>
+</ul>
+<blockquote>
+<div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cusolverDnSetFixedPointEmulationMantissaControl()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cusolverDnGetFixedPointEmulationMantissaControl()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cusolverDnSetFixedPointEmulationMaxMantissaBitCount()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cusolverDnGetFixedPointEmulationMaxMantissaBitCount()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cusolverDnSetFixedPointEmulationMantissaBitOffset()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cusolverDnGetFixedPointEmulationMantissaBitOffset()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cusolverDnSetEmulationSpecialValuesSupport()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cusolverDnGetEmulationSpecialValuesSupport()</span></code></p></li>
+</ul>
+</div>
+</blockquote>
+<ul class="simple">
+<li><p>Added the <code class="docutils literal notranslate"><span class="pre">cusolverDnXsygvd</span></code> API to support larger problem sizes.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Known Issues</strong></p>
+<ul class="simple">
+<li><p>Starting with CUDA Toolkit 13.1, <code class="docutils literal notranslate"><span class="pre">cusolverDn{C,Z}sytrf</span></code> and <code class="docutils literal notranslate"><span class="pre">cusolverDnXsytrs</span></code> assume the complex input matrix <code class="docutils literal notranslate"><span class="pre">A</span></code> is Hermitian (instead of symmetric) when <code class="docutils literal notranslate"><span class="pre">devIpiv</span> <span class="pre">==</span> <span class="pre">NULL</span></code>. <em>[5797471]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cusolver-release-13-1">
+<h3>
+<span class="section-number">3.3.8. </span>cuSOLVER: Release 13.1<a class="headerlink" href="#cusolver-release-13-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed a bug that prevented users from changing the algorithm for <code class="docutils literal notranslate"><span class="pre">cusolverDnXsyevBatched</span></code> by using <code class="docutils literal notranslate"><span class="pre">cusolverDnSetAdvOptions</span></code>. <em>[5539844]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cusolver-release-13-0-update-1">
+<h3>
+<span class="section-number">3.3.9. </span>cuSOLVER: Release 13.0 Update 1<a class="headerlink" href="#cusolver-release-13-0-update-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed a race condition in <code class="docutils literal notranslate"><span class="pre">cusolverDnXgeev</span></code> that could occur when using multiple host threads with either separate handles per thread or a shared handle, which caused execution to abort and returned <code class="docutils literal notranslate"><span class="pre">CUSOLVER_STATUS_INTERNAL_ERROR</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cusolver-release-13-0">
+<h3>
+<span class="section-number">3.3.10. </span>cuSOLVER: Release 13.0<a class="headerlink" href="#cusolver-release-13-0" title="Permalink to this headline"></a>
+</h3>
+<ul>
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li>
+<p>cuSOLVER offers a new math mode to leverage improved performance of <a class="reference external" href="https://docs.nvidia.com/cuda/cublas/#bf16x9">emulated FP32 arithmetic</a> on NVIDIA Blackwell GPUs.</p>
+<p>To enable and control this feature, the following new APIs have been added:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cusolverDnSetMathMode()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cusolverDnGetMathMode()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cusolverDnSetEmulationStrategy()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cusolverDnGetEmulationStrategy()</span></code></p></li>
+</ul>
+</li>
+<li>
+<p>Performance improvements for <code class="docutils literal notranslate"><span class="pre">cusolverDnXsyevBatched()</span></code> have been made by introducing an internal algorithm switch on Blackwell GPUs for matrices of size <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">32</span></code>.</p>
+<p>To revert to the previous algorithm for all problem sizes, use <a class="reference external" href="https://docs.nvidia.com/cuda/cusolver/index.html#cusolverdnsetadvoptions">cusolverDnSetAdvOptions()</a>.</p>
+<p>For more details, refer to the <a class="reference external" href="https://docs.nvidia.com/cuda/cusolver/index.html#cusolverdnxsyevbatched">cusolverDnXsyevBatched()</a> documentation.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Deprecations</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">cuSOLVERMg</span></code> is deprecated and may be removed in an upcoming major release. Users are encouraged to use <a class="reference external" href="https://docs.nvidia.com/cuda/cusolvermp/">cuSOLVERMp</a> for multi-GPU functionality across both single and multi-node environments. To disable the deprecation warning, add the compiler flag <code class="docutils literal notranslate"><span class="pre">-DDISABLE_CUSOLVERMG_DEPRECATED</span></code>.</p></li>
+<li>
+<p><code class="docutils literal notranslate"><span class="pre">cuSOLVERSp</span></code> and <code class="docutils literal notranslate"><span class="pre">cuSOLVERRf</span></code> are fully deprecated and may be removed in an upcoming major release. Users are encouraged to use the <a class="reference external" href="https://developer.nvidia.com/cudss">cuDSS</a> library for better performance and ongoing support.</p>
+<p>For help with the transition, refer to the <a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/master/cuDSS">cuDSS samples</a> or <a class="reference external" href="https://github.com/NVIDIA/CUDALibrarySamples/tree/master/cuSOLVERSp2cuDSS">CUDA samples</a> for migrating from <code class="docutils literal notranslate"><span class="pre">cuSOLVERSp</span></code> to <code class="docutils literal notranslate"><span class="pre">cuDSS</span></code>.</p>
+<p>To disable the deprecation warning, add the compiler flag: <code class="docutils literal notranslate"><span class="pre">-DDISABLE_CUSOLVER_DEPRECATED</span></code>.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li>
+<p>The supported input matrix size for <code class="docutils literal notranslate"><span class="pre">cusolverDnXsyevd</span></code>, <code class="docutils literal notranslate"><span class="pre">cusolverDnXsyevdx</span></code>, <code class="docutils literal notranslate"><span class="pre">cusolverDnXsyevBatched</span></code>, <code class="docutils literal notranslate"><span class="pre">cusolverDn&lt;t&gt;syevd</span></code>, and <code class="docutils literal notranslate"><span class="pre">cusolverDn&lt;t&gt;syevdx</span></code> is no longer limited to <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">32768</span></code>.</p>
+<p>This update also applies to routines that share the same internal implementation: <code class="docutils literal notranslate"><span class="pre">cusolverDnXgesvdr</span></code>, <code class="docutils literal notranslate"><span class="pre">cusolverDnXgesvdp</span></code>, <code class="docutils literal notranslate"><span class="pre">cusolverDn&lt;t&gt;sygvd</span></code>, <code class="docutils literal notranslate"><span class="pre">cusolverDn&lt;t&gt;sygvdx</span></code>, and <code class="docutils literal notranslate"><span class="pre">cusolverDn&lt;t&gt;gesvdaStridedBatched</span></code>.</p>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="cusparse-library">
+<h2>
+<span class="section-number">3.4. </span>cuSPARSE Library<a class="headerlink" href="#cusparse-library" title="Permalink to this headline"></a>
+</h2>
+<section id="cusparse-release-13-4">
+<h3>
+<span class="section-number">3.4.1. </span>cuSPARSE: Release 13.4<a class="headerlink" href="#cusparse-release-13-4" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p>Mixed-precision CSR/COO <code class="docutils literal notranslate"><span class="pre">SpMM</span></code> is not supported in some cases. Refer to the
+cuSPARSE documentation for details.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed a bug with cached parameters in <code class="docutils literal notranslate"><span class="pre">SpMVOp</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cusparse-release-13-3-update-1">
+<h3>
+<span class="section-number">3.4.2. </span>cuSPARSE: Release 13.3 Update 1<a class="headerlink" href="#cusparse-release-13-3-update-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Improved <code class="docutils literal notranslate"><span class="pre">SpGEAM</span></code> performance by an average of 40%. <em>[CUSPARSE-3361]</em></p></li>
+<li><p>Reduced preprocessing time for <code class="docutils literal notranslate"><span class="pre">SpMM</span> <span class="pre">ALG3</span></code>.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p>Incorrect result when running <code class="docutils literal notranslate"><span class="pre">BSR</span> <span class="pre">SDDMM</span></code> on a very large matrix.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed a rarely occurring issue in CSC and transposed CSR <code class="docutils literal notranslate"><span class="pre">SpMV</span></code>. <em>[5975307]</em></p></li>
+<li><p>Fixed an accuracy issue in mixed-precision SELL <code class="docutils literal notranslate"><span class="pre">SpMV</span></code>.</p></li>
+<li><p>Fixed an issue with the algorithm configuration cache in <code class="docutils literal notranslate"><span class="pre">SpMVOp</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cusparse-release-13-3">
+<h3>
+<span class="section-number">3.4.3. </span>cuSPARSE: Release 13.3<a class="headerlink" href="#cusparse-release-13-3" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Added support for the CSC format in <code class="docutils literal notranslate"><span class="pre">SpSV</span></code> and <code class="docutils literal notranslate"><span class="pre">SpSM</span></code>.</p></li>
+<li><p>Improved <code class="docutils literal notranslate"><span class="pre">CSR</span> <span class="pre">SpMV</span> <span class="pre">ALG2</span></code> performance by an average of 11%.</p></li>
+<li><p>Added the Generic API <code class="docutils literal notranslate"><span class="pre">SpGEAM</span></code> for sparse matrix-matrix addition.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">SpMVOp</span> <span class="pre">ALG1</span></code> with reduced preprocessing overhead.</p></li>
+<li><p>Added support for mixed index types in <code class="docutils literal notranslate"><span class="pre">SpMVOp</span></code> computation for CSR matrices with 64-bit offsets and 32-bit indices.</p></li>
+<li><p>Added support for the FP32 data type in <code class="docutils literal notranslate"><span class="pre">SpMVOp</span></code>.</p></li>
+<li><p>Avoided recompilation for the same epilogue in <code class="docutils literal notranslate"><span class="pre">SpMVOp</span></code>.</p></li>
+<li><p>Added mixed-precision support in <code class="docutils literal notranslate"><span class="pre">SpMV</span></code> for 32-bit input matrices and 64-bit input vectors.</p></li>
+<li><p>Added support for updating matrix values after preprocessing in <code class="docutils literal notranslate"><span class="pre">SpMVOp</span> <span class="pre">ALG1</span></code>.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed a memory leak in <code class="docutils literal notranslate"><span class="pre">SpMVOp</span></code> when <code class="docutils literal notranslate"><span class="pre">destroy_lrb()</span></code> was called. <em>[5974043]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cusparse-release-13-2-update-1">
+<h3>
+<span class="section-number">3.4.4. </span>cuSPARSE: Release 13.2 Update 1<a class="headerlink" href="#cusparse-release-13-2-update-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Improved <code class="docutils literal notranslate"><span class="pre">cusparseSpMVOp_createDescr()</span></code> performance by up to 2.5x.</p></li>
+<li><p>Reduced <code class="docutils literal notranslate"><span class="pre">cusparseSpMVOp_createPlan()</span></code> planning latency for default epilogues through ahead-of-time compilation, avoiding JIT compilation in this case.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed an issue that caused performance regressions in BSR SpMM for certain block sizes. <em>[5860241]</em></p></li>
+</ul>
+</li>
+<li>
+<p><strong>Deprecation</strong></p>
+<ul>
+<li><p>Deprecated the <code class="docutils literal notranslate"><span class="pre">SpMMOp</span></code> and <code class="docutils literal notranslate"><span class="pre">SpGEMMreuse</span></code> APIs.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cusparse-release-13-2">
+<h3>
+<span class="section-number">3.4.5. </span>cuSPARSE: Release 13.2<a class="headerlink" href="#cusparse-release-13-2" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Improved the runtime of the <code class="docutils literal notranslate"><span class="pre">SpMVOp::buffer_size_estimate</span></code> API.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cusparse-release-13-1-update-1">
+<h3>
+<span class="section-number">3.4.6. </span>cuSPARSE: Release 13.1 Update 1<a class="headerlink" href="#cusparse-release-13-1-update-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Added a new <code class="docutils literal notranslate"><span class="pre">cusparseSpMVOp_bufferSize</span></code> API that returns the size of the workspace buffer required for SpMVOp computations. Users provide this buffer when creating <code class="docutils literal notranslate"><span class="pre">cusparseSpMVOpDescr_t</span></code>, removing internal memory allocations.</p></li>
+<li><p>Improved SpMVOp performance on B200. <em>[CUSPARSE-2931]</em> <em>[CUSPARSE-2932]</em> <em>[CUSPARSE-2933]</em></p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed an accuracy issue in mixed-precision CSR/COO SpMM computations. <em>[CUSPARSE-2349]</em></p></li>
+<li><p>Fixed an issue in CSR SpMM computations when the input dense matrix has a high number of columns. <em>[CUSPARSE-2301]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cusparse-release-13-1">
+<h3>
+<span class="section-number">3.4.7. </span>cuSPARSE: Release 13.1<a class="headerlink" href="#cusparse-release-13-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Introduced an experimental Sparse Matrix-Vector Multiplication (SpMVOp) API that provides improved performance compared with the existing generic CsrMV API. This API supports CSR format with 32-bit indices, double precision, and user-defined epilogues.</p></li>
+<li><p>The nvJitLink shared library is now loaded dynamically at runtime.</p></li>
+<li><p>Improved <code class="docutils literal notranslate"><span class="pre">cusparseXcsrsort</span></code> with reduced memory usage and higher performance. <em>[CUSPARSE-2630]</em></p></li>
+</ul>
+</li>
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p>When using 32-bit indexing, <code class="docutils literal notranslate"><span class="pre">cusparseSpSV</span></code> and <code class="docutils literal notranslate"><span class="pre">cusparseSpSM</span></code> may crash if the number of nonzero elements (nnz) approaches <code class="docutils literal notranslate"><span class="pre">2^31</span> <span class="pre">-</span> <span class="pre">1</span></code>. <em>[CUSPARSE-2211]</em></p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed potential issues when input and output pointers are not 16-byte aligned in <code class="docutils literal notranslate"><span class="pre">cusparseCsr2cscEx2</span></code>, <code class="docutils literal notranslate"><span class="pre">cusparseSparseToDense</span></code>, and CSR/COO <code class="docutils literal notranslate"><span class="pre">cusparseSpMM</span></code>. <em>[CUSPARSE-2380]</em></p></li>
+<li><p>Fixed a determinism issue in CSR <code class="docutils literal notranslate"><span class="pre">cusparseSpMM</span></code> ALG3. <em>[CUSPARSE-2612]</em></p></li>
+<li><p>All routines now support matrices with up to <code class="docutils literal notranslate"><span class="pre">2^31</span> <span class="pre">-</span> <span class="pre">1</span></code> nonzero elements (nnz) when using 32-bit indexing, with the exception of <code class="docutils literal notranslate"><span class="pre">cusparseSpSV</span></code> and <code class="docutils literal notranslate"><span class="pre">cusparseSpSM</span></code>. <em>[CUSPARSE-2153]</em></p></li>
+<li><p>Fixed a potential race condition that could occur when dynamically loading driver APIs. <em>[CUSPARSE-2764]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cusparse-release-13-0-update-1">
+<h3>
+<span class="section-number">3.4.8. </span>cuSPARSE: Release 13.0 Update 1<a class="headerlink" href="#cusparse-release-13-0-update-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Added support for the BSR format in the generic SpMV API <em>(CUSPARSE-2518)</em>.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Deprecation</strong></p>
+<ul>
+<li><p>Deprecated the legacy BSR SpMV API (replaced by the generic SpMV API).</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Enabled all generic APIs to support zero-dimension matrices/vectors (m, n, k = 0) <em>(CUSPARSE-2378)</em>.</p></li>
+<li><p>Enabled all generic APIs to support small-dimension matrices/vectors (small m, n, or k) <em>(CUSPARSE-2379)</em>.</p></li>
+<li><p>Fixed incorrect results in mixed-precision CSR/COO SpMV computations <em>(CUSPARSE-2349)</em>.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cusparse-release-13-0">
+<h3>
+<span class="section-number">3.4.9. </span>cuSPARSE: Release 13.0<a class="headerlink" href="#cusparse-release-13-0" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Added support for 64-bit index matrices in SpGEMM computation. <em>(CUSPARSE-2365)</em></p></li>
+</ul>
+</li>
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p>cuSPARSE logging APIs can crash on Windows.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CUSPARSE_SPMM_CSR_ALG3</span></code> does not return deterministic results as stated in the documentation.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Deprecation</strong></p>
+<ul>
+<li><p>Dropped support for pre-Turing architectures (Maxwell, Volta, and Pascal).</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed a bug in <code class="docutils literal notranslate"><span class="pre">cusparseSparseToDense_bufferSize</span></code> that caused it to request up to 16× more memory than required. <em>[CUSPARSE-2352]</em></p></li>
+<li><p>Fixed unwanted 16-byte alignment requirements on the external buffer. Most routines will now work with any alignment. In the generic API, only <code class="docutils literal notranslate"><span class="pre">cusparseSpGEMM</span></code> routines are still affected. <em>[CUSPARSE-2352]</em></p></li>
+<li><p>Fixed incorrect results from <code class="docutils literal notranslate"><span class="pre">cusparseCsr2cscEx2</span></code> when any of the input matrix dimensions are zero, such as when <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">=</span> <span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">0</span></code>. <em>[CUSPARSE-2319]</em></p></li>
+<li><p>Fixed incorrect results from CSR SpMV when any of the input matrix dimensions are zero, such as when <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">=</span> <span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">0</span></code>. <em>[CUSPARSE-1800]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="math-library">
+<h2>
+<span class="section-number">3.5. </span>Math Library<a class="headerlink" href="#math-library" title="Permalink to this headline"></a>
+</h2>
+<section id="cuda-math-release-13-4">
+<h3>
+<span class="section-number">3.5.1. </span>CUDA Math: Release 13.4<a class="headerlink" href="#cuda-math-release-13-4" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Added new FP8 scaling factor type <code class="docutils literal notranslate"><span class="pre">__nv_fp8_ue5m3</span></code> and corresponding conversion
+operations in <code class="docutils literal notranslate"><span class="pre">cuda_fp8.h</span></code>. <em>[5482730]</em></p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed <code class="docutils literal notranslate"><span class="pre">fp128</span></code> nearest integral functions returning off-by-one results in pathological
+cases. This fix also delivers performance improvements of 2x–8x for fp128 operations on
+GB200 and up to approximately 200x on RTX 5080, covering conversion, nearest integral,
+<code class="docutils literal notranslate"><span class="pre">frexp</span></code>, <code class="docutils literal notranslate"><span class="pre">ilogb</span></code>, <code class="docutils literal notranslate"><span class="pre">modf</span></code>, and multiplication. Fixed an underflow in fp128
+<code class="docutils literal notranslate"><span class="pre">hypot</span></code>.</p></li>
+<li><p>Fixed <code class="docutils literal notranslate"><span class="pre">__hmin_nan</span></code> and <code class="docutils literal notranslate"><span class="pre">__hmax_nan</span></code> bfloat16 functions ignoring the sign of zero
+in emulation code paths for devices with compute capability below 8.0 and host CPUs;
+<code class="docutils literal notranslate"><span class="pre">-0.0</span></code> now correctly compares as less than <code class="docutils literal notranslate"><span class="pre">+0.0</span></code>. <em>[6182113]</em></p></li>
+<li><p>Fixed <code class="docutils literal notranslate"><span class="pre">__nv_fp8_ue5m3</span></code> conversions from long integer types that could produce a
+result off by one. <em>[6182039]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cuda-math-release-13-3">
+<h3>
+<span class="section-number">3.5.2. </span>CUDA Math: Release 13.3<a class="headerlink" href="#cuda-math-release-13-3" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed an issue where silent data corruption could occur when the CUDA Math API <code class="docutils literal notranslate"><span class="pre">__mul24()</span></code> intrinsic was called with compile-time constant inputs due to undefined behavior from compiler optimizations applied to overflowing signed integer multiplication. This issue was introduced in CUDA Toolkit 11.1 and resolved in CUDA Toolkit 13.3. <em>[5807344]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cuda-math-release-13-2-update-1">
+<h3>
+<span class="section-number">3.5.3. </span>CUDA Math: Release 13.2 Update 1<a class="headerlink" href="#cuda-math-release-13-2-update-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p>Silent data corruption can occur when the CUDA Math API <code class="docutils literal notranslate"><span class="pre">__mul24()</span></code> intrinsic is called with compile-time constant inputs. Compiler optimizations applied to overflowing signed integer multiplication can expose the program to undefined behavior. This issue was introduced in CUDA Toolkit 11.1 and will be fixed in a future release. <em>[5807344]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cuda-math-release-13-2">
+<h3>
+<span class="section-number">3.5.4. </span>CUDA Math: Release 13.2<a class="headerlink" href="#cuda-math-release-13-2" title="Permalink to this headline"></a>
+</h3>
+<ul>
+<li>
+<p><strong>New Features</strong></p>
+<ul class="simple">
+<li>
+<p>Accuracy and performance improvements were made to the following libdevice single-precision math functions:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">expm1f()</span></code>: up to 20% faster, with minor accuracy improvements.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">erff()</span></code>: 5% to 10% faster, with minor accuracy improvements.</p></li>
+</ul>
+</li>
+</ul>
+<p>These gains come from algorithmic simplifications, reduced branching, and tighter approximations. <em>[5480287]</em></p>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul class="simple">
+<li><p>ACLE extension support for GCC: ARM64 users, notice the behavior change for <code class="docutils literal notranslate"><span class="pre">__clz</span></code> and <code class="docutils literal notranslate"><span class="pre">__clzll</span></code> CUDA Math integer intrinsics: the signatures were updated to match the host compiler’s declarations, relevant for GCC 11.4 onwards. The (un-)signedness of the return type of the intrinsic affects the caller code relying on integer types promotions. <em>[6258270]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cuda-math-release-13-0">
+<h3>
+<span class="section-number">3.5.5. </span>CUDA Math: Release 13.0<a class="headerlink" href="#cuda-math-release-13-0" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li>
+<p>Single and double precision math functions received targeted performance and accuracy improvements through algorithmic simplifications, reduced branching, and tighter approximations.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">atan2f</span></code>, <code class="docutils literal notranslate"><span class="pre">atan2</span></code>: Up to 10% faster with minor improvements in accuracy.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sinhf</span></code>, <code class="docutils literal notranslate"><span class="pre">coshf</span></code>, <code class="docutils literal notranslate"><span class="pre">acoshf</span></code>, <code class="docutils literal notranslate"><span class="pre">asinhf</span></code>, <code class="docutils literal notranslate"><span class="pre">asinh</span></code>: Up to 50% speedups with minor improvements in accuracy.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cbrtf</span></code>, <code class="docutils literal notranslate"><span class="pre">rcbrtf</span></code>: 15% faster with minor improvements in accuracy.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">erfinvf</span></code>, <code class="docutils literal notranslate"><span class="pre">erfcinvf</span></code>, <code class="docutils literal notranslate"><span class="pre">normcdfinvf</span></code>: Minor accuracy improvements, performance neutral.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ldexpf</span></code>, <code class="docutils literal notranslate"><span class="pre">ldexp</span></code>: Up to 3x faster in single precision and 30% faster in double precision, with no accuracy loss.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">modff</span></code>, <code class="docutils literal notranslate"><span class="pre">modf</span></code>: Up to 50% faster in single precision and 10% faster in double precision, with no accuracy loss.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="nvjpeg-library">
+<h2>
+<span class="section-number">3.6. </span>nvJPEG Library<a class="headerlink" href="#nvjpeg-library" title="Permalink to this headline"></a>
+</h2>
+<section id="nvjpeg-release-13-4-update-1">
+<h3>
+<span class="section-number">3.6.1. </span>nvJPEG: Release 13.4 Update 1<a class="headerlink" href="#nvjpeg-release-13-4-update-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed parsing issues that could cause crashes or hangs when decoding malformed JPEG bitstreams.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="nvjpeg-release-13-3-update-1">
+<h3>
+<span class="section-number">3.6.2. </span>nvJPEG: Release 13.3 Update 1<a class="headerlink" href="#nvjpeg-release-13-3-update-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed an issue that would cause <code class="docutils literal notranslate"><span class="pre">nvjpegCreate*</span></code> calls to error out on Orin. <em>[6176492]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="nvjpeg-release-13-3">
+<h3>
+<span class="section-number">3.6.3. </span>nvJPEG: Release 13.3<a class="headerlink" href="#nvjpeg-release-13-3" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Added support for region-of-interest decoding with <code class="docutils literal notranslate"><span class="pre">nvjpegDecodeBatchedEx</span></code> when using the <code class="docutils literal notranslate"><span class="pre">NVJPEG_BACKEND_LOSSLESS_JPEG</span></code> backend.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed an issue with boundary handling when decoding a region of interest with <code class="docutils literal notranslate"><span class="pre">NVJPEG_FLAGS_UPSAMPLING_WITH_INTERPOLATION</span></code> enabled.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="nvjpeg-release-13-2-update-2">
+<h3>
+<span class="section-number">3.6.4. </span>nvJPEG: Release 13.2 Update 2<a class="headerlink" href="#nvjpeg-release-13-2-update-2" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>Known Issues</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvjpegCreate*</span></code> calls may error out on Orin due to compatibility issues with the <code class="docutils literal notranslate"><span class="pre">libnvcuvid.so</span></code> driver library. This issue is fixed in CUDA Toolkit 13.3 Update 1. <em>[6176492]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="nvjpeg-release-13-2-update-1">
+<h3>
+<span class="section-number">3.6.5. </span>nvJPEG: Release 13.2 Update 1<a class="headerlink" href="#nvjpeg-release-13-2-update-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>New Features</strong></p>
+<ul>
+<li><p>Added the <code class="docutils literal notranslate"><span class="pre">NVJPEG_OUTPUT_UNCHANGEDI</span></code> enum value to <code class="docutils literal notranslate"><span class="pre">nvjpegOutputFormat_t</span></code> for unchanged interleaved output. For chroma subsampling formats other than 4:4:4, chroma values are duplicated so that the chroma and luma dimensions match.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="nvjpeg-release-13-1-update-1">
+<h3>
+<span class="section-number">3.6.6. </span>nvJPEG: Release 13.1 Update 1<a class="headerlink" href="#nvjpeg-release-13-1-update-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Reduced nvJPEG encoder initialization time on Thor. <em>[5533951]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="nvjpeg-release-13-1">
+<h3>
+<span class="section-number">3.6.7. </span>nvJPEG: Release 13.1<a class="headerlink" href="#nvjpeg-release-13-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>nvJPEG’s lossless JPEG 92 (lj92) implementation can now correctly handle lj92 files that contain a comment marker in the header. <em>[5484797]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="nvjpeg-release-13-0-update-1">
+<h3>
+<span class="section-number">3.6.8. </span>nvJPEG: Release 13.0 Update 1<a class="headerlink" href="#nvjpeg-release-13-0-update-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed a race condition in certain cases during progressive encoding <em>[5307748]</em>.</p></li>
+<li><p>Fixed an uninitialized read when encoding images as 4:1:0 JPEG bitstreams <em>[5308008]</em>.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="nvjpeg-release-13-0">
+<h3>
+<span class="section-number">3.6.9. </span>nvJPEG: Release 13.0<a class="headerlink" href="#nvjpeg-release-13-0" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>Deprecations</strong></p>
+<ul>
+<li><p>Removed the <code class="docutils literal notranslate"><span class="pre">nvjpegEncoderParamsCopyHuffmanTables</span></code> API.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>nvJPEG is now more robust and no longer crashes or exhibits undefined behavior when decoding malformed or truncated bitstreams. <em>[5168024, 5133845, 5143450]</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvjpegEncodeYUV</span></code> now avoids reading outside of allocated device memory in certain cases. <em>[5133826]</em></p></li>
+<li><p>Optimized memory usage when encoding RGB inputs using the hardware encoder.</p></li>
+<li><p>Fixed issues related to rounding in various transform, sampling, and conversion steps, improving image quality for both encoder and decoder. <em>[5064901, 3976092]</em></p></li>
+<li><p>Various bug fixes for improved security.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="npp-library">
+<h2>
+<span class="section-number">3.7. </span>NPP Library<a class="headerlink" href="#npp-library" title="Permalink to this headline"></a>
+</h2>
+<section id="npp-release-13-4">
+<h3>
+<span class="section-number">3.7.1. </span>NPP: Release 13.4<a class="headerlink" href="#npp-release-13-4" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed a regression in <code class="docutils literal notranslate"><span class="pre">nppiNV12ToRGB_8u_ColorTwist32f_P2C3R_Ctx</span></code> introduced in
+CUDA 12.9 that could render black NV12 frames as blue. <em>[6229084]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="npp-release-13-1">
+<h3>
+<span class="section-number">3.7.2. </span>NPP: Release 13.1<a class="headerlink" href="#npp-release-13-1" title="Permalink to this headline"></a>
+</h3>
+<ul class="simple">
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul>
+<li><p>Fixed an issue in <code class="docutils literal notranslate"><span class="pre">nppiCFAToRGB_8u_C1C3R()</span></code> affecting SSIM validation for <code class="docutils literal notranslate"><span class="pre">NPPI_BAYER_GBRG</span></code> patterns. <em>[5192648]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="npp-release-13-0">
+<h3>
+<span class="section-number">3.7.3. </span>NPP: Release 13.0<a class="headerlink" href="#npp-release-13-0" title="Permalink to this headline"></a>
+</h3>
+<ul>
+<li>
+<p><strong>Deprecations</strong></p>
+<ul>
+<li>
+<p><strong>Removal of Legacy Non-Context APIs</strong></p>
+<p>All legacy NPP APIs without the <code class="docutils literal notranslate"><span class="pre">_Ctx</span></code> suffix have been deprecated and are now removed starting with this release.
+Developers should transition to the context-aware (<code class="docutils literal notranslate"><span class="pre">_Ctx</span></code>) versions to ensure continued support and compatibility with the latest CUDA releases.</p>
+</li>
+<li>
+<p><strong>Deprecation of ``nppGetStreamContext()``</strong></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">nppGetStreamContext()</span></code> API has been deprecated and removed. Developers are strongly encouraged to adopt application-managed stream contexts by explicitly managing the <code class="docutils literal notranslate"><span class="pre">NppStreamContext</span></code> structure.
+For guidance, refer to the <a class="reference external" href="https://docs.nvidia.com/cuda/npp/">NPP Documentation – General Conventions</a>.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Resolved Issues</strong></p>
+<ul class="simple">
+<li><p>Fixed an issue in <code class="docutils literal notranslate"><span class="pre">nppiFloodFillRange_8u_C1IR_Ctx</span></code> where the flood fill operation did not correctly fill the full target area. <em>[5141474]</em></p></li>
+<li><p>Resolved a bug in the <code class="docutils literal notranslate"><span class="pre">nppiDebayer()</span></code> API that affected proper reconstruction of color data during Bayer pattern conversion. <em>[5138782]</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="notices">
+<h1>
+<span class="section-number">4. </span>Notices<a class="headerlink" href="#notices" title="Permalink to this headline"></a>
+</h1>
+<section id="notice">
+<h2>
+<span class="section-number">4.1. </span>Notice<a class="headerlink" href="#notice" title="Permalink to this headline"></a>
+</h2>
+<p>This document is provided for information purposes only and shall not be regarded as a warranty of a certain functionality, condition, or quality of a product. NVIDIA Corporation (“NVIDIA”) makes no representations or warranties, expressed or implied, as to the accuracy or completeness of the information contained in this document and assumes no responsibility for any errors contained herein. NVIDIA shall have no liability for the consequences or use of such information or for any infringement of patents or other rights of third parties that may result from its use. This document is not a commitment to develop, release, or deliver any Material (defined below), code, or functionality.</p>
+<p>NVIDIA reserves the right to make corrections, modifications, enhancements, improvements, and any other changes to this document, at any time without notice.</p>
+<p>Customer should obtain the latest relevant information before placing orders and should verify that such information is current and complete.</p>
+<p>NVIDIA products are sold subject to the NVIDIA standard terms and conditions of sale supplied at the time of order acknowledgement, unless otherwise agreed in an individual sales agreement signed by authorized representatives of NVIDIA and customer (“Terms of Sale”). NVIDIA hereby expressly objects to applying any customer general terms and conditions with regards to the purchase of the NVIDIA product referenced in this document. No contractual obligations are formed either directly or indirectly by this document.</p>
+<p>NVIDIA products are not designed, authorized, or warranted to be suitable for use in medical, military, aircraft, space, or life support equipment, nor in applications where failure or malfunction of the NVIDIA product can reasonably be expected to result in personal injury, death, or property or environmental damage. NVIDIA accepts no liability for inclusion and/or use of NVIDIA products in such equipment or applications and therefore such inclusion and/or use is at customer’s own risk.</p>
+<p>NVIDIA makes no representation or warranty that products based on this document will be suitable for any specified use. Testing of all parameters of each product is not necessarily performed by NVIDIA. It is customer’s sole responsibility to evaluate and determine the applicability of any information contained in this document, ensure the product is suitable and fit for the application planned by customer, and perform the necessary testing for the application in order to avoid a default of the application or the product. Weaknesses in customer’s product designs may affect the quality and reliability of the NVIDIA product and may result in additional or different conditions and/or requirements beyond those contained in this document. NVIDIA accepts no liability related to any default, damage, costs, or problem which may be based on or attributable to: (i) the use of the NVIDIA product in any manner that is contrary to this document or (ii) customer product designs.</p>
+<p>No license, either expressed or implied, is granted under any NVIDIA patent right, copyright, or other NVIDIA intellectual property right under this document. Information published by NVIDIA regarding third-party products or services does not constitute a license from NVIDIA to use such products or services or a warranty or endorsement thereof. Use of such information may require a license from a third party under the patents or other intellectual property rights of the third party, or a license from NVIDIA under the patents or other intellectual property rights of NVIDIA.</p>
+<p>Reproduction of information in this document is permissible only if approved in advance by NVIDIA in writing, reproduced without alteration and in full compliance with all applicable export laws and regulations, and accompanied by all associated conditions, limitations, and notices.</p>
+<p>THIS DOCUMENT AND ALL NVIDIA DESIGN SPECIFICATIONS, REFERENCE BOARDS, FILES, DRAWINGS, DIAGNOSTICS, LISTS, AND OTHER DOCUMENTS (TOGETHER AND SEPARATELY, “MATERIALS”) ARE BEING PROVIDED “AS IS.” NVIDIA MAKES NO WARRANTIES, EXPRESSED, IMPLIED, STATUTORY, OR OTHERWISE WITH RESPECT TO THE MATERIALS, AND EXPRESSLY DISCLAIMS ALL IMPLIED WARRANTIES OF NONINFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE. TO THE EXTENT NOT PROHIBITED BY LAW, IN NO EVENT WILL NVIDIA BE LIABLE FOR ANY DAMAGES, INCLUDING WITHOUT LIMITATION ANY DIRECT, INDIRECT, SPECIAL, INCIDENTAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES, HOWEVER CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF ANY USE OF THIS DOCUMENT, EVEN IF NVIDIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. Notwithstanding any damages that customer might incur for any reason whatsoever, NVIDIA’s aggregate and cumulative liability towards customer for the products described herein shall be limited in accordance with the Terms of Sale for the product.</p>
+</section>
+<section id="opencl">
+<h2>
+<span class="section-number">4.2. </span>OpenCL<a class="headerlink" href="#opencl" title="Permalink to this headline"></a>
+</h2>
+<p>OpenCL is a trademark of Apple Inc. used under license to the Khronos Group Inc.</p>
+</section>
+<section id="trademarks">
+<h2>
+<span class="section-number">4.3. </span>Trademarks<a class="headerlink" href="#trademarks" title="Permalink to this headline"></a>
+</h2>
+<p>NVIDIA and the NVIDIA logo are trademarks or registered trademarks of NVIDIA Corporation in the U.S. and other countries. Other company and product names may be trademarks of the respective companies with which they are associated.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr>
+
+  <div role="contentinfo">
+<img src="../_static/NVIDIA-LogoBlack.svg" class="only-light">
+<img src="../_static/NVIDIA-LogoWhite.svg" class="only-dark">
+
+<p>
+  Copyright © 2007-2026, NVIDIA Corporation &amp; affiliates. All rights reserved.
+</p>
+
+    <p>
+      <span class="lastupdated">Last updated on Oct 12, 2026.
+      </span></p>
+
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script> 
+
+</body>
+</html>

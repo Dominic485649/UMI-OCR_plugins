@@ -1,0 +1,469 @@
+{
+  "schemaVersion": 1,
+  "upstream": "https://github.com/ggml-org/llama.cpp",
+  "commit": "74bca3950054eed1795f525cb9cf06bfe796492d",
+  "sourceArchiveSha256": "c71b9c01e263232c854dea1c9992d6e1a42b9e96d4a687e05f1f0c0fc13dae12",
+  "buildInputArchiveSha256": "b52e1f3af3a4eb0cb87d20320ec80d645e72f46af8c45289dbfc64b358ecd257",
+  "sourceArchiveScope": "Exact fixed-commit tracked file bytes, excluding upstream .gguf/.mmproj vocabulary/model fixtures; original full git archive retained unchanged in build audit.",
+  "sourceArchiveExclusions": [
+    {
+      "path": "models/ggml-vocab-aquila.gguf",
+      "size": 4825676,
+      "sha256": "7c53c3c516ac67c7ca12977b9690fdea3d2ef13bbaed6378f98191a13ef5ca00",
+      "reason": "Upstream vocabulary/model regression fixture, not needed to build llama-server; no model assets in product"
+    },
+    {
+      "path": "models/ggml-vocab-baichuan.gguf",
+      "size": 1340998,
+      "sha256": "4f5b955697f3bd3108070b1d5936c7eb9fc542b81c6932e59abddec75bca1963",
+      "reason": "Upstream vocabulary/model regression fixture, not needed to build llama-server; no model assets in product"
+    },
+    {
+      "path": "models/ggml-vocab-bert-bge.gguf",
+      "size": 627549,
+      "sha256": "fbcbe22278fb302694d5f4a41bfe48c5f90e8e3554eab1c0435387dff654a854",
+      "reason": "Upstream vocabulary/model regression fixture, not needed to build llama-server; no model assets in product"
+    },
+    {
+      "path": "models/ggml-vocab-command-r.gguf",
+      "size": 10874545,
+      "sha256": "a2f8cfea952ef7c391a6d92a1c309d0bd32e36384d9b9230569a7425732f27d9",
+      "reason": "Upstream vocabulary/model regression fixture, not needed to build llama-server; no model assets in product"
+    },
+    {
+      "path": "models/ggml-vocab-deepseek-coder.gguf",
+      "size": 1156067,
+      "sha256": "91cb1379f2e33af1c4866b194622b7a0e12e8f0c9dba7ba2f10d55978730bec1",
+      "reason": "Upstream vocabulary/model regression fixture, not needed to build llama-server; no model assets in product"
+    },
+    {
+      "path": "models/ggml-vocab-deepseek-llm.gguf",
+      "size": 3970167,
+      "sha256": "867f77537b54565f0d81d508c04edc41aa1d4ffc1a92745f225b4c1b02755f76",
+      "reason": "Upstream vocabulary/model regression fixture, not needed to build llama-server; no model assets in product"
+    },
+    {
+      "path": "models/ggml-vocab-falcon.gguf",
+      "size": 2287728,
+      "sha256": "9f0bf8b0733680398b72e652e90f260f43782f326e75545fc0e49611a5ba35ad",
+      "reason": "Upstream vocabulary/model regression fixture, not needed to build llama-server; no model assets in product"
+    },
+    {
+      "path": "models/ggml-vocab-gemma-4.gguf",
+      "size": 15776467,
+      "sha256": "58b1ba0b57f3b4d7c468ba4ffd91ad85190346a3d7ad7e71d1cabaae8a14bb65",
+      "reason": "Upstream vocabulary/model regression fixture, not needed to build llama-server; no model assets in product"
+    },
+    {
+      "path": "models/ggml-vocab-gpt-2.gguf",
+      "size": 1766807,
+      "sha256": "cedc56ca6e2e89f63e781696d1fd76b4b1d49e6720dee86463e915f6e90016ac",
+      "reason": "Upstream vocabulary/model regression fixture, not needed to build llama-server; no model assets in product"
+    },
+    {
+      "path": "models/ggml-vocab-gpt-neox.gguf",
+      "size": 1771431,
+      "sha256": "ae593a7f9b8bb174ed4f5019e41530463e4dac7aa06e42dee8aa650d2bdac53d",
+      "reason": "Upstream vocabulary/model regression fixture, not needed to build llama-server; no model assets in product"
+    },
+    {
+      "path": "models/ggml-vocab-llama-bpe.gguf",
+      "size": 7818140,
+      "sha256": "97272e430d53bc7688f52d5e0ad8ea8f163ede9f1bbd1694feaa504797d5d96e",
+      "reason": "Upstream vocabulary/model regression fixture, not needed to build llama-server; no model assets in product"
+    },
+    {
+      "path": "models/ggml-vocab-llama-spm.gguf",
+      "size": 723869,
+      "sha256": "16c3724582d59aa8bf84711894e833f916ee46a31d80e21312759c48bf8d0e69",
+      "reason": "Upstream vocabulary/model regression fixture, not needed to build llama-server; no model assets in product"
+    },
+    {
+      "path": "models/ggml-vocab-mpt.gguf",
+      "size": 1771393,
+      "sha256": "59dc382612866d1fc6c11ea531318d327598f3412d9c8f8600607cdf3030898f",
+      "reason": "Upstream vocabulary/model regression fixture, not needed to build llama-server; no model assets in product"
+    },
+    {
+      "path": "models/ggml-vocab-nomic-bert-moe.gguf",
+      "size": 6821877,
+      "sha256": "90a6746926454784a98389ad36a36d89bc9cfc81db9cb0f33c941bcc959fe5f9",
+      "reason": "Upstream vocabulary/model regression fixture, not needed to build llama-server; no model assets in product"
+    },
+    {
+      "path": "models/ggml-vocab-phi-3.gguf",
+      "size": 726019,
+      "sha256": "967d7190d11c4842eab697079d98d56c2116e10eb617be355a2733bfc132e326",
+      "reason": "Upstream vocabulary/model regression fixture, not needed to build llama-server; no model assets in product"
+    },
+    {
+      "path": "models/ggml-vocab-qwen2.gguf",
+      "size": 5928681,
+      "sha256": "44c2f46b715f585c6ab513970e8a006bfa5badd6108560054921cf598d154d8c",
+      "reason": "Upstream vocabulary/model regression fixture, not needed to build llama-server; no model assets in product"
+    },
+    {
+      "path": "models/ggml-vocab-qwen35.gguf",
+      "size": 5928682,
+      "sha256": "63ed952ff338996cf0bdf24a7b10015124273f75c6dc9bb427356aa3f67ec62c",
+      "reason": "Upstream vocabulary/model regression fixture, not needed to build llama-server; no model assets in product"
+    },
+    {
+      "path": "models/ggml-vocab-refact.gguf",
+      "size": 1720710,
+      "sha256": "ac3ceda902fed91ccf74312b305d9b86c37e4f8e35fa9cc6ef3ce34fca7d4678",
+      "reason": "Upstream vocabulary/model regression fixture, not needed to build llama-server; no model assets in product"
+    },
+    {
+      "path": "models/ggml-vocab-starcoder.gguf",
+      "size": 1719346,
+      "sha256": "fedb892b4e1bd3c1f2fcdae356440b14fb458f4264d586e5c987ed93df4e174d",
+      "reason": "Upstream vocabulary/model regression fixture, not needed to build llama-server; no model assets in product"
+    }
+  ],
+  "binaryOrigins": {
+    "llama-server.exe": {
+      "source": "D:\\Code\\Python\\Umi-OCR\\build\\staging\\model-settings-20261026-020955-llama\\cmake\\bin\\llama-server.exe",
+      "origin": "llama.cpp fresh build",
+      "sha256": "918fb90f1d564b47fdc11025ca4fb532a6bb7ef71c06f9c4e6b709298460a9e1"
+    },
+    "vcruntime140.dll": {
+      "source": "D:\\Microsoft Visual Studio\\2026\\VC\\Redist\\MSVC\\14.51.36231\\x64\\Microsoft.VC145.CRT\\vcruntime140.dll",
+      "origin": "MSVC CRT redistributable",
+      "sha256": "d1f4225df2cd877dbf130d5668a021dce3f94118455ff5ec952061c30afc9ce7"
+    },
+    "llama-server-impl.dll": {
+      "source": "D:\\Code\\Python\\Umi-OCR\\build\\staging\\model-settings-20261026-020955-llama\\cmake\\bin\\llama-server-impl.dll",
+      "origin": "llama.cpp fresh build",
+      "sha256": "9404d32640132ecd0a46f247d940140fa6c2323aa8eef4523a2d937ab99cebb4"
+    },
+    "vcruntime140_1.dll": {
+      "source": "D:\\Microsoft Visual Studio\\2026\\VC\\Redist\\MSVC\\14.51.36231\\x64\\Microsoft.VC145.CRT\\vcruntime140_1.dll",
+      "origin": "MSVC CRT redistributable",
+      "sha256": "a7146c08f89fe5b04541ab507cdb59ff7b44534d4ba3c668a426c6450a03434e"
+    },
+    "mtmd.dll": {
+      "source": "D:\\Code\\Python\\Umi-OCR\\build\\staging\\model-settings-20261026-020955-llama\\cmake\\bin\\mtmd.dll",
+      "origin": "llama.cpp fresh build",
+      "sha256": "46ea6161fcd619fbdd9ff6c13474d315e2db888ec4db955587da6be0fa60e87c"
+    },
+    "msvcp140.dll": {
+      "source": "D:\\Microsoft Visual Studio\\2026\\VC\\Redist\\MSVC\\14.51.36231\\x64\\Microsoft.VC145.CRT\\msvcp140.dll",
+      "origin": "MSVC CRT redistributable",
+      "sha256": "7c26614e1d733892c2deac7e245ce115504b1d80592dd0a01b08e3e5a55f89ca"
+    },
+    "llama.dll": {
+      "source": "D:\\Code\\Python\\Umi-OCR\\build\\staging\\model-settings-20261026-020955-llama\\cmake\\bin\\llama.dll",
+      "origin": "llama.cpp fresh build",
+      "sha256": "a4c8796b9babd4a7b6ceeeec25c26200418d160a7a674cb37fcabcf4cccbdadb"
+    },
+    "ggml.dll": {
+      "source": "D:\\Code\\Python\\Umi-OCR\\build\\staging\\model-settings-20261026-020955-llama\\cmake\\bin\\ggml.dll",
+      "origin": "llama.cpp fresh build",
+      "sha256": "29b6d005dc08160859b4a9313a19eb946e032328c14487a017fba3403e6926a7"
+    },
+    "ggml-cuda.dll": {
+      "source": "D:\\Code\\Python\\Umi-OCR\\build\\staging\\model-settings-20261026-020955-llama\\cmake\\bin\\ggml-cuda.dll",
+      "origin": "llama.cpp fresh build",
+      "sha256": "28814797051cb30702e67d20a86f7a5115718dcd5aac1e05d34e0bfeb1a49954"
+    },
+    "ggml-base.dll": {
+      "source": "D:\\Code\\Python\\Umi-OCR\\build\\staging\\model-settings-20261026-020955-llama\\cmake\\bin\\ggml-base.dll",
+      "origin": "llama.cpp fresh build",
+      "sha256": "d6871ff6ae825a65b5b096a3b7ab3bbda0103614873cef41414cb97890bb0bd2"
+    },
+    "vcomp140.dll": {
+      "source": "D:\\Microsoft Visual Studio\\2026\\VC\\Redist\\MSVC\\14.51.36231\\x64\\Microsoft.VC145.OpenMP\\vcomp140.dll",
+      "origin": "MSVC OpenMP redistributable",
+      "sha256": "95d4ce4a6802d1e18b5e0e1722cc30ea72ca7e033f83828f05c0b7b993fe7cbf"
+    },
+    "cublas64_13.dll": {
+      "source": "D:\\Scoop\\apps\\cuda\\current\\bin\\x64\\cublas64_13.dll",
+      "origin": "CUDA Toolkit x64 redistributable",
+      "sha256": "60bbba8868290311e9c1657b2193ddec667744eb555ff843f87acb7c039f9efa"
+    },
+    "cublaslt64_13.dll": {
+      "source": "D:\\Scoop\\apps\\cuda\\current\\bin\\x64\\cublasLt64_13.dll",
+      "origin": "CUDA Toolkit x64 redistributable",
+      "sha256": "cad63434448e7141629e240ea093ad596a7ef6a0f67b468ba9bc1df6e1eeee33"
+    },
+    "ggml-cpu.dll": {
+      "source": "D:\\Code\\Python\\Umi-OCR\\build\\staging\\model-settings-20261026-020955-llama\\cmake\\bin\\ggml-cpu.dll",
+      "origin": "llama.cpp fresh build",
+      "sha256": "5c4a1956a4fa09d4a274ea64f3ac173b85efad5efc903cdaea3434c46b494a9c"
+    },
+    "llama-common.dll": {
+      "source": "D:\\Code\\Python\\Umi-OCR\\build\\staging\\model-settings-20261026-020955-llama\\cmake\\bin\\llama-common.dll",
+      "origin": "llama.cpp fresh build",
+      "sha256": "1beeff50e71caac3db481da04d35992fb504e21645605bbcb2ceeb2ae85c1f1a"
+    }
+  },
+  "imports": {
+    "llama-server.exe": [
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "kernel32.dll",
+      "llama-server-impl.dll",
+      "vcruntime140.dll"
+    ],
+    "vcruntime140.dll": [
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "kernel32.dll"
+    ],
+    "llama-server-impl.dll": [
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-filesystem-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-time-l1-1-0.dll",
+      "ggml-base.dll",
+      "ggml.dll",
+      "kernel32.dll",
+      "llama-common.dll",
+      "llama.dll",
+      "msvcp140.dll",
+      "mtmd.dll",
+      "vcruntime140.dll",
+      "vcruntime140_1.dll",
+      "ws2_32.dll"
+    ],
+    "vcruntime140_1.dll": [
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "kernel32.dll",
+      "vcruntime140.dll"
+    ],
+    "mtmd.dll": [
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-filesystem-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "ggml-base.dll",
+      "ggml.dll",
+      "kernel32.dll",
+      "llama.dll",
+      "msvcp140.dll",
+      "vcruntime140.dll",
+      "vcruntime140_1.dll"
+    ],
+    "msvcp140.dll": [
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-filesystem-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-time-l1-1-0.dll",
+      "api-ms-win-crt-utility-l1-1-0.dll",
+      "kernel32.dll",
+      "vcruntime140.dll",
+      "vcruntime140_1.dll"
+    ],
+    "llama.dll": [
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-filesystem-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "ggml-base.dll",
+      "ggml.dll",
+      "kernel32.dll",
+      "msvcp140.dll",
+      "vcruntime140.dll",
+      "vcruntime140_1.dll"
+    ],
+    "ggml.dll": [
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "ggml-base.dll",
+      "ggml-cpu.dll",
+      "ggml-cuda.dll",
+      "kernel32.dll",
+      "msvcp140.dll",
+      "vcruntime140.dll",
+      "vcruntime140_1.dll"
+    ],
+    "ggml-cuda.dll": [
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "cublas64_13.dll",
+      "ggml-base.dll",
+      "kernel32.dll",
+      "msvcp140.dll",
+      "vcruntime140.dll",
+      "vcruntime140_1.dll"
+    ],
+    "ggml-base.dll": [
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-time-l1-1-0.dll",
+      "api-ms-win-crt-utility-l1-1-0.dll",
+      "kernel32.dll",
+      "msvcp140.dll",
+      "vcomp140.dll",
+      "vcruntime140.dll",
+      "vcruntime140_1.dll"
+    ],
+    "vcomp140.dll": [
+      "kernel32.dll"
+    ],
+    "cublas64_13.dll": [
+      "cublaslt64_13.dll",
+      "kernel32.dll"
+    ],
+    "cublaslt64_13.dll": [
+      "kernel32.dll"
+    ],
+    "ggml-cpu.dll": [
+      "advapi32.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "ggml-base.dll",
+      "kernel32.dll",
+      "msvcp140.dll",
+      "vcomp140.dll",
+      "vcruntime140.dll",
+      "vcruntime140_1.dll"
+    ],
+    "llama-common.dll": [
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-filesystem-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-time-l1-1-0.dll",
+      "ggml-base.dll",
+      "ggml.dll",
+      "kernel32.dll",
+      "llama.dll",
+      "msvcp140.dll",
+      "shell32.dll",
+      "vcruntime140.dll",
+      "vcruntime140_1.dll",
+      "ws2_32.dll"
+    ]
+  },
+  "cudaRuntimeLinkage": "Only DLLs reachable through PE normal/delay imports are bundled. The upstream nvcc link may embed cudart_static; cudart DLL is not added unless imported. Driver components remain external.",
+  "externalPrerequisites": [
+    "advapi32.dll",
+    "api-ms-win-crt-convert-l1-1-0.dll",
+    "api-ms-win-crt-environment-l1-1-0.dll",
+    "api-ms-win-crt-filesystem-l1-1-0.dll",
+    "api-ms-win-crt-heap-l1-1-0.dll",
+    "api-ms-win-crt-locale-l1-1-0.dll",
+    "api-ms-win-crt-math-l1-1-0.dll",
+    "api-ms-win-crt-runtime-l1-1-0.dll",
+    "api-ms-win-crt-stdio-l1-1-0.dll",
+    "api-ms-win-crt-string-l1-1-0.dll",
+    "api-ms-win-crt-time-l1-1-0.dll",
+    "api-ms-win-crt-utility-l1-1-0.dll",
+    "kernel32.dll",
+    "shell32.dll",
+    "ws2_32.dll"
+  ],
+  "licenseSources": [
+    {
+      "outputName": "NVIDIA-CUDA-EULA.html",
+      "url": "https://docs.nvidia.com/cuda/eula/index.html",
+      "path": "NVIDIA-CUDA-EULA/NVIDIA-CUDA-EULA.html",
+      "retrievedAt": "2026-10-26T02:23:39.0847824+08:00",
+      "size": 103131,
+      "sha256": "f676e53acbf3f714e69e64b7e4cc6fe8b4698b7c8c4ef9577542beb7ae68ca41"
+    },
+    {
+      "outputName": "CUDA-release-notes.html",
+      "url": "https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html",
+      "path": "CUDA-release-notes/CUDA-release-notes.html",
+      "retrievedAt": "2026-10-26T02:23:39.5797888+08:00",
+      "size": 182348,
+      "sha256": "07051d134f185ef0294d3978d47b5a55d994f38db954217d0c9521ce922fc840"
+    },
+    {
+      "outputName": "MSVC-redistribution.html",
+      "url": "https://learn.microsoft.com/en-us/visualstudio/releases/2026/redistribution",
+      "path": "MSVC-redistribution/MSVC-redistribution.html",
+      "retrievedAt": "2026-10-26T02:23:40.1228148+08:00",
+      "size": 48845,
+      "sha256": "a3a39cb37d4f65a11ee9153d6462c2ee4dd1b5cdd5d7ae63d39fe89c08f0a210"
+    },
+    {
+      "outputName": "MSVC-license.html",
+      "url": "https://visualstudio.microsoft.com/license-terms/vs2026-ga-community/",
+      "path": "MSVC-license/MSVC-license.html",
+      "retrievedAt": "2026-10-26T02:23:41.7437318+08:00",
+      "size": 234760,
+      "sha256": "c0c3840b2fe17e0f895e063e49677ccb0d7c2712f2bb8735617266859e6ff498"
+    },
+    {
+      "outputName": "MSVC-Community-2026-license.docx",
+      "url": "https://visualstudio.microsoft.com/wp-content/uploads/2025/10/Visual_Studio_2026-License-Community_ENU.docx",
+      "path": "MSVC-Community-2026-license/MSVC-Community-2026-license.docx",
+      "retrievedAt": "2026-10-26T02:23:43.2630063+08:00",
+      "size": 69066,
+      "sha256": "02ac07637f4a513a807cd3721c7620433fc483bc049d25784b0c10c54b05e1fb"
+    },
+    {
+      "outputName": "CCCL-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/NVIDIA/cccl/v3.4.3/LICENSE",
+      "path": "CCCL-LICENSE/CCCL-LICENSE.txt",
+      "retrievedAt": "2026-10-26T02:23:43.5293517+08:00",
+      "size": 22452,
+      "sha256": "f96f51edda77fb9897de29d924d615e6bd153f4969db85fc6b7a22d7a624631e"
+    }
+  ],
+  "driver": {
+    "source": "https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html",
+    "cuda13CompatibilityFloorBranch": "R580",
+    "cuda13_4CorrespondingBranch": "R615",
+    "policy": "R615 or later recommended; new CUDA 13.4 features/platforms require R615 or later. R580 is a CUDA 13.x minor-compatibility floor, not proof this seven-architecture/PTX runtime works there.",
+    "notBundled": true
+  },
+  "licensingScope": "Local candidate only. CUDA/MSVC are proprietary and remain subject to their own terms; valid developer licensing and downstream compliance are not presumed. No toolkit, driver or model is redistributed here.",
+  "validationLimit": "Build/packaging evidence does not imply inference testing. Device discovery results recorded separately; other GPUs and old driver versions not physically tested."
+}

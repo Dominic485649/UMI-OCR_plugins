@@ -1,0 +1,311 @@
+{
+  "schema_version": 1,
+  "id": "win32_PaddleOCRVL_1_6",
+  "name": "PaddleOCR-VL 1.6",
+  "version": "3.1.2",
+  "host_api": ">=2.9,<3.0",
+  "platform": [
+    "win32"
+  ],
+  "arch": [
+    "x86_64"
+  ],
+  "vendor": "Umi-OCR Plugin (independent source delivery)",
+  "license": "AGPL-3.0-or-later",
+  "homepage": "https://github.com/Dominic485649/UMI-OCR",
+  "description": "PaddleOCR-VL 1.6 提供文字识别与完整文档解析，共用插件内置 llama.cpp。GGUF、mmproj 与版面模型由用户导入；CUDA 兼容目标为 Turing sm75 及以后，不提供 CPU 回退。实际支持须通过 GPU 与驱动检查。",
+  "i18n": "i18n.csv",
+  "services": [
+    {
+      "id": "paddlevl",
+      "entry": "runtime:getService",
+      "config": {
+        "title": "PaddleOCR-VL 1.6 模型服务",
+        "type": "group",
+        "notice": {
+          "title": "模型与服务",
+          "default": "user-supplied",
+          "optionsList": [
+            [
+              "user-supplied",
+              "内置运行时，用户导入模型"
+            ]
+          ],
+          "toolTip": "插件包含固定版本 llama.cpp 运行时，仅监听 127.0.0.1。GGUF、mmproj 与版面模型仍由用户导入，不下载或修改模型。端口被外部程序占用时不会接管。"
+        },
+        "service": {
+          "title": "本地服务",
+          "type": "group",
+          "port": {
+            "title": "端口",
+            "default": 9931,
+            "min": 1,
+            "max": 65535,
+            "isInt": true
+          },
+          "mainModel": {
+            "title": "主 GGUF",
+            "type": "file",
+            "default": "",
+            "selectExisting": true,
+            "nameFilters": [
+              "GGUF 模型 (*.gguf)"
+            ],
+            "save": true,
+            "toolTip": "请选择 PaddleOCR-VL-1.6-GGUF.gguf。下载：https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6-GGUF/tree/main 。该名称仅作提示，不会按文件名拒绝内容合法的 GGUF 模型。"
+          },
+          "mmprojModel": {
+            "title": "视觉投影 GGUF",
+            "type": "file",
+            "default": "",
+            "selectExisting": true,
+            "nameFilters": [
+              "GGUF 视觉投影 (*.gguf)"
+            ],
+            "save": true,
+            "toolTip": "请选择与主模型配套的 PaddleOCR-VL-1.6-GGUF-mmproj.gguf。下载：https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6-GGUF/tree/main 。仅作名称提示，不会按文件名拒绝内容合法的视觉投影 GGUF。插件不会修改此文件。"
+          }
+        },
+        "resources": {
+          "title": "资源与超时",
+          "type": "group",
+          "contextLength": {
+            "title": "上下文长度",
+            "default": 16384,
+            "min": 2048,
+            "max": 131072,
+            "isInt": true,
+            "toolTip": "新默认值为 16384；已保存的其他有效值（例如 8192）仍会沿用。上下文按并发槽位均分，并为视觉输入和提示词预留预算。"
+          },
+          "startupTimeoutSeconds": {
+            "title": "服务启动超时",
+            "default": 180,
+            "min": 10,
+            "max": 3600,
+            "isInt": true,
+            "unit": "秒"
+          },
+          "timeoutSeconds": {
+            "title": "请求超时",
+            "default": 120,
+            "min": 5,
+            "max": 3600,
+            "isInt": true,
+            "unit": "秒"
+          },
+          "maxOutputTokens": {
+            "title": "最大输出 token",
+            "default": 4096,
+            "min": 256,
+            "max": 65536,
+            "isInt": true,
+            "advanced": true,
+            "toolTip": "服务端最大输出 token 上限；每项 OCR 或文档任务的输出还须不超过此值，并与单槽的 2048 个视觉 token、512 个提示 token 预留同时满足上下文预算。"
+          },
+          "slots": {
+            "title": "服务并发槽位",
+            "default": 1,
+            "min": 1,
+            "max": 8,
+            "isInt": true,
+            "advanced": true,
+            "toolTip": "单用户 OCR 默认 1；提高会放大上下文和显存消耗。"
+          },
+          "batchSize": {
+            "title": "Batch",
+            "default": 2048,
+            "min": 32,
+            "max": 8192,
+            "isInt": true,
+            "advanced": true
+          },
+          "ubatchSize": {
+            "title": "Ubatch",
+            "default": 512,
+            "min": 32,
+            "max": 4096,
+            "isInt": true,
+            "advanced": true
+          },
+          "flashAttention": {
+            "title": "Flash Attention",
+            "default": "auto",
+            "optionsList": [
+              [
+                "auto",
+                "自动"
+              ],
+              [
+                "on",
+                "开启"
+              ],
+              [
+                "off",
+                "关闭"
+              ]
+            ],
+            "advanced": true
+          },
+          "mmprojOffload": {
+            "title": "视觉投影 GPU Offload",
+            "default": true,
+            "advanced": true
+          },
+          "kvOffload": {
+            "title": "KV GPU Offload",
+            "default": true,
+            "advanced": true
+          },
+          "cacheKeyType": {
+            "title": "KV Key 类型",
+            "default": "f16",
+            "optionsList": [
+              [
+                "f16",
+                "f16"
+              ],
+              [
+                "q8_0",
+                "q8_0"
+              ]
+            ],
+            "advanced": true
+          },
+          "cacheValueType": {
+            "title": "KV Value 类型",
+            "default": "f16",
+            "optionsList": [
+              [
+                "f16",
+                "f16"
+              ],
+              [
+                "q8_0",
+                "q8_0"
+              ]
+            ],
+            "advanced": true
+          }
+        }
+      }
+    }
+  ],
+  "capabilities": [
+    {
+      "type": "ocr",
+      "entry": "ocr_api:Api",
+      "config": {
+        "global_options": {
+          "title": "PaddleOCR-VL 1.6 文字识别",
+          "modelName": "PaddleOCR-VL1.6",
+          "type": "group"
+        },
+        "local_options": {
+          "title": "文字识别设置",
+          "type": "group",
+          "maxOutputTokens": {
+            "title": "最大输出 token",
+            "default": 4096,
+            "min": 256,
+            "max": 65536,
+            "isInt": true,
+            "advanced": true,
+            "toolTip": "此任务的输出上限不得超过服务端最大输出 token；还须为单槽上下文中的视觉输入和提示词预留空间。"
+          }
+        }
+      },
+      "meta": {
+        "settingsOrder": 20,
+        "serviceRefs": [
+          "paddlevl"
+        ]
+      }
+    },
+    {
+      "type": "document",
+      "entry": "api:Api",
+      "config": {
+        "global_options": {
+          "title": "PaddleOCR-VL 1.6 文档解析",
+          "type": "group",
+          "pipeline": {
+            "title": "版面检测",
+            "type": "group",
+            "layoutModelDir": {
+              "title": "版面检测模型目录",
+              "type": "file",
+              "default": "",
+              "selectExisting": true,
+              "selectFolder": true,
+              "nameFilters": [],
+              "save": true,
+              "toolTip": "PP-DocLayoutV3 模型目录，必须含 inference.json；仅完整文档解析使用。"
+            },
+            "cudaDevice": {
+              "title": "版面检测设备",
+              "default": "gpu:0",
+              "deviceProvider": "nvidia-cuda",
+              "toolTip": "仅支持 gpu:N。不可用时明确失败，不偷偷切换 CPU。"
+            }
+          }
+        },
+        "local_options": {
+          "title": "文档解析设置",
+          "type": "group",
+          "maxOutputTokens": {
+            "title": "最大输出 token",
+            "default": 4096,
+            "min": 256,
+            "max": 65536,
+            "isInt": true,
+            "toolTip": "此文档任务的输出上限不得超过服务端最大输出 token；还须为单槽上下文中的视觉输入和提示词预留空间。"
+          },
+          "mergeTables": {
+            "title": "合并跨页表格",
+            "default": true
+          },
+          "relevelTitles": {
+            "title": "重排标题层级",
+            "default": true
+          },
+          "concatenatePages": {
+            "title": "合并为单篇",
+            "default": true
+          },
+          "exportAssets": {
+            "title": "导出图片资源",
+            "default": true
+          }
+        }
+      },
+      "meta": {
+        "serviceRefs": [
+          "paddlevl"
+        ]
+      }
+    }
+  ],
+  "pages": [
+    {
+      "key": "StructuredDocument",
+      "qml": "StructuredDocument.qml",
+      "controller": "page:StructuredDocumentPage",
+      "title": "文档解析",
+      "intro": "# 文档解析\n\n使用 PP-DocLayoutV3 和 PaddleOCR-VL 1.6 恢复页面结构，输出 Markdown 和结构化 JSON，预览支持公式与代码高亮。插件内置模型服务运行时，模型由用户导入。"
+    }
+  ],
+  "health": "health:check",
+  "runtime": {
+    "priority": "append",
+    "vendor_dirs": [],
+    "closure_lock": "runtime.lock.json",
+    "process_boundary": {
+      "type": "separate-worker-stdio-ipc",
+      "entry": "worker.py",
+      "request_schema": "JSON lines: start(mode, config), spotting(path), document(path), stop",
+      "response_schema": "JSON lines: {ok,result,timing} or {ok:false,error}"
+    },
+    "dll_dirs": []
+  },
+  "conflicts": []
+}

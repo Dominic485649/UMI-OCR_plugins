@@ -1,0 +1,4 @@
+--index-url https://pypi.org/simple
+--only-binary=:all:
+
+openai==2.45.0
