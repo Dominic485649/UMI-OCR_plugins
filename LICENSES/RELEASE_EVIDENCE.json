@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "verification_date": "2026-10-24",
+  "verification_date": "2026-10-29",
   "artifact_kind": "gpu",
   "gates": {
     "runtime_vendor": "PASS",
@@ -13,21 +13,12 @@
     "agpl_nvidia": "BLOCK",
     "cpu_ocr": "NOT_INCLUDED",
     "document_models": "NOT_INCLUDED",
-    "gpu_ocr_e2e": "BLOCK",
     "source_delivery": "BLOCK",
+    "gpu_ocr_e2e": "BLOCK",
     "current_source_e2e": "BLOCK"
   },
   "public_prerelease_allowed": false,
   "validation_errors": [],
-  "local_candidate": true,
-  "source_delivery": {
-    "status": "BLOCK",
-    "verified": false,
-    "previous_recorded_status": null,
-    "blockers": [
-      "A fresh --release-gates input and successful verification are required."
-    ]
-  },
   "current_source_e2e": {
     "status": "BLOCK",
     "verified": false,
@@ -35,5 +26,16 @@
     "blockers": [
       "A fresh --release-gates input and successful verification are required."
     ]
+  },
+  "local_candidate": true,
+  "source_delivery": {
+    "status": "BLOCK",
+    "public_source_url": "PENDING",
+    "source_tree": "source-snapshot.zip contains exact current CUDA sources and locked corresponding-source materials",
+    "reason": "No user-owned public 3.0.5 source repository is available yet."
+  },
+  "current_source_validation": {
+    "status": "NOT_RUN",
+    "reason": "Historical GPU evidence is not current-source/current-artifact E2E acceptance."
   }
 }

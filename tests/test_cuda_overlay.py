@@ -395,11 +395,11 @@ class CandidateAssemblyTests(CudaFixtureCase):
         gpu = make_gpu(self.root / (name + "-gpu"), self.cuda_version, host_version=self.version, **kwargs)
         return base, gpu
 
-    def assemble(self, base, gpu, destination):
+    def assemble(self, base, gpu, destination, *optional_arguments):
         return subprocess.run([self.pwsh, "-NoProfile", "-NonInteractive", "-File",
                                str(ROOT / "build/windows/Assemble-Candidate.ps1"),
                                "-BaseStagingRoot", str(base), "-GpuStagingRoot", str(gpu),
-                               "-Destination", str(destination), "-PythonExe", PYTHON],
+                               "-Destination", str(destination), "-PythonExe", PYTHON, *optional_arguments],
                               cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace")
 
     def test_assembly_preserves_independent_cuda_records_then_overlay_uses_them(self):
@@ -427,6 +427,40 @@ class CandidateAssemblyTests(CudaFixtureCase):
                 self.assertEqual((delivered / "source-snapshot.zip").read_bytes(), (gpu / "source-snapshot.zip").read_bytes())
                 self.assertEqual(len(list(output.rglob("source-snapshot.zip"))), 1)
                 self.assertFalse((delivered / "LICENSES" / module.SOURCE_RECORDS_DIR).exists())
+
+    def test_assembly_keeps_optional_plugin_versions_independent(self):
+        base, gpu = self.inputs("optional")
+        arguments = []
+        versions = {"win32_PaddleOCRv6_CPU": "2.9.8", "win32_PaddleOCRVL_1_6": "4.2.1"}
+        for plugin_id, version in versions.items():
+            selected = self.root / plugin_id
+            plugin = selected / "UmiOCR-data/plugins" / plugin_id
+            plugin.mkdir(parents=True)
+            (plugin / "umi-plugin.json").write_bytes(encoded({"id": plugin_id, "version": version}))
+            (selected / "LICENSES").mkdir()
+            (selected / "LICENSES/NOTICE.md").write_text(plugin_id, encoding="utf-8")
+            arguments.extend(["-CpuStagingRoot" if plugin_id.endswith("CPU") else "-VlStagingRoot", str(selected)])
+        combined = self.root / "optional-combined"
+        result = self.assemble(base, gpu, combined, *arguments)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        record = json.loads((combined / "assembly.json").read_text(encoding="utf-8-sig"))
+        self.assertEqual(record["version"], self.version)
+        self.assertEqual(record["plugin_versions"], {module.PLUGIN_ID: self.cuda_version, **versions})
+        self.assertEqual((combined / "VERSION").read_bytes(), (base / "VERSION").read_bytes())
+
+    def test_assembly_rejects_invalid_optional_identity_before_output(self):
+        for identity, version in (("other-plugin", "4.2.1"), ("win32_PaddleOCRVL_1_6", "../4.2.1")):
+            with self.subTest(identity=identity, version=version):
+                base, gpu = self.inputs("optional-invalid-" + str(len(list(self.root.iterdir()))))
+                selected = self.root / ("selected-" + str(len(list(self.root.iterdir()))))
+                plugin = selected / "UmiOCR-data/plugins/win32_PaddleOCRVL_1_6"
+                plugin.mkdir(parents=True)
+                (plugin / "umi-plugin.json").write_bytes(encoded({"id": identity, "version": version}))
+                (selected / "LICENSES").mkdir()
+                combined = self.root / ("rejected-" + str(len(list(self.root.iterdir()))))
+                result = self.assemble(base, gpu, combined, "-VlStagingRoot", str(selected))
+                self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertFalse(combined.exists())
 
     def test_assembly_rejects_invalid_cuda_metadata_before_destination_creation(self):
         for kind in ("missing", "wrong-scope", "version", "loose-source", "base-plugin", "reserved-notices"):

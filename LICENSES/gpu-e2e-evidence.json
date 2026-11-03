@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "verification_date": "2026-10-24",
+  "verification_date": "2026-10-29",
   "evidence": {
     "artifact_path": "UmiOCR-data/plugins/win32_PaddleOCRv6_CUDA/gpu-e2e-evidence.json",
     "SHA256": "7609f5299680d6ab6892ccce41613554fb8aad27cc2a01d2b713d83e13a654ce"
@@ -24,7 +24,7 @@
   },
   "runtime_lock_reverified": {
     "artifact_path": "UmiOCR-data/plugins/win32_PaddleOCRv6_CUDA/runtime.lock.json",
-    "SHA256": "e4884b6a28d7d06908df054814bb329e1555590af4e3c99c0b3426ed41abc829"
+    "SHA256": "5c1a0ba7e1d2797988377d204ef6e69be3181319a2328fc9332d727bb3d824f0"
   },
   "expected_model_initialization": [
     "PP-LCNet_x1_0_doc_ori",

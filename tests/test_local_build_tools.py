@@ -28,9 +28,13 @@ import test_cuda_overlay as cuda_fixtures
 class LocalBuildToolsTests(unittest.TestCase):
     def test_real_source_selection_includes_untracked_required_files(self):
         selected = {path.as_posix() for path in snapshot.files_for_repo(REPO, public=True)}
-        for name in ("UmiOCR-data/py_src/plugins_controller/services.py",
+        for name in ("UmiOCR-data/runtime_archive_bootstrap.py",
+                     "UmiOCR-data/py_src/plugins_controller/services.py",
                      "UmiOCR-data/py_src/server/http_utils.py", "UmiOCR-data/py_src/ocr/score.py",
-                     "build/tools/prepare_products.py", "build/tools/package_tar_xz.py"):
+                     "build/tools/prepare_products.py", "build/tools/package_tar_xz.py",
+                     "build/tools/merge_runtime.py", "build/tools/runtime_archive_layout.py",
+                     "build/tools/audit_runtime_archives.py",
+                     "build/windows/runtime_archives_host.json", "build/windows/runtime_archives_cuda.json"):
             self.assertIn(name, selected)
         self.assertFalse(any("win32_PaddleOCRv6_CPU/" in name or "win32_PaddleOCRVL" in name for name in selected))
         self.assertFalse(any(name.startswith(("build/logs/", "build/artifacts/", "build/audit/", "$tmp/", "temp_doc/")) for name in selected))
@@ -41,10 +45,12 @@ class LocalBuildToolsTests(unittest.TestCase):
                      "UmiOCR-data/plugins/win32_PaddleOCRv6_CUDA/models/weights.json",
                      "UmiOCR-data/plugins/win32_PaddleOCRv6_CUDA/vendor/paddle.py",
                      "UmiOCR-data/plugins/win32_PaddleOCRv6_CPU/api.py",
+                     "benchmarks/results/private-machine.json", "benchmarks/README-local.md",
                      "docs/CLAUDE.md", "docs/nested/.CoDeX/settings.json",
                      "UmiOCR-data/py_src/.CLAUDE/session.py", "tests/AGENTS.md"):
             self.assertTrue(snapshot.is_excluded(Path(name), public=True), name)
         for name in ("LICENSES/GPL-3.0.txt", "LICENSES/PyMuPDF-AGPL-3.0.txt",
+                     "benchmarks/benchmark_startup_isolated.py",
                      "third_party/pymupdf.tar.gz", "docs/PLUGIN_API.md"):
             self.assertFalse(snapshot.is_excluded(Path(name), public=True), name)
 
@@ -67,6 +73,26 @@ class LocalBuildToolsTests(unittest.TestCase):
                 products.check_snapshot_version(output, "3.0.0")
                 with self.assertRaises(RuntimeError):
                     snapshot.write_snapshot(output, manifest, provenance, {"version": "3.0.0"})
+
+    def test_data_mirror_includes_external_runtime_bootstrap(self):
+        work = REPO / "build/tmp/startup-small-files-20261028-r1/source-mirror-tests"
+        work.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(prefix="data-mirror-", dir=work) as temp:
+            repo = Path(temp)
+            inputs = {
+                "UmiOCR-data/main.py": b"from runtime_archive_bootstrap import prepare_archives\n",
+                "UmiOCR-data/runtime_archive_bootstrap.py": b"def prepare_archives(*args, **kwargs): return []\n",
+                "UmiOCR-data/py_src/run.py": b"VALUE = 1\n",
+            }
+            for name, content in inputs.items():
+                path = repo / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(content)
+            destination = repo / "build/fresh/UmiOCR-data"
+            with patch.object(snapshot, "relative_entries", return_value=[Path(name) for name in inputs]):
+                snapshot.mirror_sources(repo, destination, data_only=True)
+            for name, content in inputs.items():
+                self.assertEqual((destination / Path(name).relative_to("UmiOCR-data")).read_bytes(), content)
 
     def test_locked_sources_fail_offline_and_accept_exact_small_input(self):
         with tempfile.TemporaryDirectory(prefix="umi-lock-test-") as temp:
@@ -240,6 +266,31 @@ class LocalBuildToolsTests(unittest.TestCase):
             with self.assertRaises(packaging.ArchiveError):
                 packaging.create_archive(root, root / "self.tar.xz")
 
+    def test_streamed_tar_xz_has_same_payload_without_temporary_tar(self):
+        work = REPO / "build/tmp/startup-small-files-20261028-r1/stream-archive-tests"
+        work.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(prefix="stream-", dir=work) as temporary:
+            root = Path(temporary) / "payload"
+            root.mkdir()
+            (root / "original.py").write_bytes(b"VALUE = 1\n")
+            (root / "LICENSE").write_bytes(b"unchanged license\n")
+            output = Path(temporary) / "candidate.tar.xz"
+            with patch.object(packaging.tempfile, "TemporaryDirectory", side_effect=AssertionError("streaming must not create an intermediate tar")):
+                result = packaging.create_archive(root, output, streaming=True)
+            self.assertFalse(result["temporary_tar_created"])
+            self.assertEqual(result["format"], "tar.xz")
+            self.assertEqual(result["outer_method"], "LZMA2")
+            with tarfile.open(output, "r:xz") as archive:
+                self.assertEqual(set(archive.getnames()), {"original.py", "LICENSE"})
+                for name in archive.getnames():
+                    self.assertEqual(archive.extractfile(name).read(), (root / name).read_bytes())
+            before = output.read_bytes()
+            with self.assertRaises(packaging.ArchiveError):
+                packaging.create_archive(root, output, streaming=True)
+            self.assertEqual(output.read_bytes(), before)
+            with self.assertRaises(packaging.ArchiveError):
+                packaging.create_archive(root, root / "self.tar.xz", streaming=True)
+
     def test_unsafe_tar_members(self):
         with tempfile.TemporaryDirectory(prefix="umi-tar-path-test-") as temp:
             for index, name in enumerate(("../outside", "C:/outside", "safe")):
@@ -260,6 +311,10 @@ class LocalBuildToolsTests(unittest.TestCase):
         selected = {path.as_posix() for path in cuda.selected_sources(REPO)}
         self.assertIn("build/tools/package_tar_xz.py", selected)
         self.assertIn("build/windows/Build-GpuPlugin.ps1", selected)
+        for name in ("build/windows/runtime_archives_cuda.json", "build/tools/merge_runtime.py",
+                     "build/tools/runtime_archive_layout.py", "build/tools/audit_runtime_archives.py",
+                     "UmiOCR-data/plugins/win32_PaddleOCRv6_CUDA/runtime_archive_bootstrap.py"):
+            self.assertIn(name, selected)
         self.assertIn("SOURCE-CODE.md", selected)
         self.assertFalse(any("win32_PaddleOCRv6_CPU/" in name or "win32_PaddleOCRVL" in name or name.startswith(".git/") for name in selected))
         self.assertFalse(any(name.startswith("UmiOCR-data/qt_res/") for name in selected))

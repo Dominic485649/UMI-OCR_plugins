@@ -12,6 +12,7 @@ checks that the release artifact contains the complete worker closure.
 """
 
 from pathlib import Path
+from .i18n_helpers import tr
 
 PLUGIN_DIR = Path(__file__).resolve().parent
 MODELS_DIR = PLUGIN_DIR / "models"
@@ -62,8 +63,7 @@ def check():
         return {
             "ok": False,
             "message": (
-                f"GPU OCR worker 归档不完整，缺少：{', '.join(missing)}。"
-                "请重新解压完整 GPU OCR 插件归档。"
+                tr('GPU OCR worker 归档不完整，缺少：{items}。请重新解压完整 GPU OCR 插件归档。', items=', '.join(missing))
             ),
             "details": details,
         }
@@ -71,8 +71,7 @@ def check():
     return {
         "ok": True,
         "message": (
-            "GPU OCR worker 归档完整；实际 Paddle/CUDA/cuDNN 设备检查将在"
-            "独立 worker 启动和推理时执行。"
+            tr('GPU OCR worker 归档完整；实际 Paddle/CUDA/cuDNN 设备检查将在独立 worker 启动和推理时执行。')
         ),
         "details": details,
     }

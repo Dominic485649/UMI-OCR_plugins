@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "verification_date": "2026-10-24",
+  "verification_date": "2026-10-29",
   "license_type": "proprietary",
   "license": "NVIDIA CUDA Toolkit EULA",
   "applicable_cuda_version": "12.6",
@@ -325,7 +325,7 @@
     "import_tables": [
       {
         "artifact_path": ".build/cuda_worker/CMakeFiles/4.4.4/CMakeDetermineCompilerABI_CXX.bin",
-        "SHA256": "d5654d45974d7413d24373cd7c95af60ba7f21013f1d32732d52d7852a9a8efd",
+        "SHA256": "1910f81f3d1a4ade29ae76b2c73d3ee6f1381f9af63be0841eaba5db569066d9",
         "normal_imports": [
           "kernel32.dll",
           "ucrtbased.dll",
@@ -335,7 +335,7 @@
       },
       {
         "artifact_path": ".build/cuda_worker/CMakeFiles/4.4.4/CompilerIdCXX/CompilerIdCXX.exe",
-        "SHA256": "52b39db292b5f0ead3dc3169bd6e626010b58fa77a119495b829d1c78abca11f",
+        "SHA256": "2be6373fe9e2c51c273a1f67b82e67b16f00152e7e9cfc89b30f8dc2aa57f5ba",
         "normal_imports": [
           "kernel32.dll",
           "ucrtbased.dll",
@@ -345,7 +345,7 @@
       },
       {
         "artifact_path": ".build/cuda_worker/Release/UmiOCR-CudaWorker.exe",
-        "SHA256": "9703abc86d5780bfb25bd9ad9da07337dc825c0a6b2a39a9fa76f9df40197a15",
+        "SHA256": "089270831ac66e37ed66c9c1bf8177dab6be582aee92c83ec25eb334c83939ea",
         "normal_imports": [
           "kernel32.dll"
         ],
@@ -353,7 +353,7 @@
       },
       {
         "artifact_path": "UmiOCR-data/plugins/win32_PaddleOCRv6_CUDA/UmiOCR-CudaWorker.exe",
-        "SHA256": "9703abc86d5780bfb25bd9ad9da07337dc825c0a6b2a39a9fa76f9df40197a15",
+        "SHA256": "089270831ac66e37ed66c9c1bf8177dab6be582aee92c83ec25eb334c83939ea",
         "normal_imports": [
           "kernel32.dll"
         ],

@@ -21,7 +21,8 @@ import time
 from copy import deepcopy
 from pathlib import Path
 
-from .config import PRESETS
+from .config import DEFAULT_OPTIONS, default_preprocess_threads
+from .i18n_helpers import tr, language
 
 
 # Keep the logical package path (rather than resolving a staging junction) so
@@ -50,14 +51,17 @@ class _WorkerClient:
             # line satisfy the new worker's ``start`` request.
             self.responses = queue.Queue()
             if not WORKER.is_file() or not WORKER_LAUNCHER.is_file():
-                raise FileNotFoundError("CUDA worker 原生入口或脚本缺失，请完整安装匹配的插件。")
+                raise FileNotFoundError(tr('CUDA worker 原生入口或脚本缺失，请完整安装匹配的插件。'))
             creationflags = getattr(subprocess, "CREATE_NO_WINDOW", 0) if os.name == "nt" else 0
+            log_root = Path.cwd() / "temp_doc" / "cuda-worker-logs"
+            log_root.mkdir(parents=True, exist_ok=True)
             self.stderr_file = tempfile.NamedTemporaryFile(
-                prefix="umi-ocr-cuda-worker-", suffix=".log", delete=False
+                prefix="umi-ocr-cuda-worker-", suffix=".log", delete=False, dir=log_root
             )
             environment = os.environ.copy()
             environment["PYTHONUTF8"] = "1"
             environment["PYTHONIOENCODING"] = "utf-8"
+            environment["UMI_PLUGIN_LANGUAGE"] = language()
             self.process = subprocess.Popen(
                 [str(WORKER_LAUNCHER)],
                 cwd=str(PLUGIN_DIR),
@@ -151,10 +155,12 @@ class _WorkerClient:
 
 class Api:
     def __init__(self, globalArgd):
+        self._globalArgd = dict(globalArgd or {})
+        self._task_timeout = 300
         self.device = str((globalArgd or {}).get("device", "gpu:0")).strip().lower()
         match = DEVICE_RE.fullmatch(self.device)
         if not match:
-            raise ValueError("CUDA 设备必须使用 gpu:N 格式，例如 gpu:0。")
+            raise ValueError(tr('CUDA 设备必须使用 gpu:N 格式，例如 gpu:0。'))
         self.device_index = int(match.group(1))
         self._config = None
         self._worker = _WorkerClient()
@@ -168,45 +174,56 @@ class Api:
 
     @staticmethod
     def _normalize_config(argd):
-        source = dict(PRESETS["accuracy"])
+        source = dict(DEFAULT_OPTIONS)
         source.update(argd or {})
         task_type = str(source.get("taskType", "screenshot"))
         if task_type not in {"screenshot", "batch", "document"}:
             task_type = "screenshot"
-        undistort = str(source["undistort"])
-        textline_orientation = str(source["textlineOrientation"])
+        undistort, orientation = str(source["undistort"]), str(source["textlineOrientation"])
+        if not isinstance(source["docOrientation"], bool):
+            raise ValueError(tr("文档方向分类必须为布尔值。"))
         return {
             "device": str(source.get("device", "gpu:0")).lower(),
-            "detModel": str(source["detModel"]),
-            "recModel": str(source["recModel"]),
-            "docOrientation": bool(source["docOrientation"]),
-            "undistort": undistort,
-            "textlineOrientation": textline_orientation,
+            "detModel": str(source["detModel"]), "recModel": str(source["recModel"]),
+            "docOrientation": source["docOrientation"], "undistort": undistort,
+            "textlineOrientation": orientation,
             "useDocUnwarping": undistort == "on" or (undistort == "auto" and task_type in {"batch", "document"}),
-            "useTextlineOrientation": textline_orientation == "on" or (textline_orientation == "auto" and task_type != "screenshot"),
-            "longSide": int(source["longSide"]),
-            "recBatchSize": int(source["recBatchSize"]),
+            "useTextlineOrientation": orientation == "on" or (orientation == "auto" and task_type != "screenshot"),
+            "longSide": int(source["longSide"]), "recBatchSize": int(source["recBatchSize"]),
             "scoreThreshold": float(source["scoreThreshold"]),
+            "preprocessThreads": int(source.get("preprocessThreads", default_preprocess_threads())),
         }
 
     @staticmethod
     def _validate_config(config):
+        import math
         if config["detModel"] != "PP-OCRv6_medium" or config["recModel"] != "PP-OCRv6_medium":
-            raise ValueError("未知 PP-OCRv6 模型；本发布只包含 medium det/rec。")
+            raise ValueError(tr("未知 PP-OCRv6 模型；本发布只包含 medium det/rec。"))
         if config["undistort"] not in {"off", "auto", "on"}:
-            raise ValueError("文档去扭曲选项无效。")
+            raise ValueError(tr("文档去扭曲选项无效。"))
         if config["textlineOrientation"] not in {"off", "auto", "on"}:
-            raise ValueError("文本行方向选项无效。")
+            raise ValueError(tr("文本行方向选项无效。"))
         if not DEVICE_RE.fullmatch(config["device"]):
-            raise ValueError("CUDA 设备必须使用 gpu:N 格式。")
+            raise ValueError(tr("CUDA 设备必须使用 gpu:N 格式。"))
+        if not 640 <= config["longSide"] <= 8000 or not 1 <= config["recBatchSize"] <= 64:
+            raise ValueError(tr("长边或识别批量大小超出允许范围。"))
+        if not math.isfinite(config["scoreThreshold"]) or not 0 <= config["scoreThreshold"] <= 1:
+            raise ValueError(tr("置信度阈值必须在 0 到 1 之间。"))
+        if not 1 <= config["preprocessThreads"] <= max(64, os.cpu_count() or 1):
+            raise ValueError(tr("预处理线程数超出允许范围。"))
 
     def start(self, argd):
         # The constructor device is the host-selected default.  Callers often
         # pass only task-specific overrides to start(); silently falling back
         # to the preset gpu:0 would make an invalid-device request appear to
         # succeed and would ignore the plugin's configured device.
-        start_argd = dict(argd or {})
+        start_argd = dict(self._globalArgd)
+        start_argd.update(argd or {})
         start_argd.setdefault("device", self.device)
+        timeout = start_argd.get("taskTimeoutSeconds", 300)
+        if isinstance(timeout, bool) or not isinstance(timeout, (int, float)) or not 1 <= timeout <= 300:
+            return "[Error] " + tr("任务时间预算必须在 1 到 300 秒之间。")
+        self._task_timeout = float(timeout)
         config = self._normalize_config(start_argd)
         with self._lock:
             if config == self._config and self._worker.process and self._worker.process.poll() is None:
@@ -224,16 +241,16 @@ class Api:
                 self._worker.stop()
                 self._config = None
                 self._startup = {}
-                self._last_error = f"[Error] PP-OCRv6 CUDA worker 启动失败：{exc}"
+                self._last_error = tr('[Error] PP-OCRv6 CUDA worker 启动失败：{error}', error=exc)
                 return self._last_error
 
     def warmup(self, argd):
         config = self._normalize_config(argd)
         with self._lock:
             if config == self._config and self._worker.process and self._worker.process.poll() is None:
-                return "[Success] PP-OCRv6 CUDA 已驻留显存。"
+                return tr('[Success] PP-OCRv6 CUDA 已驻留显存。')
             if self._warmup_thread and self._warmup_thread.is_alive():
-                return "[Success] PP-OCRv6 CUDA 正在后台预热。"
+                return tr('[Success] PP-OCRv6 CUDA 正在后台预热。')
             token = object()
             self._warmup_token = token
 
@@ -251,14 +268,14 @@ class Api:
 
             self._warmup_thread = threading.Thread(target=run, name="UmiOCR-CUDA-Warmup", daemon=True)
             self._warmup_thread.start()
-        return "[Success] PP-OCRv6 CUDA 已开始后台预热。"
+        return tr('[Success] PP-OCRv6 CUDA 已开始后台预热。')
 
     def get_execution_info(self):
         config = self._config or {}
         models = dict.fromkeys(config.get(key, "") for key in ("detModel", "recModel"))
         return {
-            "device": config.get("device", "设备未确认").upper(),
-            "model": " / ".join(model.replace("_", " ") for model in models if model),
+            "device": config.get("device", tr('设备未确认')).upper(),
+            "model": " / ".join(model for model in models if model),
             "engine": "paddle",
         }
 
@@ -283,10 +300,16 @@ class Api:
             self._last_timing = {}
             self._last_used_at = None
             self._last_error = ""
-        return "[Success] PP-OCRv6 CUDA worker 已清理。" if was_active else "[Warning] PP-OCRv6 CUDA 尚未加载。"
+        return tr('[Success] PP-OCRv6 CUDA worker 已清理。') if was_active else tr('[Warning] PP-OCRv6 CUDA 尚未加载。')
 
     def stop(self):
         self.release()
+
+    def cancel(self):
+        # 推理线程持有 API 锁，取消仅终止本实例自有 worker，等待方收到 EOF 后收尾。
+        self._worker.stop()
+        self._config = None
+        self._startup = {}
 
     def runPath(self, imgPath):
         return self._request({"op": "run_path", "path": str(imgPath)})
@@ -298,22 +321,24 @@ class Api:
         try:
             return self.runBytes(base64.b64decode(imageBase64, validate=True))
         except Exception as exc:
-            return {"code": 202, "data": f"[Error] Base64 图片无效：{exc}"}
+            return {"code": 202, "data": tr('[Error] Base64 图片无效：{error}', error=exc)}
 
     def _request(self, payload):
         with self._lock:
             if not self._config:
-                return {"code": 203, "data": "[Error] PP-OCRv6 CUDA worker 尚未启动。"}
+                return {"code": 203, "data": tr('[Error] PP-OCRv6 CUDA worker 尚未启动。')}
             try:
-                response = self._worker.request(payload, timeout=180)
+                payload["taskTimeoutSeconds"] = self._task_timeout
+                response = self._worker.request(payload, timeout=self._task_timeout + 5)
                 self._last_used_at = time.monotonic()
                 if response.get("timing"):
                     self._last_timing = dict(response["timing"])
                 if not response.get("ok", False):
-                    return {"code": 204, "data": f"[Error] PP-OCRv6 CUDA 推理失败：{response.get('error', 'unknown worker error')}"}
+                    self._last_error = "[Error] " + tr("PP-OCRv6 CUDA 推理失败：{error}", error=response.get("error", "unknown worker error"))
+                    return {"code": 204, "data": self._last_error, "errorType": response.get("errorType", "INFERENCE_FAILED")}
                 return response.get("result", {"code": 101, "data": ""})
             except Exception as exc:
-                self._last_error = f"[Error] PP-OCRv6 CUDA worker 通信失败：{exc}"
+                self._last_error = tr('[Error] PP-OCRv6 CUDA worker 通信失败：{error}', error=exc)
                 return {"code": 204, "data": self._last_error}
 
 
@@ -321,6 +346,6 @@ def health(argd=None):
     ready = WORKER.is_file() and WORKER_LAUNCHER.is_file()
     return {
         "ok": ready,
-        "message": "GPU OCR 使用原生 UTF-8 独立 worker；CUDA/Paddle 仅在 worker 进程中加载。" if ready else "缺少 GPU worker.py 或原生启动入口，请完整安装插件。",
+        "message": tr('GPU OCR 使用原生 UTF-8 独立 worker；CUDA/Paddle 仅在 worker 进程中加载。') if ready else tr('缺少 GPU worker.py 或原生启动入口，请完整安装插件。'),
         "details": {"worker": str(WORKER), "launcher": str(WORKER_LAUNCHER), "architecture": "separate-worker-stdio-ipc"},
     }

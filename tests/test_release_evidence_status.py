@@ -161,6 +161,125 @@ def main():
     print("Release evidence status gate regression passed.")
 
 
+class FullNativeEvidenceStatusTests(unittest.TestCase):
+    """纯合成原生 PE/源码/工作流契约，不执行二进制、模型或旧启动矩阵。"""
+    def setUp(self):
+        spec = importlib.util.spec_from_file_location("full_native_fixtures", ROOT / "tests/test_gpu_startup_evidence.py")
+        fixtures = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(fixtures)
+        self.temporary = tempfile.TemporaryDirectory(prefix="umi-full-native-gates-")
+        self.addCleanup(self.temporary.cleanup)
+        self.fixture = fixtures.StartupFixture(Path(self.temporary.name))
+        self.write = fixtures.write
+        spec = importlib.util.spec_from_file_location("full_native_verifier", ROOT / "build/tools/verify_release_evidence.py")
+        self.module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.module)
+        self.parser = self.module.release_gate_inputs.startup_evidence_module()
+        self.parser.REPOSITORY = self.fixture.root
+        self.module.release_gate_inputs.startup_evidence_module = lambda: self.parser
+        self.fixture.manifest["version"] = "3.0.5"
+        self.write(self.fixture.plugin / "umi-plugin.json", self.fixture.manifest)
+        self.write(self.fixture.plugin / "api.py", "# subprocess.Popen json.dumps JSON-lines\n")
+        self.write(self.fixture.plugin / "worker.py", "# import paddle\n# from paddleocr import PaddleOCR\n# import cv2\n# run_path run_bytes json.loads\n")
+        for path in self.fixture.plugin.glob("*.py"):
+            self.write(self.fixture.metadata / "source" / self.parser.PLUGIN_RELATIVE / path.name, path.read_bytes())
+        for root in (self.fixture.root, self.fixture.metadata / "source"):
+            self.write(root / "tests/test_ocr_workflows.py", "# SYNTHETIC WORKFLOW SOURCE - NEVER EXECUTED\n")
+        self.launcher = self.fixture.plugin / self.parser.LAUNCHER
+        self.lock = {"pluginId": self.module.release_gate_inputs.PLUGIN_ID, "version": "3.0.5",
+                     "files": [{"path": self.launcher.name, "sha256": self.module.sha256(self.launcher)}]}
+        self.models = {"models": [{"model_name": name} for name in self.module.CPU_MODELS]}
+        self.save_current()
+
+    def save_current(self):
+        self.write(self.fixture.plugin / "runtime.lock.json", self.lock)
+        self.raw = {"test_type": "real_gpu_ocr_workflows_e2e", "status": "PASS", "device": "gpu:0",
+            "architecture": {"type": "separate-worker-stdio-ipc", "host_loaded_proprietary_modules": [],
+                             "ipc_payload": "JSON-lines path/base64 -> JSON OCR result"},
+            "plugin_source_sha256": {path.name: self.module.sha256(path) for path in self.fixture.plugin.glob("*.py")},
+            "plugin_runtime_lock_sha256": self.module.sha256(self.fixture.plugin / "runtime.lock.json"),
+            "workflow_test": {"SHA256": self.module.sha256(self.fixture.root / "tests/test_ocr_workflows.py")},
+            "model_initialization": list(self.module.CPU_MODELS), "ffmpeg_backend_dll_count": 0, "cusolvermg_dll_count": 0,
+            "exercised_paths": ["batch OCR", "document PDF OCR", "CUDA-only failure paths"]}
+        for root in (self.fixture.plugin, self.fixture.metadata / "source" / self.parser.PLUGIN_RELATIVE):
+            self.write(root / "gpu-e2e-evidence.json", self.raw)
+        self.workflow = self.module.verify_gpu_e2e(self.fixture.staging, self.fixture.plugin, self.models, self.fixture.root)
+        self.assertEqual(self.workflow["status"], "PASS", self.workflow)
+
+    def verify(self, workflow=None):
+        return self.module.verify_agpl(self.fixture.staging, self.fixture.root, self.fixture.plugin,
+                                       gpu_e2e=self.workflow if workflow is None else workflow)
+
+    def test_full_native_305_requires_current_ocr_not_startup_exception(self):
+        result = self.verify()
+        self.assertEqual(result["status"], "PASS", result)
+        native = result["integration_architecture"]["full_native_worker_evidence"]
+        self.assertEqual(native["validation_scope"], "full")
+        self.assertTrue(native["verified"])
+        self.assertEqual(native["native_manifest"]["launcher_sha256"], self.module.sha256(self.launcher))
+
+    def test_full_workflow_uses_artifact_adapter_not_unrelated_workspace_copy(self):
+        unrelated = self.fixture.root / self.parser.PLUGIN_RELATIVE / "api.py"
+        self.write(unrelated, "import paddle\n# unrelated workspace copy\n")
+        self.assertEqual(self.verify()["status"], "PASS")
+
+    def test_artifact_outside_source_repository_has_artifact_relative_evidence_paths(self):
+        separate_repo = self.fixture.root / "separate-source-repository"
+        for name in (*self.parser.NATIVE_SOURCES, "tests/test_ocr_workflows.py"):
+            self.write(separate_repo / name, (self.fixture.root / name).read_bytes())
+        result = self.module.verify_agpl(self.fixture.staging, separate_repo, self.fixture.plugin, gpu_e2e=self.workflow)
+        self.assertEqual(result["status"], "PASS", result)
+        self.assertIn(self.parser.PLUGIN_RELATIVE + "/api.py", result["integration_architecture"]["evidence_paths"])
+        self.assertTrue(all(not Path(name).is_absolute() for name in result["integration_architecture"]["evidence_paths"]))
+
+    def test_missing_unverified_stale_or_foreign_workflow_stays_blocked(self):
+        variants = [{}, {**self.workflow, "status": "NOT_RUN"}, {**self.workflow, "source_binding_valid": False},
+                    {**self.workflow, "record": {**self.raw, "device": "gpu:99"}},
+                    {**self.workflow, "evidence": {"artifact_path": "foreign.json", "SHA256": "0" * 64}}]
+        for workflow in variants:
+            with self.subTest(workflow=workflow):
+                self.assertEqual(self.verify(workflow)["status"], "BLOCK")
+        self.write(self.fixture.plugin / "api.py", "# changed after workflow\n")
+        self.assertEqual(self.verify()["status"], "BLOCK")
+
+    def test_native_lock_must_bind_one_exact_current_launcher(self):
+        original = copy.deepcopy(self.lock)
+        for files in ([], original["files"] * 2,
+                original["files"] + [{"path": self.launcher.name, "sha256": "0" * 64}]):
+            self.lock = {**original, "files": files}
+            self.save_current()
+            self.assertEqual(self.verify()["status"], "BLOCK")
+        self.lock = {**original, "version": "3.0.4"}
+        self.save_current()
+        self.assertEqual(self.verify()["status"], "BLOCK")
+
+    def test_native_pe_and_utf8_manifest_are_checked_not_just_file_presence(self):
+        original = self.launcher.read_bytes()
+        for content in (b"NOT A PE", original.replace(b"UTF-8", b"GBK  ")):
+            self.write(self.launcher, content)
+            self.lock["files"] = [{"path": self.launcher.name, "sha256": self.module.sha256(self.launcher)}]
+            self.save_current()
+            self.assertEqual(self.verify()["status"], "BLOCK")
+
+    def test_native_corresponding_source_and_workflow_source_must_match(self):
+        for relative in (self.parser.NATIVE_SOURCES[1], "tests/test_ocr_workflows.py"):
+            path = self.fixture.metadata / "source" / relative
+            original = path.read_bytes()
+            self.write(path, b"SYNTHETIC CHANGED SOURCE - NOT EXECUTED")
+            self.assertEqual(self.verify()["status"], "BLOCK")
+            self.write(path, original)
+
+    def test_proprietary_host_import_still_blocks_with_valid_native_evidence(self):
+        adapter = "# subprocess.Popen json.dumps JSON-lines\nimport paddle\n"
+        self.write(self.fixture.plugin / "api.py", adapter)
+        self.write(self.fixture.metadata / "source" / self.parser.PLUGIN_RELATIVE / "api.py", adapter)
+        self.save_current()
+        result = self.verify()
+        self.assertTrue(result["integration_architecture"]["full_native_worker_evidence"]["verified"])
+        self.assertFalse(result["integration_architecture"]["checks"]["host_has_no_proprietary_runtime_imports"])
+        self.assertEqual(result["status"], "BLOCK")
+
+
 class StartupEvidenceStatusTests(unittest.TestCase):
     def setUp(self):
         path = ROOT / "tests/test_release_gate_inputs.py"

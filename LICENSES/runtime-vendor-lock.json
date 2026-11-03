@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "verification_date": "2026-10-24",
+  "verification_date": "2026-10-29",
   "runtime_lock": "UmiOCR-data/plugins/win32_PaddleOCRv6_CUDA/runtime.lock.json",
   "runtime_lock_valid": true,
   "runtime_lock_failures": [],
@@ -5708,5 +5708,1837 @@
     }
   ],
   "status": "PASS",
-  "blockers": []
+  "blockers": [],
+  "runtime_archives": {
+    "status": "PASS",
+    "root": "D:\\Code\\Python\\Umi-OCR\\build\\staging\\startup-small-files-20261029-cuda-r1\\UmiOCR-data\\plugins\\win32_PaddleOCRv6_CUDA",
+    "kind": "plugin",
+    "archives": [
+      {
+        "path": "vendor.zip",
+        "bytes": 3164203,
+        "sha256": "1ef6770e6955c87dcc88cadc9eeee9f59fc4d0ac28f49bd0f7d7c610bcd58a7e"
+      }
+    ],
+    "archived_paths": [
+      "vendor/anyio/__init__.py",
+      "vendor/anyio/_backends/__init__.py",
+      "vendor/anyio/_backends/_asyncio.py",
+      "vendor/anyio/_backends/_trio.py",
+      "vendor/anyio/_core/__init__.py",
+      "vendor/anyio/_core/_asyncio_selector_thread.py",
+      "vendor/anyio/_core/_contextmanagers.py",
+      "vendor/anyio/_core/_eventloop.py",
+      "vendor/anyio/_core/_exceptions.py",
+      "vendor/anyio/_core/_fileio.py",
+      "vendor/anyio/_core/_resources.py",
+      "vendor/anyio/_core/_signals.py",
+      "vendor/anyio/_core/_sockets.py",
+      "vendor/anyio/_core/_streams.py",
+      "vendor/anyio/_core/_subprocesses.py",
+      "vendor/anyio/_core/_synchronization.py",
+      "vendor/anyio/_core/_tasks.py",
+      "vendor/anyio/_core/_tempfile.py",
+      "vendor/anyio/_core/_testing.py",
+      "vendor/anyio/_core/_typedattr.py",
+      "vendor/anyio/abc/__init__.py",
+      "vendor/anyio/abc/_eventloop.py",
+      "vendor/anyio/abc/_resources.py",
+      "vendor/anyio/abc/_sockets.py",
+      "vendor/anyio/abc/_streams.py",
+      "vendor/anyio/abc/_subprocesses.py",
+      "vendor/anyio/abc/_tasks.py",
+      "vendor/anyio/abc/_testing.py",
+      "vendor/anyio/from_thread.py",
+      "vendor/anyio/functools.py",
+      "vendor/anyio/itertools.py",
+      "vendor/anyio/lowlevel.py",
+      "vendor/anyio/py.typed",
+      "vendor/anyio/pytest_plugin.py",
+      "vendor/anyio/streams/__init__.py",
+      "vendor/anyio/streams/buffered.py",
+      "vendor/anyio/streams/file.py",
+      "vendor/anyio/streams/memory.py",
+      "vendor/anyio/streams/stapled.py",
+      "vendor/anyio/streams/text.py",
+      "vendor/anyio/streams/tls.py",
+      "vendor/anyio/to_interpreter.py",
+      "vendor/anyio/to_process.py",
+      "vendor/anyio/to_thread.py",
+      "vendor/future/__init__.py",
+      "vendor/future/backports/__init__.py",
+      "vendor/future/backports/_markupbase.py",
+      "vendor/future/backports/datetime.py",
+      "vendor/future/backports/email/__init__.py",
+      "vendor/future/backports/email/_encoded_words.py",
+      "vendor/future/backports/email/_header_value_parser.py",
+      "vendor/future/backports/email/_parseaddr.py",
+      "vendor/future/backports/email/_policybase.py",
+      "vendor/future/backports/email/base64mime.py",
+      "vendor/future/backports/email/charset.py",
+      "vendor/future/backports/email/encoders.py",
+      "vendor/future/backports/email/errors.py",
+      "vendor/future/backports/email/feedparser.py",
+      "vendor/future/backports/email/generator.py",
+      "vendor/future/backports/email/header.py",
+      "vendor/future/backports/email/headerregistry.py",
+      "vendor/future/backports/email/iterators.py",
+      "vendor/future/backports/email/message.py",
+      "vendor/future/backports/email/mime/__init__.py",
+      "vendor/future/backports/email/mime/application.py",
+      "vendor/future/backports/email/mime/audio.py",
+      "vendor/future/backports/email/mime/base.py",
+      "vendor/future/backports/email/mime/image.py",
+      "vendor/future/backports/email/mime/message.py",
+      "vendor/future/backports/email/mime/multipart.py",
+      "vendor/future/backports/email/mime/nonmultipart.py",
+      "vendor/future/backports/email/mime/text.py",
+      "vendor/future/backports/email/parser.py",
+      "vendor/future/backports/email/policy.py",
+      "vendor/future/backports/email/quoprimime.py",
+      "vendor/future/backports/email/utils.py",
+      "vendor/future/backports/html/__init__.py",
+      "vendor/future/backports/html/entities.py",
+      "vendor/future/backports/html/parser.py",
+      "vendor/future/backports/http/__init__.py",
+      "vendor/future/backports/http/client.py",
+      "vendor/future/backports/http/cookiejar.py",
+      "vendor/future/backports/http/cookies.py",
+      "vendor/future/backports/http/server.py",
+      "vendor/future/backports/misc.py",
+      "vendor/future/backports/socket.py",
+      "vendor/future/backports/socketserver.py",
+      "vendor/future/backports/total_ordering.py",
+      "vendor/future/backports/urllib/__init__.py",
+      "vendor/future/backports/urllib/error.py",
+      "vendor/future/backports/urllib/parse.py",
+      "vendor/future/backports/urllib/request.py",
+      "vendor/future/backports/urllib/response.py",
+      "vendor/future/backports/urllib/robotparser.py",
+      "vendor/future/backports/xmlrpc/__init__.py",
+      "vendor/future/backports/xmlrpc/client.py",
+      "vendor/future/backports/xmlrpc/server.py",
+      "vendor/future/builtins/__init__.py",
+      "vendor/future/builtins/disabled.py",
+      "vendor/future/builtins/iterators.py",
+      "vendor/future/builtins/misc.py",
+      "vendor/future/builtins/new_min_max.py",
+      "vendor/future/builtins/newnext.py",
+      "vendor/future/builtins/newround.py",
+      "vendor/future/builtins/newsuper.py",
+      "vendor/future/moves/__init__.py",
+      "vendor/future/moves/_dummy_thread.py",
+      "vendor/future/moves/_markupbase.py",
+      "vendor/future/moves/_thread.py",
+      "vendor/future/moves/builtins.py",
+      "vendor/future/moves/collections.py",
+      "vendor/future/moves/configparser.py",
+      "vendor/future/moves/copyreg.py",
+      "vendor/future/moves/dbm/__init__.py",
+      "vendor/future/moves/dbm/dumb.py",
+      "vendor/future/moves/dbm/gnu.py",
+      "vendor/future/moves/dbm/ndbm.py",
+      "vendor/future/moves/html/__init__.py",
+      "vendor/future/moves/html/entities.py",
+      "vendor/future/moves/html/parser.py",
+      "vendor/future/moves/http/__init__.py",
+      "vendor/future/moves/http/client.py",
+      "vendor/future/moves/http/cookiejar.py",
+      "vendor/future/moves/http/cookies.py",
+      "vendor/future/moves/http/server.py",
+      "vendor/future/moves/itertools.py",
+      "vendor/future/moves/multiprocessing.py",
+      "vendor/future/moves/pickle.py",
+      "vendor/future/moves/queue.py",
+      "vendor/future/moves/reprlib.py",
+      "vendor/future/moves/socketserver.py",
+      "vendor/future/moves/subprocess.py",
+      "vendor/future/moves/sys.py",
+      "vendor/future/moves/tkinter/__init__.py",
+      "vendor/future/moves/tkinter/colorchooser.py",
+      "vendor/future/moves/tkinter/commondialog.py",
+      "vendor/future/moves/tkinter/constants.py",
+      "vendor/future/moves/tkinter/dialog.py",
+      "vendor/future/moves/tkinter/dnd.py",
+      "vendor/future/moves/tkinter/filedialog.py",
+      "vendor/future/moves/tkinter/font.py",
+      "vendor/future/moves/tkinter/messagebox.py",
+      "vendor/future/moves/tkinter/scrolledtext.py",
+      "vendor/future/moves/tkinter/simpledialog.py",
+      "vendor/future/moves/tkinter/tix.py",
+      "vendor/future/moves/tkinter/ttk.py",
+      "vendor/future/moves/urllib/__init__.py",
+      "vendor/future/moves/urllib/error.py",
+      "vendor/future/moves/urllib/parse.py",
+      "vendor/future/moves/urllib/request.py",
+      "vendor/future/moves/urllib/response.py",
+      "vendor/future/moves/urllib/robotparser.py",
+      "vendor/future/moves/winreg.py",
+      "vendor/future/moves/xmlrpc/__init__.py",
+      "vendor/future/moves/xmlrpc/client.py",
+      "vendor/future/moves/xmlrpc/server.py",
+      "vendor/future/standard_library/__init__.py",
+      "vendor/future/types/__init__.py",
+      "vendor/future/types/newbytes.py",
+      "vendor/future/types/newdict.py",
+      "vendor/future/types/newint.py",
+      "vendor/future/types/newlist.py",
+      "vendor/future/types/newmemoryview.py",
+      "vendor/future/types/newobject.py",
+      "vendor/future/types/newopen.py",
+      "vendor/future/types/newrange.py",
+      "vendor/future/types/newstr.py",
+      "vendor/future/utils/__init__.py",
+      "vendor/future/utils/surrogateescape.py",
+      "vendor/httpcore/__init__.py",
+      "vendor/httpcore/_api.py",
+      "vendor/httpcore/_async/__init__.py",
+      "vendor/httpcore/_async/connection.py",
+      "vendor/httpcore/_async/connection_pool.py",
+      "vendor/httpcore/_async/http11.py",
+      "vendor/httpcore/_async/http2.py",
+      "vendor/httpcore/_async/http_proxy.py",
+      "vendor/httpcore/_async/interfaces.py",
+      "vendor/httpcore/_async/socks_proxy.py",
+      "vendor/httpcore/_backends/__init__.py",
+      "vendor/httpcore/_backends/anyio.py",
+      "vendor/httpcore/_backends/auto.py",
+      "vendor/httpcore/_backends/base.py",
+      "vendor/httpcore/_backends/mock.py",
+      "vendor/httpcore/_backends/sync.py",
+      "vendor/httpcore/_backends/trio.py",
+      "vendor/httpcore/_exceptions.py",
+      "vendor/httpcore/_models.py",
+      "vendor/httpcore/_ssl.py",
+      "vendor/httpcore/_sync/__init__.py",
+      "vendor/httpcore/_sync/connection.py",
+      "vendor/httpcore/_sync/connection_pool.py",
+      "vendor/httpcore/_sync/http11.py",
+      "vendor/httpcore/_sync/http2.py",
+      "vendor/httpcore/_sync/http_proxy.py",
+      "vendor/httpcore/_sync/interfaces.py",
+      "vendor/httpcore/_sync/socks_proxy.py",
+      "vendor/httpcore/_synchronization.py",
+      "vendor/httpcore/_trace.py",
+      "vendor/httpcore/_utils.py",
+      "vendor/httpcore/py.typed",
+      "vendor/httpx/__init__.py",
+      "vendor/httpx/__version__.py",
+      "vendor/httpx/_api.py",
+      "vendor/httpx/_auth.py",
+      "vendor/httpx/_client.py",
+      "vendor/httpx/_config.py",
+      "vendor/httpx/_content.py",
+      "vendor/httpx/_decoders.py",
+      "vendor/httpx/_exceptions.py",
+      "vendor/httpx/_main.py",
+      "vendor/httpx/_models.py",
+      "vendor/httpx/_multipart.py",
+      "vendor/httpx/_status_codes.py",
+      "vendor/httpx/_transports/__init__.py",
+      "vendor/httpx/_transports/asgi.py",
+      "vendor/httpx/_transports/base.py",
+      "vendor/httpx/_transports/default.py",
+      "vendor/httpx/_transports/mock.py",
+      "vendor/httpx/_transports/wsgi.py",
+      "vendor/httpx/_types.py",
+      "vendor/httpx/_urlparse.py",
+      "vendor/httpx/_urls.py",
+      "vendor/httpx/_utils.py",
+      "vendor/httpx/py.typed",
+      "vendor/idna/__init__.py",
+      "vendor/idna/__main__.py",
+      "vendor/idna/cli.py",
+      "vendor/idna/codec.py",
+      "vendor/idna/compat.py",
+      "vendor/idna/core.py",
+      "vendor/idna/idnadata.py",
+      "vendor/idna/intranges.py",
+      "vendor/idna/package_data.py",
+      "vendor/idna/py.typed",
+      "vendor/idna/uts46data.py",
+      "vendor/packaging/__init__.py",
+      "vendor/packaging/_elffile.py",
+      "vendor/packaging/_manylinux.py",
+      "vendor/packaging/_musllinux.py",
+      "vendor/packaging/_parser.py",
+      "vendor/packaging/_structures.py",
+      "vendor/packaging/_tokenizer.py",
+      "vendor/packaging/dependency_groups.py",
+      "vendor/packaging/direct_url.py",
+      "vendor/packaging/errors.py",
+      "vendor/packaging/licenses/__init__.py",
+      "vendor/packaging/licenses/_spdx.py",
+      "vendor/packaging/markers.py",
+      "vendor/packaging/metadata.py",
+      "vendor/packaging/py.typed",
+      "vendor/packaging/pylock.py",
+      "vendor/packaging/requirements.py",
+      "vendor/packaging/specifiers.py",
+      "vendor/packaging/tags.py",
+      "vendor/packaging/utils.py",
+      "vendor/packaging/version.py",
+      "vendor/six.py",
+      "vendor/typing_extensions.py"
+    ],
+    "members": [
+      {
+        "path": "vendor/anyio/__init__.py",
+        "sha256": "1e2b5421fcef0288d279a1d5989f6b167f24ff223adc6eacfe350bd900a17f85",
+        "bytes": 6405,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/_backends/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/_backends/_asyncio.py",
+        "sha256": "78ad23f0f2343bbcb76d7f1c501b1a7e858ff30b1747eb333fa722c8fe0c9249",
+        "bytes": 104400,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/_backends/_trio.py",
+        "sha256": "8684d72fccc8f35bf8504f984ff72bd9fce1ff363598a766643de840799e4741",
+        "bytes": 45583,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/_core/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/_core/_asyncio_selector_thread.py",
+        "sha256": "d8f77114cddcb34d8aa7a052a696ef9914fbabb6acade4d6e45801c44b1f941a",
+        "bytes": 5626,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/_core/_contextmanagers.py",
+        "sha256": "6089c109a6e211e4be51a3ff25dc5ad426850bbd444cf5bc1d94c720cf11b1cf",
+        "bytes": 7215,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/_core/_eventloop.py",
+        "sha256": "0726547890fd6a531f7324ec791a392334ced0896d12e97f1b2abd8aa4a3a839",
+        "bytes": 6658,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/_core/_exceptions.py",
+        "sha256": "39fccb3b86771e88354e78a96c89fbd9836d9286314b89475bd32a28378673cf",
+        "bytes": 4936,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/_core/_fileio.py",
+        "sha256": "8477f25746d70cbf91d99367227c2c7b79e64c0777e80233d5c071826030cc04",
+        "bytes": 31358,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/_core/_resources.py",
+        "sha256": "35b994e4ee545f7c44c800a7926617dbc166c1d97e7fe9f2d2d1f29b6e9ed30d",
+        "bytes": 435,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/_core/_signals.py",
+        "sha256": "9a34c107685328d3d1954d088678a379079da563861110e23234a5250b05aee8",
+        "bytes": 1016,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/_core/_sockets.py",
+        "sha256": "1ed8e2487fb2cde865aa1fcba43dcf18869f0ee502c1df20b9e52e93930578d9",
+        "bytes": 35288,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/_core/_streams.py",
+        "sha256": "15ccc5c08803a6790ad1b3835895cca6c50961dbc00f4e24694686cc953c0cad",
+        "bytes": 1806,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/_core/_subprocesses.py",
+        "sha256": "33618273834a5c26c1fc6b44b242609dd88cd9bd154b434afe8866171ae2ecef",
+        "bytes": 7923,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/_core/_synchronization.py",
+        "sha256": "9203e4f3cf9e54e998fa90cdb3e45e45b7047a56356bb61ccee5413ec67073c0",
+        "bytes": 21591,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/_core/_tasks.py",
+        "sha256": "cbdf6f462f8017312fea4caf230aabceeb2413634c88d22d5a7b961a4ede3abe",
+        "bytes": 13126,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/_core/_tempfile.py",
+        "sha256": "8c4db0e7d151177c91a38be39237d917661caac059bdceba556470ac91836069",
+        "bytes": 19624,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/_core/_testing.py",
+        "sha256": "bbb30fa865f0a53c6a23b85c95274d037d33d861f5370db9f2ec0abf2fd17c18",
+        "bytes": 2340,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/_core/_typedattr.py",
+        "sha256": "3f8a33662927dfe0dba6861cbf28214bf14e60081b994c5ea14f3e2ffd3ba593",
+        "bytes": 2508,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/abc/__init__.py",
+        "sha256": "ea65a1725fe919786b8195473ff4c27ccbc85c83a9f66ae810533dd1f60253f5",
+        "bytes": 2869,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/abc/_eventloop.py",
+        "sha256": "3aa5984848f44e6c0bff19e2089b77fe31c55acb8c93d4c793cb424c6b0a6a92",
+        "bytes": 10681,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/abc/_resources.py",
+        "sha256": "0eb62f90d375847e94befe7fe6e2b24af0ec9e49c65437bc14229f928d15b4df",
+        "bytes": 783,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/abc/_sockets.py",
+        "sha256": "3a6543adf7a656f17d7392b5b6906043257a7e7e6fd17c821312c0a81386cfda",
+        "bytes": 13124,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/abc/_streams.py",
+        "sha256": "ae74b0472fbacbcd133d0b485e2b792e330c894d420964b5a0c36c9894074538",
+        "bytes": 7582,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/abc/_subprocesses.py",
+        "sha256": "72e9803c94e4b4e42dc3adc8a86d250e9c99aaefe5d44125bd01cc8b02602f4f",
+        "bytes": 2067,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/abc/_tasks.py",
+        "sha256": "9be16d138a61c5e34810b486ec0dc7ed5533de303621be49d8921ec3cf8f4baa",
+        "bytes": 6642,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/abc/_testing.py",
+        "sha256": "f5860cd805ec605bdfe0f2e3504afac91c43894781e506d8fe03a0d17fc2ea56",
+        "bytes": 2034,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/from_thread.py",
+        "sha256": "258b1b68268807f222b7a90d86d5d2b5e246b783dc43b9dcab49c8a5c7a522b8",
+        "bytes": 19265,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/functools.py",
+        "sha256": "4f8252f085eafb1d52d0b6e8da8c05f25f5fcdad8aca93b5e3b40b7b2cf8723b",
+        "bytes": 11797,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/itertools.py",
+        "sha256": "415fbd9a7442af6c81a61f20d35405bcdf9b43f6257bef12975dd84b274194c2",
+        "bytes": 16168,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/lowlevel.py",
+        "sha256": "fb9f78f3867a2b98c5ed7249847c581c82a7bc51ffb8078c865f5afc07da4872",
+        "bytes": 6280,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/py.typed",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/pytest_plugin.py",
+        "sha256": "a5a32923f54c3507f66e2af42dfbe03295d28982681c3cd674a5154f2a079af4",
+        "bytes": 13609,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/streams/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/streams/buffered.py",
+        "sha256": "bbb8420fc48dad81dcbad1ba2b9c048b2d45f3cfa98b3823bc414cdb62aad82c",
+        "bytes": 6746,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/streams/file.py",
+        "sha256": "ea3ba32369be409213aaa2856a6aeea57fc336c53bcb6173de898b67138bb98d",
+        "bytes": 4524,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/streams/memory.py",
+        "sha256": "66629608ba7222d3825e6bc2413f8bf08c891cd15a07e39525bae7f3c09a328d",
+        "bytes": 10776,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/streams/stapled.py",
+        "sha256": "983345f468f875e5df3ae292666824106f901316002801a36011dbaecfab25a4",
+        "bytes": 4486,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/streams/text.py",
+        "sha256": "05c540189c35551bed22a9effa8d116f4a701fba7cbf096f976d711eae76d9a8",
+        "bytes": 5765,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/streams/tls.py",
+        "sha256": "1afb3ef983a81717329fe85a9173a23ccf07f9a129f27b14ea4f6b4eb2aa240e",
+        "bytes": 15801,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/to_interpreter.py",
+        "sha256": "fe62e782b332f7b4cc47a55b5b863a6330d493d66e3dc40c3e592ec918770bd9",
+        "bytes": 7100,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/to_process.py",
+        "sha256": "8c7c3bbfa5c704d21f61ae83aa7a8a63482c468f1270e0a1f1fa35f5fa85be35",
+        "bytes": 9848,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/anyio/to_thread.py",
+        "sha256": "6d8b335b49420df4e62e75db01889cd391c47bf0e2ff451629a6e02f6bd4d13d",
+        "bytes": 2750,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/__init__.py",
+        "sha256": "4fd3cd2eeeb272656da444cbc51bab9ae7ee4406a8b0809699674013165be5af",
+        "bytes": 2938,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/__init__.py",
+        "sha256": "e505ef43f8dce57c7aa787526879d95cf65acc112e9ca0ca85b523c59d170f52",
+        "bytes": 530,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/_markupbase.py",
+        "sha256": "3033d30b290bab827b01e6b73ef628b404c4134086e11fd28e5c5f25a2d74c93",
+        "bytes": 16215,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/datetime.py",
+        "sha256": "8c84c24ada257da76108485e8c577df700a8e7d9810c5d11ba3f25ed0706eccb",
+        "bytes": 75553,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/__init__.py",
+        "sha256": "787dc026bdc592e072fc3eb24b55762bbe90d8243ddf2db39803169a7f056c72",
+        "bytes": 2269,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/_encoded_words.py",
+        "sha256": "9b5bd345fc4041d83857258eecf17ed628759a6abded5f813f21c792e13048c1",
+        "bytes": 8443,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/_header_value_parser.py",
+        "sha256": "1a649daf93e91b7c7379d3221254893ac43a2301374e5e52370a789ba653e1a1",
+        "bytes": 104692,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/_parseaddr.py",
+        "sha256": "29ec049e8b3460333e4985f9d37cfb13532655b1b955168a8f18dc9742298dbb",
+        "bytes": 17389,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/_policybase.py",
+        "sha256": "da5243f71a2e8b3e2e1ef58643a8f59f0970595406c30ce9cb9259a1e42a8547",
+        "bytes": 14647,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/base64mime.py",
+        "sha256": "817645c61eba8e4e83d94a809a345b9a6ca13976c651666615c755388a256981",
+        "bytes": 3761,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/charset.py",
+        "sha256": "09f138895db302ae8c402d021d71cb9f04cd5bbd739a13484dbcce71fc44e2f6",
+        "bytes": 17439,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/encoders.py",
+        "sha256": "367e0f731d6b39d460a1223307a4f94561e5e73c4295b7f7db0804e83d2d52df",
+        "bytes": 2800,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/errors.py",
+        "sha256": "b515fc3cfe60ee69366c0c4bd634c262b6df843da03d914dae1e3f18944cf0e4",
+        "bytes": 3680,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/feedparser.py",
+        "sha256": "6ef9a16f871d63e8a97b1b4f2b62b6b0380cb0dbd3b299ae41f6320b1738cd27",
+        "bytes": 22736,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/generator.py",
+        "sha256": "96968b8591e77a0baf67642046eec58a09236fbce6636f001a18fd8994dd23bb",
+        "bytes": 19520,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/header.py",
+        "sha256": "b811db34a3becb1e48f4a05f95eae7269cb2ddf5f8808982075404ec8080a4bb",
+        "bytes": 24448,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/headerregistry.py",
+        "sha256": "64f6ef2ca5c3d0d30b494e235e55477c6c8670b32b166f86415511bbf5c78fcf",
+        "bytes": 20637,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/iterators.py",
+        "sha256": "90c458146cb7495569a3b1c6ec926bd990253a8697e8254fcca6300d2bcb7d5d",
+        "bytes": 2348,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/message.py",
+        "sha256": "23a596e5c643cdaeeec0b386252bec0e11990bd2bf439ef42e4da0b7fbc35173",
+        "bytes": 35237,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/mime/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/mime/application.py",
+        "sha256": "9bee5ae264b1bb6137d970089a7a7dc7d78c557e5599eda23609f674c30dcacb",
+        "bytes": 1401,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/mime/audio.py",
+        "sha256": "da88276a515169d72c51841831465b8efe62d7125b16140deb8ddda0cb88ecce",
+        "bytes": 2815,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/mime/base.py",
+        "sha256": "c15dc2950c8cb0eaa69174976e4ff077fccfa0f4ef071f24008ceadeb74ce251",
+        "bytes": 875,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/mime/image.py",
+        "sha256": "0e9424d6c07e20c98ee37005e2e69db17c9fff2e53744cc92dfca1a91e3c6c8c",
+        "bytes": 1907,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/mime/message.py",
+        "sha256": "a45b0c8575b4eda463b0bab5a5e3bce3b3c0a56140976f3e67667b04fd439fbe",
+        "bytes": 1429,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/mime/multipart.py",
+        "sha256": "8f82dffec266bb04db7e0750e91df9fedd7f85ad83ca7241243be98f06cd39b1",
+        "bytes": 1699,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/mime/nonmultipart.py",
+        "sha256": "0a26dad59f1ddb22c30e9c600c9ba4dc16fe4ea72913d1c277c29f6d6e6f825e",
+        "bytes": 832,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/mime/text.py",
+        "sha256": "cd5f7c063a11e12fe75fc738ef1e372e7b2789f7868487cd1b0480879ef96ecd",
+        "bytes": 1552,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/parser.py",
+        "sha256": "3694e39af8efe980c7e9e2263091188889ff2bba9ef7ea4fcf70e6cd374c6545",
+        "bytes": 5310,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/policy.py",
+        "sha256": "82971b855457b82a2190ae8c52aa294ecd65bf8138f995543ba3959dca061091",
+        "bytes": 8823,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/quoprimime.py",
+        "sha256": "c3ddd6e5781d169c86683a83049ae75c5feffe7a47e6bdb45ae0319ab033c908",
+        "bytes": 10923,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/email/utils.py",
+        "sha256": "be97cdd04f148cd6cdc3ed8d1414060a8e13360ae084cb2ace91185b90bf7c1b",
+        "bytes": 14270,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/html/__init__.py",
+        "sha256": "14ac2a16d58c0a818d92153dece3e74757d94a1e9eb4029f375154d4abd7715f",
+        "bytes": 924,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/html/entities.py",
+        "sha256": "933a119d0c8693fdc3828b9c1cb84be502f5a6094af67be6c613c81991434e77",
+        "bytes": 75428,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/html/parser.py",
+        "sha256": "1b6b5439bbdb1d2a2d36dd3a24b63e04fd6cc1a64d7c360577f10d5838cf9918",
+        "bytes": 19770,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/http/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/http/client.py",
+        "sha256": "efa11b84464eb6f74715c53e8eb8e2be87dfd77a10f4831b76464475fe644334",
+        "bytes": 47602,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/http/cookiejar.py",
+        "sha256": "8ea6f6eeebeff300769899ba905f5a0b4c3b074de73baaf3434fc2177e7202b8",
+        "bytes": 76608,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/http/cookies.py",
+        "sha256": "0ecc835060c46c25c003d26aeacbacc1273beae499a94bb7f5a7430cd8fc5c6c",
+        "bytes": 21581,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/http/server.py",
+        "sha256": "d4268cc60cc77fd9588664c9c84eeda298234489489fd7278e0c3c604bf0255e",
+        "bytes": 45523,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/misc.py",
+        "sha256": "1069c2551994fbfef1af3b2cd6baaa0aac2a950572c1a3c0c712e880178da70e",
+        "bytes": 33063,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/socket.py",
+        "sha256": "0c7d55e888ca3e9274b659fc6d8bf1bd0eea9ef646f94a10b4c039c9595e1e25",
+        "bytes": 15663,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/socketserver.py",
+        "sha256": "4f0bf293916a56739e88d71b56cc8c0cf4c5d6636590a7f2a1f1bbb4ac53743f",
+        "bytes": 24286,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/total_ordering.py",
+        "sha256": "3b7339eff222b10fb35b9856db4bb191f9387d31acaf4105dad00ac77064b10a",
+        "bytes": 1929,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/urllib/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/urllib/error.py",
+        "sha256": "92d8a4b8af5a838952e1ff19d24e69d45d75a85e343760223ad8db5e217dedec",
+        "bytes": 2715,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/urllib/parse.py",
+        "sha256": "ebb6afad8a95d542bb8bfdb6828454aef27c49f7f38d17538daf70ceaff29d76",
+        "bytes": 35792,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/urllib/request.py",
+        "sha256": "691f593337e15750b6424df016c1af930c6ab5d3d376c255191b790d40b0809f",
+        "bytes": 96276,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/urllib/response.py",
+        "sha256": "a28432b30c1b6fef4de88562d4ac23b2cd5a47e2af9bc64d7b3a32544a27a7c7",
+        "bytes": 3180,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/urllib/robotparser.py",
+        "sha256": "a670064db2a175b0aaffdc8c669ee6f218f9abf349a72417ea840866e61c9e4c",
+        "bytes": 6865,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/xmlrpc/__init__.py",
+        "sha256": "87ad5c8954dd56fbbca04517bf87477ff4dce575170c7dd1281d7ef1f4214ac8",
+        "bytes": 38,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/xmlrpc/client.py",
+        "sha256": "4c81cfced29196b4ada6198efcf7d8390c6ccb6c6e83358acfbed24c2d4e6755",
+        "bytes": 48175,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/backports/xmlrpc/server.py",
+        "sha256": "5bf456e618186cd5762c66e7be78339bb6a469c45d2be5c563e0b2d872feaac6",
+        "bytes": 37285,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/builtins/__init__.py",
+        "sha256": "ac3007ce485f5c749ac9eef6160cd0cfe1cf377c9806ef955d2b393d424603aa",
+        "bytes": 1688,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/builtins/disabled.py",
+        "sha256": "62cabbe1bb26c27b69abb7739304c00fb2072ab917cbaeaf2653ec855c205412",
+        "bytes": 2109,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/builtins/iterators.py",
+        "sha256": "97565ac26db1f36a2a3ae186b4265113be848fdf2c3251d0c2ef5f64b2b946b0",
+        "bytes": 1396,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/builtins/misc.py",
+        "sha256": "85cb6528a594c8dd04a28771838c9240712a0114ee90e2d1e0be4ae5ce8f5bd9",
+        "bytes": 4550,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/builtins/new_min_max.py",
+        "sha256": "eea4388a21b8183811ce33f3cf39a0f6975bcb7e4cb6deb134e3accaa1e72066",
+        "bytes": 1757,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/builtins/newnext.py",
+        "sha256": "a315c1f1b697a89bf6f581b8d1a092f545e4f7339bca83a3c9af0127b35d0493",
+        "bytes": 2009,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/builtins/newround.py",
+        "sha256": "ed84d68c181f200bd2125ee12c25a07a6863a9d2adce885b3b5f32304acacf81",
+        "bytes": 3190,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/builtins/newsuper.py",
+        "sha256": "dd882aabef25df087d80dbc66d6e670224d84f95b1c6048a37a461363eea8bbe",
+        "bytes": 3849,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/__init__.py",
+        "sha256": "32c016ebd5e9fdfa94a38c4e0ee7dc28ce8065ffa8cc76b3e3858f65db031490",
+        "bytes": 220,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/_dummy_thread.py",
+        "sha256": "50b52d2e4d4bbb0f48d61f983e2b6753782a09bbcd3e8282dbc37f064f23911f",
+        "bytes": 348,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/_markupbase.py",
+        "sha256": "5bdc21fc6bb78c300c2215415756670a427060b1d193fbffb2efc72c02c19194",
+        "bytes": 171,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/_thread.py",
+        "sha256": "af063b2f80593053e5ae9fe2e93d949f8fe2298c27ad727ec95e8525937c603a",
+        "bytes": 163,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/builtins.py",
+        "sha256": "e2c8e32a2ca579c25e2fd75afd1681663772997da3b4cb3ce2803d942a9be148",
+        "bytes": 281,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/collections.py",
+        "sha256": "38a43e4df5209acff66e76519f886b7252c3a223768be1d259c8ecdc10b6898f",
+        "bytes": 417,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/configparser.py",
+        "sha256": "4cdcb6dbab826e58e353e0e3015a3b8fb11f7db8f9cf15ef0e1d127577a16f39",
+        "bytes": 146,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/copyreg.py",
+        "sha256": "6375232d720c48ec598205edbd9b9c13dcafe2d90a66d55a9f8e73f1e8b1e2c5",
+        "bytes": 438,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/dbm/__init__.py",
+        "sha256": "fd592f4070b651c2206453d1ae8897fcfd05b3b1cda92ffaf5f951d3ea2ad81f",
+        "bytes": 488,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/dbm/dumb.py",
+        "sha256": "1ca7638ed3b71323fd10a8b51e0c61fde514eb2090d1f057f4d3779fecdbf091",
+        "bytes": 166,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/dbm/gnu.py",
+        "sha256": "5e809212967641a3a0a368759bcd065bb354823fdbf7704ab5b72ec20b6768aa",
+        "bytes": 162,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/dbm/ndbm.py",
+        "sha256": "3859eb7b2a3fd581c3065e58526f600b32a53753078166df490019565b368da3",
+        "bytes": 162,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/html/__init__.py",
+        "sha256": "052505487c577f6906bc7a33967ac1d679fa6cf13aa783e93770f003f67981ea",
+        "bytes": 1016,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/html/entities.py",
+        "sha256": "955bdc85d8cafd1cd18fbe7d7a0e1132f1961df8016e3d2d2863a867c75b4726",
+        "bytes": 177,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/html/parser.py",
+        "sha256": "5765e91cb28b0b142e9b737dc653b721471c003ec123291932a744716113def6",
+        "bytes": 167,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/http/__init__.py",
+        "sha256": "331d6ffd3724b38b9d1c2b4333cab6c67614890d35803ec4a4fc9e430b0fdfe4",
+        "bytes": 71,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/http/client.py",
+        "sha256": "86a101abb1835d989d77502c70a9d2ca34a831cba3f2b111a864e60fb5617834",
+        "bytes": 165,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/http/cookiejar.py",
+        "sha256": "16bafd6590a0fb5e39ca6cb4546a623c986f044a49b55a910583da2a1813d59e",
+        "bytes": 173,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/http/cookies.py",
+        "sha256": "3cfac76b5fe80dbbb70ff06124673a3ef3206352a8c7262ad63a9e27011c32f1",
+        "bytes": 233,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/http/server.py",
+        "sha256": "f184254824a18c0b01e6baf97e856f660a77233c1816f4e6199087841483b5a2",
+        "bytes": 606,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/itertools.py",
+        "sha256": "3d5c451d1941425f44952d1cb8614f714b63e777875fb6750e6820cc67e043a7",
+        "bytes": 158,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/multiprocessing.py",
+        "sha256": "e0bdfb8a055fd8dc01857aa6087440dec959ee525e8902f365dac648638e674f",
+        "bytes": 191,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/pickle.py",
+        "sha256": "afc8fdb24cdf13c642787ca1fce07e5ae70e9114c81cdef3a5133b97b577a92e",
+        "bytes": 229,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/queue.py",
+        "sha256": "bb1bcb082845fb3c565a0ad8d5aff0c6df2ba768c82ddc0ee0fae79015ba5531",
+        "bytes": 160,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/reprlib.py",
+        "sha256": "36de6c520310de379522e92a4873af074508b25e98e6dfa6993ff5de6a599a26",
+        "bytes": 161,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/socketserver.py",
+        "sha256": "bfc64bbab0f11ce82cb9b626d6279f8e5a679c941cc7656e4541adf4508907d9",
+        "bytes": 174,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/subprocess.py",
+        "sha256": "a2a45231f15993133831792dde80f937a781c26989eab43d28f86f490293fe13",
+        "bytes": 251,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/sys.py",
+        "sha256": "1ce3115f82e88a6ef914c6d66b0777a04c2e18d251f8294c444105915a41b11b",
+        "bytes": 132,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/tkinter/__init__.py",
+        "sha256": "8d5f6f0f1df0465d1bb2872553ca127bee52a8743762909b4ad9aab579ead69e",
+        "bytes": 620,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/tkinter/colorchooser.py",
+        "sha256": "929ae59a946dbc36d6e46ab8dc7d668b62a6349da4bb32d039b6b46b91300e45",
+        "bytes": 333,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/tkinter/commondialog.py",
+        "sha256": "99d51bab5219a8e19a480efff11dfaec8ba40c2b0c7f35e2547ad3410a69ed9d",
+        "bytes": 333,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/tkinter/constants.py",
+        "sha256": "d2a454ad92d13dd571b9e0012fd293cf311612c93ac4cd6b3a3c4ae8e1f15ed0",
+        "bytes": 324,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/tkinter/dialog.py",
+        "sha256": "92ca7ecefb3efc0f743fd44d1d2f12dbb7f593c7f8f331b605e9768f0655e72d",
+        "bytes": 311,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/tkinter/dnd.py",
+        "sha256": "0bf021d14ae7c9fd97284e6efa83fa9968b5e91ccc49780c035ba1052030298f",
+        "bytes": 306,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/tkinter/filedialog.py",
+        "sha256": "c8daf7d24fa10d8d5a3091cdb0aa91a87a8e3a5cd8282b9b7d0dc78d8d5996b1",
+        "bytes": 534,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/tkinter/font.py",
+        "sha256": "4d76ab7e5849471a9ea5a44d483c3a2455151b3e4fd53d42e3fb85f5546a8f7c",
+        "bytes": 309,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/tkinter/messagebox.py",
+        "sha256": "589b78b7cde42e6aff527a42585b8ba326b366bdf001438497a0039f7a2ca040",
+        "bytes": 327,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/tkinter/scrolledtext.py",
+        "sha256": "0d1ccdf1a040943054a350762831f3769452cd705f1f8ace3b3d22b875db41c8",
+        "bytes": 329,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/tkinter/simpledialog.py",
+        "sha256": "e8c86e561642255e177cfa4f49458a9432cb1848b4636665190f536ec98914bd",
+        "bytes": 329,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/tkinter/tix.py",
+        "sha256": "68d78e7db5921a670debd5261067f8b49f902312d3e92539ca7ce6d625a07a90",
+        "bytes": 302,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/tkinter/ttk.py",
+        "sha256": "ad1ac9a438dc3f682340dba4102bb8174dba3fe0a45bedc26b6b4de8e89af85c",
+        "bytes": 302,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/urllib/__init__.py",
+        "sha256": "c81f45f9f0d0a73bb5bfc701a0a808acbd9271436a8e592a133b58ac654243ed",
+        "bytes": 110,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/urllib/error.py",
+        "sha256": "81facaceffba5b93a3ccd21f8ef25a424c400512f29b62b08df2855d274307ad",
+        "bytes": 479,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/urllib/parse.py",
+        "sha256": "c4b2d4308201e4cade09d633459e732115ab853442a0c3bc459107e163c54036",
+        "bytes": 1045,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/urllib/request.py",
+        "sha256": "b6d233abad0fc23472acb41419d02d7d8bece1fce2570bdc2ded8ac3e86f1348",
+        "bytes": 3496,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/urllib/response.py",
+        "sha256": "64464c2f41696c1fbe18878114fbd2cdbb65549e84b11e2d088e2a07b0fcb054",
+        "bytes": 342,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/urllib/robotparser.py",
+        "sha256": "8f6e29e9d30dcd4a4666d4f7050c7046813e17cf225a60692a0bb4b5157ad454",
+        "bytes": 179,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/winreg.py",
+        "sha256": "db33401b9f5023bbc59428fb92a0e1d09ac0613a5ec4e9c8e793c40088d886aa",
+        "bytes": 163,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/xmlrpc/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/xmlrpc/client.py",
+        "sha256": "d8f7e72f921b295c1d28fec2f01d4e52f884b6e04e6f0a07e2900f7ef1c8bd07",
+        "bytes": 143,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/moves/xmlrpc/server.py",
+        "sha256": "1120d77695204cac9e1660834a7266069f3338d8c9925b1124ebf2e0eb5a00b7",
+        "bytes": 143,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/standard_library/__init__.py",
+        "sha256": "3706daaa29327a1efbc128aba3e0473634ac0a64a6b8b1807bdd5de1ce6afd01",
+        "bytes": 28065,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/types/__init__.py",
+        "sha256": "e5f0715aa7ff39343c8d9ee4d934b7e2b147d78b6881e478f3c178cc11c843eb",
+        "bytes": 6831,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/types/newbytes.py",
+        "sha256": "0ff90d0c3f6c6cd262af6714c7178f880bb0d8e5b98abc559eee79b879ae2bd1",
+        "bytes": 16303,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/types/newdict.py",
+        "sha256": "828f8b6e5d8c4566492519704c052524d251920f7ce9861e5748c2a8450414d7",
+        "bytes": 2011,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/types/newint.py",
+        "sha256": "1c7f741d2d98d40a52d362c3a4aceab7d5752f0b69ead92d3086236af654221f",
+        "bytes": 13406,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/types/newlist.py",
+        "sha256": "f87e7e7d7a1d77e51081316764125dc04ebc0ab8082ff8d589876fe30eeadab5",
+        "bytes": 2284,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/types/newmemoryview.py",
+        "sha256": "2e70118222aa436ccbc300d9de8c2ed5ab68a273d090e9de58c7f1242c01e3fa",
+        "bytes": 712,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/types/newobject.py",
+        "sha256": "017fe7f06c250d1d8863ec48c190afbb43a58ff09ad9a4b9ee79538a19c5afe2",
+        "bytes": 3358,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/types/newopen.py",
+        "sha256": "95c44d1d6675523127ff4fd72a2b35640e54ea5fb873e087942d165f5b18e0d2",
+        "bytes": 810,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/types/newrange.py",
+        "sha256": "7dc08bd629aaa87fa5a96b18f4b9e697d77e59b24eb57adac8050fa146ccec29",
+        "bytes": 5296,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/types/newstr.py",
+        "sha256": "7b46eb92eac8d082befb84e84043b80b3d4510265abf80b250630ac65adc98ae",
+        "bytes": 15758,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/utils/__init__.py",
+        "sha256": "12bfed525e9b4b8c69eff335677859ae033d8401ab454bc201d7070d181239d1",
+        "bytes": 21960,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/future/utils/surrogateescape.py",
+        "sha256": "eeee15e17956f373f96120094b67fdd98505f2fb16b61b224e7980b213892ff3",
+        "bytes": 6097,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/__init__.py",
+        "sha256": "f644ff92a0a10822544c7c30db866647f7b371d6e94585a4b03fa060dce464ff",
+        "bytes": 3445,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_api.py",
+        "sha256": "ba7666783b1c8415821823c2c244b75a8b7d7ae2ba6e0fe42b12ed193c70db5e",
+        "bytes": 3146,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_async/__init__.py",
+        "sha256": "116765dafe2d867007cc9a6a8d4e21d9af03522180bcd896ae48a2f697e14dfd",
+        "bytes": 1221,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_async/connection.py",
+        "sha256": "e8e70f5ea3047dcd01537f3ffa21d4343775bca4937365154f4f57a8d6ff04e9",
+        "bytes": 8449,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_async/connection_pool.py",
+        "sha256": "0ce210dacd9909ff6a7f0c61ccca6b4cf2ea08bf0ec465e2285eaa447c6f5726",
+        "bytes": 17307,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_async/http11.py",
+        "sha256": "faa33d6d5ecf8d2405e6fc6cdfbf9e5173881706c88cf7196cd962b97f53b41c",
+        "bytes": 13880,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_async/http2.py",
+        "sha256": "6b35f57dc9ad5da2308e9bad165678bddf7627cc708c639af5ac7d408bf8dfde",
+        "bytes": 23936,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_async/http_proxy.py",
+        "sha256": "db3564ae5bfe0ecfab5866aa69796b84426201014fa36dc14f71aafec5a80575",
+        "bytes": 14701,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_async/interfaces.py",
+        "sha256": "8d389a58bf37a60a460bdce2bfdd197f068a34c987c2639a97368a8ae4f1013a",
+        "bytes": 4455,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_async/socks_proxy.py",
+        "sha256": "94b2a02e58203df84596a8b438378190e5afb7d0a0841054caab27b14d6dc7a4",
+        "bytes": 13841,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_backends/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_backends/anyio.py",
+        "sha256": "c7c3e01215d10bc6d5aac77393f609c7c63a77d4ee6f4e82b944b09db9adaa86",
+        "bytes": 5252,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_backends/auto.py",
+        "sha256": "cced77e8f2999ac6930caf87464f38780f8c520f3fdb025fe0dbe62b8df6022a",
+        "bytes": 1662,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_backends/base.py",
+        "sha256": "69286045d6673264611561deb63ba694cef77fc2b3d58380c8250fff8907b250",
+        "bytes": 3042,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_backends/mock.py",
+        "sha256": "7abf53e37eae49eecd2eb7e22dae31e8dbaa8398af43af770b1598096b206c7e",
+        "bytes": 4077,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_backends/sync.py",
+        "sha256": "6e113877d88af549b176c76c826d847ca9d76819acd9682019853eee3994ba35",
+        "bytes": 7977,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_backends/trio.py",
+        "sha256": "2c7bb8fccaf932cc109a64f7c84e282e07fd6ff2497de552e018c3c5e25ced1a",
+        "bytes": 5996,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_exceptions.py",
+        "sha256": "968a022a06b7fd8558bb7b3e7772fd44c3d127286c63b7e2bae1b1be4383d1cd",
+        "bytes": 1184,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_models.py",
+        "sha256": "20ed8271771da68bd170b4dd185181e91c8165d126da1fd33a6a02738ac42a1a",
+        "bytes": 17623,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_ssl.py",
+        "sha256": "b2baa648d53888e52f585f92ac9bdbf06fd811b1c510b39740ec1d0c80534bd7",
+        "bytes": 187,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_sync/__init__.py",
+        "sha256": "2410c8817b7995ad4b089d6c2d078a863285a4b9e936bf12beceb3da78b77e08",
+        "bytes": 1141,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_sync/connection.py",
+        "sha256": "f5ec4639bdcf07e329d93d7eb1c91278bdadfad27ff7e357a2657c8a19960a05",
+        "bytes": 8238,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_sync/connection_pool.py",
+        "sha256": "6be4fc2d3b14c5ceebd16c356ad7c7483a163e34347c0f1497b4b7f85d0c8fbd",
+        "bytes": 16955,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_sync/http11.py",
+        "sha256": "205a1b0f531de491652462969e1d7f4377a98a452bc88f2aa34f6ff0c8892040",
+        "bytes": 13476,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_sync/http2.py",
+        "sha256": "031538ca172aebc067e6fa9d258b625ca6148fb9ef8586f1cf7bf8ad3e319ef0",
+        "bytes": 23400,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_sync/http_proxy.py",
+        "sha256": "fda97fe9cacab8466edb0cafbb8f7745922625d0499e3e6818a3632ce24bd99a",
+        "bytes": 14463,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_sync/interfaces.py",
+        "sha256": "b275ce378daf5031cee49049be8f03e155a4d966ade38cf63975c70eb8db97de",
+        "bytes": 4344,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_sync/socks_proxy.py",
+        "sha256": "cde8195bd4a7aa3dbff7dd831496bcfc2a6939506454be0083076e4644ad6a44",
+        "bytes": 13614,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_synchronization.py",
+        "sha256": "cd28b5de6002a250679278d90649d40ba84a343413e02ea28e77b367eaf44f6b",
+        "bytes": 9434,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_trace.py",
+        "sha256": "724e99a08cd84e474d0087eae4c19e2aa0570edaa3397faa7d8c266456eb19ca",
+        "bytes": 3952,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/_utils.py",
+        "sha256": "fd12e05d8380602df9d229002d5e7d199ebc209adda1c459c4fb3d3e39b37456",
+        "bytes": 1537,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpcore/py.typed",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/__init__.py",
+        "sha256": "0ac6997bac998f4ac783adf6d8058a587193315afdb718047c3e4fdff46bcfad",
+        "bytes": 2171,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/__version__.py",
+        "sha256": "2e853261e3974e2786cee3ffeb850bd30c5db718eebbf41b3af13b34e83e22a5",
+        "bytes": 108,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_api.py",
+        "sha256": "aff660b388c8a5c3c92ea2b975b6d26b2aa8fe254c2856b164277ea0e1f12c4b",
+        "bytes": 11743,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_auth.py",
+        "sha256": "62bdd0c1a5122b5eeb198c7eee3f85762705233cf863d14557ed45e3eed15d7e",
+        "bytes": 11891,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_client.py",
+        "sha256": "c43f941baefe58c91e96d00039e1868fe719d91453026d7db1647194563bff8d",
+        "bytes": 65714,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_config.py",
+        "sha256": "a4fa7653ec2271f70ab05f8a6111352d876dddee84446788a1767c1a3a372d67",
+        "bytes": 8547,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_content.py",
+        "sha256": "2c61b3ac94d1dcebcde0c6f519554d2d7917247fbaa0a97002db4ef69e70ff28",
+        "bytes": 8161,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_decoders.py",
+        "sha256": "a74757f08d0d1077b1b37506a784ac66eb62321b17aeb5a5ebe1a7a956f488a3",
+        "bytes": 12041,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_exceptions.py",
+        "sha256": "6f15bb7f1ce054c01d3536f04f4567ab4e202435b5fe023f1858903ee3328cbd",
+        "bytes": 8527,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_main.py",
+        "sha256": "0a0f4631a6e24d3fecc1a0df5202118ad4b0c4b44c4b05033a6ecb7521aa940e",
+        "bytes": 15626,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_models.py",
+        "sha256": "e3ffc6bb2bf580bc6e6428708a6f247d036220e709f5a72b785392babbd97e6b",
+        "bytes": 44700,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_multipart.py",
+        "sha256": "28e1c465997aa28860f663da2b2caedf8e6aab5ac92e0df94d41b7600cd70776",
+        "bytes": 9843,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_status_codes.py",
+        "sha256": "0d89fedae7c180c797cb9b3cc77fd307bc2302e00031ec136a43eb9b9ad712c7",
+        "bytes": 5639,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_transports/__init__.py",
+        "sha256": "19b52805200ea7bcfe97ef63e5884c851dc3308727e8554b863d3bd8edcd9e7a",
+        "bytes": 275,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_transports/asgi.py",
+        "sha256": "1d17e20d830fb78c101f6805807660e1cfa2dec6e5a3a6cbe464ea7044fec73f",
+        "bytes": 5501,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_transports/base.py",
+        "sha256": "9194bf54c6d58987c5e7bd29a205022756ee973fb26df2f9d4faacf7292d79b5",
+        "bytes": 2523,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_transports/default.py",
+        "sha256": "03379a454c95c0271c4f2c8d25ec437f49f57457f3cf2769748420bf0ecf2e79",
+        "bytes": 13983,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_transports/mock.py",
+        "sha256": "3d3a34779ebb4484d7c46ae48ba90deffebbc300317f088c0dcb972626428c4a",
+        "bytes": 1232,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_transports/wsgi.py",
+        "sha256": "35c3d7dd76a9fc4c0215958efce692c9036e227098c7540c35b3bc1807a2ea36",
+        "bytes": 4825,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_types.py",
+        "sha256": "272878d4642aec039ebfc20e58a0c083bcc26ef1c07ee7e65b983f3e24ed12b6",
+        "bytes": 2965,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_urlparse.py",
+        "sha256": "640987e3b38d7e4c6bae3f8f3d88467a21e36fa0232824be00d58837838bfca6",
+        "bytes": 18546,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_urls.py",
+        "sha256": "757f7d551d4348e1e9828f40abb3f360ee0529dc6a2a3c32369f20adff1d1cdd",
+        "bytes": 21550,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/_utils.py",
+        "sha256": "fd355ea802afc4990a1ddcfb74579be2cd0b66a41781e1645d281f88704aff5a",
+        "bytes": 8285,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/httpx/py.typed",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/idna/__init__.py",
+        "sha256": "30fa8d0cb65b5ea19a35d5f1005862a853ca1105e3bb68cd42109ecbafb97893",
+        "bytes": 868,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/idna/__main__.py",
+        "sha256": "e0930aeba5a3e2e2d94ca6c5fac4f72c0c4eb2be9bba283becf98e909091471c",
+        "bytes": 83,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/idna/cli.py",
+        "sha256": "b30a892cc35cf14ceceb42b388da5b5a71eeaa51b75914302526e8e27f310c0a",
+        "bytes": 4139,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/idna/codec.py",
+        "sha256": "2516e8f9fee91242dd59e887f3d67bd94478541621bca0c5ad005e357eac4431",
+        "bytes": 5040,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/idna/compat.py",
+        "sha256": "01ea40dfd71e447c647c73f8d7e16f296e4a8be7f83df519f7445432508d766a",
+        "bytes": 1353,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/idna/core.py",
+        "sha256": "49f3abd713b73e8134443631edb31c8809e38b28c93db3f0ffddc007921460ec",
+        "bytes": 24685,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/idna/idnadata.py",
+        "sha256": "01ffa6a3c5819a48402ba4f25ca3901fcf0e5f49903432ad74bed45ad429a699",
+        "bytes": 44862,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/idna/intranges.py",
+        "sha256": "838f6c70b4a4a89b4084b98e3836bb8551eb8928e66fad2d893b04a287097412",
+        "bytes": 1851,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/idna/package_data.py",
+        "sha256": "4de23de04a8014015a5df049c2c38f50c2e7dbdebdba2acf6be0da79a71e0325",
+        "bytes": 21,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/idna/py.typed",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/idna/uts46data.py",
+        "sha256": "8ee8cdcf942a58c7097fe5d82efe17d6306f6f9165234b7af9ed6620bb206cf9",
+        "bytes": 234325,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/__init__.py",
+        "sha256": "42130474fbb65e882b2735774b42964bab7b97423d93c11e0d1265e1f9f0f3bb",
+        "bytes": 494,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/_elffile.py",
+        "sha256": "fac2a4a6d62acd8c36fb1dd007225ae66078adf3d6bb5a719191d1c755801426",
+        "bytes": 3211,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/_manylinux.py",
+        "sha256": "1dfea707470eadac84b3debea77a085c08069c5aaebf6d033b997ea36fd79efd",
+        "bytes": 9559,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/_musllinux.py",
+        "sha256": "67ab308c7dcc03b5d2dea5e798c37b40f86a3f77e7a18234790d7c7bdf878001",
+        "bytes": 2707,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/_parser.py",
+        "sha256": "29fda7b03c38739e17f36a58f1b6b8174d81bdee8eca018c0232fe05e82a71ec",
+        "bytes": 11698,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/_structures.py",
+        "sha256": "eb48d16c5efca7ccf930a9cd77a700a6b80e69d0891d5d03966526441a8565cb",
+        "bytes": 1109,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/_tokenizer.py",
+        "sha256": "b455365abf996497406e45cb109a3ba9440325a2247dfb7d0ea6a27e210d0fb0",
+        "bytes": 5391,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/dependency_groups.py",
+        "sha256": "5d92005452bdb871b84421a9ae6267dd522751631eb3185afe4cad26e30ef5e6",
+        "bytes": 10218,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/direct_url.py",
+        "sha256": "78a99b0e23cfd6c2d5e0c8ff902499aaa927ac8c953bd4abec9a45f0a0a3a785",
+        "bytes": 10917,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/errors.py",
+        "sha256": "ea17c461701ff2ffc817ae7e94569d24e30889e04fdb120ab721178c6d67188b",
+        "bytes": 2680,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/licenses/__init__.py",
+        "sha256": "fc9c745d1883ff9f296a5b169f22eb2ee879f59a4608f20f5cb29d668f4e26f4",
+        "bytes": 7293,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/licenses/_spdx.py",
+        "sha256": "596ec35e2ca0ebcba9fd8343ff0a51625af548786257815f24b41f7e08613314",
+        "bytes": 51122,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/markers.py",
+        "sha256": "f1f0c8521005e9832708d0791528b087da4422eb22173005ef727ed0e07c6d39",
+        "bytes": 17055,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/metadata.py",
+        "sha256": "72b021d04dc654656a3e5bba11d445b1a1be63a518ce74d4aa3b8629118fbfa7",
+        "bytes": 38770,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/py.typed",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/pylock.py",
+        "sha256": "1bfd609dc4e60db44b6358e8e150c8f54c3e6f9204ae1fd0f55fc16d5253983f",
+        "bytes": 33890,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/requirements.py",
+        "sha256": "75dd5cf5a6b5829e4d23a6ed17a5054508cf9f59f14179c4fd3df8c830d31297",
+        "bytes": 4383,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/specifiers.py",
+        "sha256": "31fa7c6af420d25568b75eeda3d955281b590f516c5814c8b681b0154677c2d8",
+        "bytes": 71514,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/tags.py",
+        "sha256": "350d707a8ebdfd28ed7b7c4167523f1badc22200a668dd02db89b3fb3de1198a",
+        "bytes": 34224,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/utils.py",
+        "sha256": "33bf8930a89cdac3f562d57ff1a5bb795181fb1dc00ee282892aec55e09dd94a",
+        "bytes": 9848,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/packaging/version.py",
+        "sha256": "635693b717b7b27db138c6b905d23ce7e01c1eec9b6da9ce56412fbd24510bc2",
+        "bytes": 38369,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/six.py",
+        "sha256": "c51c91f703d3d4b3696c923cb5fec213e05e75d9215393befac7f2fa6a3904df",
+        "bytes": 34703,
+        "binding": "retained-wheel-RECORD"
+      },
+      {
+        "path": "vendor/typing_extensions.py",
+        "sha256": "4040ca1a1ecbee00d1385c12a93084d1c5bd46f0b774f07e5ae7e91c4f55e696",
+        "bytes": 165012,
+        "binding": "retained-wheel-RECORD"
+      }
+    ],
+    "externalInputHashesVerified": false,
+    "publicRulesApplied": false,
+    "scope": "\u89c4\u8303\u6e90\u7801/\u5df2\u4fdd\u7559wheel RECORD\u4e0e\u5b8c\u6574ZIP\u5b57\u8282\u5173\u8054\uff0c\u4e0d\u662f\u8fd0\u884c\u517c\u5bb9\u6027\u3001\u539f\u751f\u53ef\u91cd\u73b0\u6784\u5efa\u6216\u53d1\u5e03\u6388\u6743\u3002"
+  }
 }

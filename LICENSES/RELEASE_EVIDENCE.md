@@ -1,6 +1,6 @@
 # Release Evidence Report
 
-Verification date: `2026-10-24`
+Verification date: `2026-10-29`
 
 Artifact kind: `gpu`
 

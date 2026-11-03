@@ -16,10 +16,11 @@ MODELS_DIR = PLUGIN_DIR / "models"
 os.environ["PADDLE_PDX_DISABLE_DEVICE_FALLBACK"] = "True"
 os.environ["PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK"] = "True"
 os.environ["PADDLE_PDX_ENABLE_MKLDNN_BYDEFAULT"] = "False"
-sys.path.insert(0, str(VENDOR))
-if (PLUGIN_DIR / "vendor.zip").is_file():
-    sys.path.append(str(PLUGIN_DIR / "vendor.zip"))
 sys.path.insert(0, str(PLUGIN_DIR))
+from runtime_archive_bootstrap import prepare_archives
+_runtime_archive_paths = prepare_archives(PLUGIN_DIR)
+sys.path[0:0] = [*_runtime_archive_paths, str(VENDOR)]
+from i18n_helpers import tr
 _dll_handles = []
 if os.name == "nt":
     for path in [VENDOR / "paddle" / "base", *sorted((VENDOR / "nvidia").glob("*") if (VENDOR / "nvidia").is_dir() else [])]:
@@ -43,21 +44,21 @@ def assert_cuda(device):
     import paddle
 
     if not paddle.is_compiled_with_cuda():
-        raise RuntimeError("当前 Paddle 不是 CUDA 构建；拒绝 CPU fallback")
+        raise RuntimeError(tr('当前 Paddle 不是 CUDA 构建；拒绝 CPU fallback'))
     index = int(str(device).split(":", 1)[1])
     if index >= paddle.device.cuda.device_count():
-        raise RuntimeError(f"请求 {device}，但没有对应的 NVIDIA GPU")
+        raise RuntimeError(tr('请求 {device}，但没有对应的 NVIDIA GPU', device=device))
     paddle.device.set_device(device)
     tensor = paddle.to_tensor([1.0], place=paddle.CUDAPlace(index))
     if float((tensor + 1.0).numpy()[0]) != 2.0:
-        raise RuntimeError("CUDA 张量自检失败")
+        raise RuntimeError(tr('CUDA 张量自检失败'))
 
 
 def create_engine(config):
     import cv2
     from paddleocr import PaddleOCR
 
-    cv2.setNumThreads(4)
+    cv2.setNumThreads(int(config.get("preprocessThreads", 4)))
     assert_cuda(config["device"])
     det_name = f"{config['detModel']}_det"
     rec_name = f"{config['recModel']}_rec"
@@ -77,7 +78,7 @@ def create_engine(config):
         required.append(model_dirs["textline_orientation_model_dir"])
     missing = [str(path) for path in required if not path.is_dir()]
     if missing:
-        raise FileNotFoundError("缺少离线模型目录：" + ", ".join(missing))
+        raise FileNotFoundError(tr('缺少离线模型目录：{items}', items=', '.join(missing)))
     return PaddleOCR(
         doc_orientation_classify_model_name="PP-LCNet_x1_0_doc_ori",
         doc_unwarping_model_name="UVDoc",
@@ -103,14 +104,30 @@ def create_engine(config):
 def decode_request(request):
     import cv2
     import numpy as np
+    from io import BytesIO
+    from PIL import Image
+    from image_tiles import check_size, MAX_IMAGE_BYTES
+    from i18n_helpers import tr
 
     if request["op"] == "run_path":
-        image = cv2.imread(str(request["path"]), cv2.IMREAD_COLOR)
+        source = Path(str(request["path"]))
+        if source.stat().st_size > MAX_IMAGE_BYTES:
+            raise ValueError(tr("输入图片文件超过大小预算。"))
+        raw = source.read_bytes()
     else:
-        raw = base64.b64decode(str(request.get("data", "")), validate=True)
-        image = cv2.imdecode(np.frombuffer(raw, dtype=np.uint8), cv2.IMREAD_COLOR)
+        encoded = str(request.get("data", ""))
+        if len(encoded) > (MAX_IMAGE_BYTES + 2) // 3 * 4:
+            raise ValueError(tr("输入图片文件超过大小预算。"))
+        raw = base64.b64decode(encoded, validate=True)
+    if len(raw) > MAX_IMAGE_BYTES:
+        raise ValueError(tr("输入图片文件超过大小预算。"))
+    # 先核对解码尺寸，避免先分配整个超大像素缓冲再应用检测长边限制。
+    with Image.open(BytesIO(raw)) as header:
+        check_size(*header.size)
+    image = cv2.imdecode(np.frombuffer(raw, dtype=np.uint8), cv2.IMREAD_COLOR)
     if image is None:
-        raise ValueError("图片无法由 OpenCV 解码")
+        raise ValueError(tr("图片无法由 OpenCV 解码。"))
+    check_size(image.shape[1], image.shape[0])
     return image
 
 
@@ -125,12 +142,47 @@ def convert_results(results):
         preprocessor = result.get("doc_preprocessor_res")
         use_unwarping = result.get("model_settings", {}).get("use_doc_unwarping", False)
         if use_unwarping and (preprocessor is None or preprocessor.get("grid") is None):
-            raise RuntimeError("UVDoc 网格输出不可用")
+            raise RuntimeError(tr('UVDoc 网格输出不可用'))
         has_transform = preprocessor is not None and preprocessor.get("input_img") is not None
         for text, score, polygon in zip(texts, scores, polygons):
             box = restore_polygon(polygon, preprocessor) if has_transform else [[int(round(x)), int(round(y))] for x, y in polygon]
             items.append({"text": str(text), "box": box, "score": float(score)})
     return {"code": 100, "data": items} if items else {"code": 101, "data": ""}
+
+
+def predict_image(image, config, timeout):
+    from image_tiles import tiles, merge
+    from i18n_helpers import tr
+    height, width = image.shape[:2]
+    regions = tiles(width, height, config["longSide"])
+    deadline = time.monotonic() + timeout
+    blocks, warnings = [], []
+    completed = 0
+    for index, (x1, y1, x2, y2) in enumerate(regions):
+        if time.monotonic() >= deadline:
+            warnings.append(tr("处理时间预算已用尽，保留已完成的分块。"))
+            break
+        try:
+            result = convert_results(_engine.predict(image[y1:y2, x1:x2]))
+            items = result.get("data") or []
+            available = max(0, 20000 - len(blocks))
+            for item in items[:available]:
+                item["box"] = [[x + x1, y + y1] for x, y in item["box"]]
+                blocks.append(item)
+            completed += 1
+            if len(items) > available:
+                warnings.append(tr("识别结果数量超过预算，保留已完成的分块。"))
+                break
+        except Exception as exc:
+            warnings.append(tr("第 {index} 个分块识别失败：{error}", index=index + 1, error=str(exc)))
+    result = {"code": 100, "data": merge(blocks)} if blocks else {"code": 101, "data": ""}
+    if warnings:
+        result.update({"partial": True, "warnings": warnings})
+        if not blocks:
+            result.update({"code": 204, "data": "\n".join(warnings)})
+    result["metadata"] = {"sourceWidth": width, "sourceHeight": height,
+                          "tileCount": len(regions), "completedTiles": completed}
+    return result
 
 
 def stop_engine():
@@ -167,11 +219,11 @@ def startup_info(config):
     kernel32.GetModuleFileNameW.restype = wintypes.DWORD
     code_page = int(kernel32.GetACP())
     if code_page != 65001 or not sys.flags.utf8_mode:
-        raise RuntimeError("CUDA worker 必须由原生 UTF-8 入口启动；需要 Windows 10 1903 或更新系统。")
+        raise RuntimeError(tr('CUDA worker 必须由原生 UTF-8 入口启动；需要 Windows 10 1903 或更新系统。'))
     buffer = ctypes.create_unicode_buffer(32768)
     length = kernel32.GetModuleFileNameW(sys.dllhandle, buffer, len(buffer))
     if not length or length >= len(buffer):
-        raise OSError("无法确认实际 Python DLL 路径。")
+        raise OSError(tr('无法确认实际 Python DLL 路径。'))
     models = []
     if config["docOrientation"]:
         models.append("PP-LCNet_x1_0_doc_ori")
@@ -202,6 +254,13 @@ def main():
                 _config = dict(request.get("config") or {})
                 startup = startup_info(_config)
                 _engine = create_engine(_config)
+                startup["runtime_archives"] = list(_runtime_archive_paths)
+                startup["archive_modules"] = {
+                    name: str(module.__file__) for name, module in tuple(sys.modules.items())
+                    if getattr(module, "__file__", None) and any(
+                        str(module.__file__).replace("\\", "/").startswith(path.replace("\\", "/") + "/")
+                        for path in _runtime_archive_paths)
+                }
                 reply({"ok": True, "status": "loaded", "model_initialization_ms": (time.perf_counter_ns() - started) / 1_000_000, "startup": startup})
             elif op in {"run_path", "run_bytes"}:
                 if _engine is None:
@@ -210,7 +269,7 @@ def main():
                 image = decode_request(request)
                 decode_ms = (time.perf_counter_ns() - started) / 1_000_000
                 started = time.perf_counter_ns()
-                result = convert_results(_engine.predict(image))
+                result = predict_image(image, _config, float(request.get("taskTimeoutSeconds", 300)))
                 predict_ms = (time.perf_counter_ns() - started) / 1_000_000
                 reply({"ok": True, "result": result, "timing": {"decode_ms": round(decode_ms, 3), "predict_ms": round(predict_ms, 3), "total_ms": round(decode_ms + predict_ms, 3)}})
             elif op == "stop":
@@ -220,7 +279,16 @@ def main():
             else:
                 raise ValueError(f"unknown worker operation: {op}")
         except Exception as exc:
-            reply({"ok": False, "error": str(exc)})
+            from i18n_helpers import tr
+            code = str(exc)
+            messages = {
+                "IMAGE_BUDGET_EXCEEDED": tr("图片尺寸超过安全解码预算，请裁剪或降低原图尺寸。"),
+                "IMAGE_TILE_BUDGET_EXCEEDED": tr("图片需要的分块数量过多，请分成较小图片后重试。"),
+            }
+            error_type = code if code in messages else "INFERENCE_FAILED"
+            if "out of memory" in code.lower():
+                error_type = "OUT_OF_MEMORY"
+            reply({"ok": False, "error": messages.get(code, code), "errorType": error_type})
 
 
 if __name__ == "__main__":

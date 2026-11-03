@@ -240,24 +240,68 @@ def runtime_lock_target(staging: Path, package_root: Path, lock_path: Path, entr
     return target
 
 
+def _runtime_archive_evidence(package_root: Path):
+    """Audit only a declared/present runtime assembly, using our trusted tool.
+
+    Native locks do not cover Python ZIP members. A partial assembly must not
+    turn into a legacy loose-layout result when a ZIP/manifest is missing.
+    """
+    indicators = {"runtime-archives.json", "runtime-archive-inputs.json",
+                  ".runtime-archive-candidate.json", "archive-layout.json"}
+    try:
+        # Include case variants, directories, dangling links and policy-named
+        # root containers, but not the embedded stdlib ZIP under runtime/.
+        names = {path.name.casefold() for path in package_root.iterdir()}
+        if not (names & indicators or any(name.endswith(".zip") for name in names)):
+            return None
+        if "archive-layout.json" in names:
+            raise ValueError("Unsupported legacy runtime archive declaration must not coexist with a current assembly")
+        tool = Path(__file__).resolve().with_name("audit_runtime_archives.py")
+        spec = importlib.util.spec_from_file_location("umi_runtime_archive_evidence_audit", tool)
+        if spec is None or spec.loader is None:
+            raise RuntimeError("Cannot load the trusted adjacent runtime archive auditor")
+        auditor = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(auditor)
+        evidence = auditor.audit(package_root)
+        if (not isinstance(evidence, dict) or evidence.get("status") != "PASS" or
+                any(not isinstance(evidence.get(key), list) for key in ("archives", "members", "archived_paths"))):
+            raise ValueError("Existing/declared runtime assembly did not receive complete archive/source acceptance")
+        return evidence
+    except Exception as exc:
+        # All audit failures remain explicit blockers, including loader errors.
+        # Never import package code, unpack content, or use a native-only PASS
+        # as a substitute for the archive/source association.
+        return {"status": "BLOCK", "root": str(package_root), "archives": [], "members": [],
+                "archived_paths": [], "blockers": [f"Runtime Python archive/source evidence failed ({type(exc).__name__}): {exc}"]}
+
+
 def verify_runtime_vendor(staging: Path, package_root: Path, vendor: Path, errors: list[str]):
     packages, _, owners = package_rows(vendor, staging)
     package_by_key = {normalized(row["name"]): row for row in packages}
     binaries = []
     bad_lock = []
+    lock_errors = []
     lock_path = package_root / "runtime.lock.json"
     if not lock_path.is_file() and (package_root / "native-dlls.lock.json").is_file():
         lock_path = package_root / "native-dlls.lock.json"
     if lock_path.is_file():
-        runtime_lock = load_json(lock_path)
-        entries = runtime_lock.get("files", []) if isinstance(runtime_lock, dict) else runtime_lock
-        for entry in entries:
-            path = str(entry.get("path", ""))
-            target = runtime_lock_target(staging, package_root, lock_path, path)
-            if target is None or not target.is_file() or sha256(target) != entry.get("sha256"):
-                bad_lock.append(path)
+        try:
+            runtime_lock = release_gate_inputs.read_json(lock_path)
+            entries = runtime_lock.get("files") if isinstance(runtime_lock, dict) else runtime_lock
+            if not isinstance(entries, list):
+                raise ValueError("Runtime lock must contain a files array or be an array")
+            for entry in entries:
+                if (not isinstance(entry, dict) or not isinstance(entry.get("path"), str) or not entry["path"] or
+                        not isinstance(entry.get("sha256"), str) or not re.fullmatch(r"[0-9a-f]{64}", entry["sha256"])):
+                    raise ValueError("Runtime lock entry lacks a path or valid SHA-256")
+                path = entry["path"]
+                target = runtime_lock_target(staging, package_root, lock_path, path)
+                if target is None or not target.is_file() or sha256(target) != entry["sha256"]:
+                    bad_lock.append(path)
+        except (OSError, ValueError) as exc:
+            lock_errors.append(f"Invalid runtime lock: {rel(lock_path, staging)} ({type(exc).__name__}): {exc}")
+            errors.extend(lock_errors)
     else:
-        runtime_lock = {}
         errors.append(f"Missing runtime lock: {rel(lock_path, staging)}")
 
     for path in sorted(vendor.rglob("*")):
@@ -286,19 +330,34 @@ def verify_runtime_vendor(staging: Path, package_root: Path, vendor: Path, error
         )
 
     unknown = [item["artifact_path"] for item in binaries if item["package"] == "UNKNOWN"]
-    status = "PASS" if not bad_lock and not unknown else "BLOCK"
-    return {
+    status = "PASS" if not bad_lock and not unknown and not lock_errors else "BLOCK"
+    blockers = (["Unowned runtime binaries: " + ", ".join(unknown)] if unknown else [])
+    blockers += (["runtime.lock.json hash mismatch: " + ", ".join(bad_lock)] if bad_lock else [])
+    blockers.extend(lock_errors)
+    archive_evidence = _runtime_archive_evidence(package_root)
+    if archive_evidence is not None and not lock_path.is_file():
+        # The legacy path already reports this in errors. An archive acceptance
+        # must not conceal the missing native lock in the composite status.
+        status = "BLOCK"
+        blockers.append(f"Missing runtime lock: {rel(lock_path, staging)}")
+    if archive_evidence is not None and archive_evidence["status"] != "PASS":
+        status = "BLOCK"
+        blockers.extend(archive_evidence["blockers"])
+        errors.extend(archive_evidence["blockers"])
+    result = {
         "schema_version": 1,
         "verification_date": VERIFY_DATE,
         "runtime_lock": rel(lock_path, staging),
-        "runtime_lock_valid": not bad_lock,
+        "runtime_lock_valid": not bad_lock and not lock_errors and (archive_evidence is None or lock_path.is_file()),
         "runtime_lock_failures": bad_lock,
         "packages": packages,
         "binaries": binaries,
         "status": status,
-        "blockers": (["Unowned runtime binaries: " + ", ".join(unknown)] if unknown else [])
-        + (["runtime.lock.json hash mismatch: " + ", ".join(bad_lock)] if bad_lock else []),
+        "blockers": blockers,
     }
+    if archive_evidence is not None:
+        result["runtime_archives"] = archive_evidence
+    return result
 
 
 def verify_models(staging: Path, plugin: Path, source_lock, apache_path: str, errors: list[str]):
@@ -1195,14 +1254,63 @@ def verify_mpl(staging: Path, vendor: Path, source_lock, cache_root: Path | None
     }
 
 
-def verify_agpl(staging: Path, repo: Path, plugin: Path, startup_evidence: dict | None = None):
+def _full_native_worker_evidence(staging: Path, repo: Path, plugin: Path, workflow: dict | None):
+    """完整 OCR 证据与原生启动器分别核验，不借用 3.0.4 的启动例外。"""
+    try:
+        raw_path = plugin / "gpu-e2e-evidence.json"
+        if (not isinstance(workflow, dict) or workflow.get("status") != "PASS"
+                or workflow.get("source_binding_valid") is not True
+                or workflow.get("evidence") != file_record(raw_path, staging)):
+            raise ValueError("缺少当前完整 GPU 工作流的已验证原始证据")
+        raw = release_gate_inputs.read_json(raw_path)
+        if workflow.get("record") != raw or not _material_functionality(staging)[0]:
+            raise ValueError("完整 GPU 工作流记录或源码/运行锁绑定不一致")
+        metadata = release_gate_inputs.artifact_metadata_root(staging, "gpu")
+        source = metadata / "source"
+        test = Path("tests/test_ocr_workflows.py")
+        if (not (source / test).is_file() or not (repo / test).is_file()
+                or sha256(source / test) != sha256(repo / test)
+                or raw.get("workflow_test", {}).get("SHA256") != sha256(source / test)):
+            raise ValueError("完整 GPU 工作流测试不匹配对应源码")
+        for name, checksum in raw["plugin_source_sha256"].items():
+            original = source / "UmiOCR-data/plugins" / plugin.name / name
+            if not original.is_file() or sha256(original) != checksum:
+                raise ValueError("工作流测试的适配器不匹配对应源码")
+        parser = release_gate_inputs.startup_evidence_module()
+        native_sources = {}
+        for name in parser.NATIVE_SOURCES:
+            original, current = source / name, repo / name
+            if not original.is_file() or not current.is_file() or sha256(original) != sha256(current):
+                raise ValueError("原生启动器对应源码缺失或不一致")
+            native_sources[name] = sha256(original)
+        launcher = plugin / "UmiOCR-CudaWorker.exe"
+        native_manifest = parser.embedded_manifest(launcher)
+        lock_path = plugin / "runtime.lock.json"
+        lock = release_gate_inputs.read_json(lock_path)
+        manifest = release_gate_inputs.read_json(plugin / "umi-plugin.json")
+        expected = {"path": launcher.name, "sha256": sha256(launcher)}
+        if (manifest.get("id") != release_gate_inputs.PLUGIN_ID or lock.get("pluginId") != release_gate_inputs.PLUGIN_ID
+                or lock.get("version") != manifest.get("version") or not isinstance(lock.get("files"), list)
+                or [item for item in lock["files"] if isinstance(item, dict) and item.get("path") == launcher.name] != [expected]):
+            raise ValueError("实际原生启动器没有唯一绑定到当前插件运行锁")
+        return {"status": "PASS", "verified": True, "validation_scope": "full",
+            "native_manifest": native_manifest, "native_source_sha256": native_sources,
+            "runtime_lock_sha256": sha256(lock_path), "gpu_workflow_evidence": file_record(raw_path, staging),
+            "blockers": []}
+    except (OSError, ValueError, KeyError, TypeError):
+        return {"status": "BLOCK", "verified": False, "validation_scope": "full",
+            "blockers": ["完整 GPU 工作流、对应源码、PE UTF-8 清单或原生启动器运行锁证据未通过。"]}
+
+
+def verify_agpl(staging: Path, repo: Path, plugin: Path, startup_evidence: dict | None = None, *, gpu_e2e: dict | None = None):
     copying = repo / "COPYING"
     mit = repo / "LICENSE"
     about = repo / "UmiOCR-data" / "about.json"
     combined = metadata_path(staging, "LICENSES") / "COMBINED_DISTRIBUTION.md"
     manifest = plugin / "umi-plugin.json"
     controller = repo / "UmiOCR-data" / "py_src" / "plugins_controller" / "plugins_controller.py"
-    api = (plugin / "api.py") if startup_evidence is not None else (repo / "UmiOCR-data" / "plugins" / "win32_PaddleOCRv6_CUDA" / "api.py")
+    artifact_api = startup_evidence is not None or gpu_e2e is not None
+    api = (plugin / "api.py") if artifact_api else (repo / "UmiOCR-data" / "plugins" / "win32_PaddleOCRv6_CUDA" / "api.py")
     worker = plugin / "worker.py"
     manifest_data = load_json(manifest) if manifest.is_file() else {}
     runtime = manifest_data.get("runtime") if isinstance(manifest_data, dict) else {}
@@ -1215,10 +1323,13 @@ def verify_agpl(staging: Path, repo: Path, plugin: Path, startup_evidence: dict 
         if token in api_text
     )
     native_launcher = plugin / "UmiOCR-CudaWorker.exe"
-    native_boundary = (isinstance(startup_evidence, dict) and startup_evidence.get("status") == "PASS" and
-                       startup_evidence.get("verified") is True and startup_evidence.get("validation_scope") == release_gate_inputs.STARTUP_SCOPE and
-                       startup_evidence.get("native_manifest", {}).get("verified") is True and
-                       native_launcher.is_file() and startup_evidence["native_manifest"].get("launcher_sha256") == sha256(native_launcher))
+    startup_native = (isinstance(startup_evidence, dict) and startup_evidence.get("status") == "PASS" and
+                      startup_evidence.get("verified") is True and startup_evidence.get("validation_scope") == release_gate_inputs.STARTUP_SCOPE and
+                      startup_evidence.get("native_manifest", {}).get("verified") is True and
+                      native_launcher.is_file() and startup_evidence["native_manifest"].get("launcher_sha256") == sha256(native_launcher))
+    full_native = (_full_native_worker_evidence(staging, repo, plugin, gpu_e2e)
+                   if startup_evidence is None and boundary.get("entry") == "UmiOCR-CudaWorker.exe" else None)
+    native_boundary = startup_native or bool(full_native and full_native.get("verified") is True)
     worker_boundary_checks = {
         "worker_present_in_artifact": worker.is_file(),
         "manifest_vendor_dirs_empty": runtime.get("vendor_dirs") in ([], None),
@@ -1262,8 +1373,9 @@ def verify_agpl(staging: Path, repo: Path, plugin: Path, startup_evidence: dict 
                 "The plugin manifest declares no host vendor_dirs or dll_dirs. worker.py alone registers private vendor DLL directories in the child process.",
                 "The host and worker exchange only JSON-lines requests (path/base64 image plus configuration) and JSON OCR result records; no pointers, shared memory, or private ABI cross the boundary.",
             ],
-            "evidence_paths": [rel(controller, repo), rel(api, repo), rel(worker, staging), rel(manifest, staging)],
+            "evidence_paths": [rel(controller, repo), rel(api, staging if artifact_api else repo), rel(worker, staging), rel(manifest, staging)],
             "checks": worker_boundary_checks,
+            "full_native_worker_evidence": full_native,
         },
         "agpl_network_interaction_obligation": "For any modified AGPL-covered deployment that lets users interact remotely, AGPLv3 section 13 requires a prominent offer of Corresponding Source. The release source mirror is separately audited; proprietary NVIDIA binaries are not asserted to be AGPL-covered source.",
         "system_library_claim": "not made",
@@ -2194,6 +2306,12 @@ def public_release_allowed(gates: dict[str, dict]) -> bool:
                 ocr.get("status") != "NOT_RUN" or ocr.get("validation_scope") != release_gate_inputs.STARTUP_SCOPE or
                 not release_gate_inputs._same_binding(ocr.get("binding"), current.get("binding"))):
             return False
+    elif current.get("validation_scope") == release_gate_inputs.BASE_CAPTURE_SCOPE:
+        if not release_gate_inputs.verified_base_capture_waiver(current):
+            return False
+    elif current.get("validation_scope") == release_gate_inputs.directed.SCOPE:
+        if not release_gate_inputs.directed.verified_receipt(current):
+            return False
     elif current.get("validation_scope", "full") != "full":
         return False
     return all(
@@ -2291,8 +2409,8 @@ def verify(staging: Path, repo: Path, kind: str, cache_root: Path | None, cpu_st
             ffmpeg = verify_ffmpeg(staging, plugin, source_lock, cache_root)
             opencv = verify_opencv(staging, vendor)
             mpl = verify_mpl(staging, vendor, source_lock, cache_root)
-            agpl = verify_agpl(staging, repo, plugin, startup_evidence=startup_evidence)
             gpu_e2e = verify_gpu_e2e(staging, plugin, models, repo, startup_evidence=startup_evidence)
+            agpl = verify_agpl(staging, repo, plugin, startup_evidence=startup_evidence, gpu_e2e=gpu_e2e)
         else:
             vendor = staging / "UmiOCR-data" / "site-packages"
             if not vendor.is_dir():

@@ -1,29 +1,32 @@
 {
   "test_type": "real_gpu_ocr_workflows_e2e",
   "status": "PASS",
-  "tested_at": "2026-10-14T01:49:16.128008+00:00",
+  "tested_at": "2026-11-03T17:14:52.346541+00:00",
   "device": "gpu:0",
   "architecture": {
     "type": "separate-worker-stdio-ipc",
     "host_loaded_proprietary_modules": [],
     "ipc_payload": "JSON-lines path/base64 -> JSON OCR result"
   },
-  "plugin_runtime_lock_sha256": "dd3858a2e15589b6a071e79ec755d01670dcb3079fc8ec939c5e933642b5b297",
+  "plugin_runtime_lock_sha256": "5c1a0ba7e1d2797988377d204ef6e69be3181319a2328fc9332d727bb3d824f0",
   "plugin_source_sha256": {
     "__init__.py": "ce911c7da3e3616a6b979bc6085af4f2a6b9de9d00ec221b42dd5691f4c9850d",
-    "api.py": "5fd074c64b165ec16fcd43bc905b45abd99a1daaa03b0a69b3566e40ceab4fba",
-    "config.py": "e4ffb99b451082d1a40f57837c3ef315fcdb38119ffea43a435611c135de3eac",
+    "api.py": "8274dc1bb002a004b2df29f234c2323bee5e67a554545d548dbfdce5df5a8e98",
+    "config.py": "b7805b2643fffa7a813c5119ab1e634d451ae68d1486e454a48a604ed874444f",
     "coordinates.py": "5f082318184b15266caf8a34113295a4377d54b0467f9b594e68ed811a5d72ff",
-    "health.py": "687234287a880168787c82a5fcfe525dd05da752439ff8d73424a113f51344b9",
-    "worker.py": "cc8c6cf10bda817b76938a717a901497250281e27cd9005e99fc0873d2b16c01"
+    "health.py": "023cc3013db67baed0d4202965b98c3c4d403f74f78ce6356ed4c8720ae48ad4",
+    "i18n_helpers.py": "7ba752dbc070e59d8601efa01d5b99ddd375165d0fae3c679d9b6b7ee1893807",
+    "image_tiles.py": "9565ae4f0ee1bf2ad62df9d467efa5607536702a914e8e5c5e4c1ed091318035",
+    "runtime_archive_bootstrap.py": "f02fa853e5af2fe27f8696a59bd7d4b3b28e2f09bb52640d1099482ca926ae42",
+    "worker.py": "0df5549e369161f33c1ab96e9abe5b5873c20b6b6e0351ccbca87a3137f014b1"
   },
   "workflow_test": {
     "path": "tests/test_ocr_workflows.py",
     "SHA256": "b2eeab87fb105ff865d11e4afa661e4b7030b011570dc45b486e96c61141ccca"
   },
   "workflow_log": {
-    "file": "300-gpu-workflows-final.log",
-    "SHA256": "e7292e35e4f8d517c22b209cb70017d23e35393e11a5074fbb4999e8f9a89a0f"
+    "file": "cuda-gpu-workflows-r1.log",
+    "SHA256": "259c58b9faaba9e8c0ada9eaf8430ae35cf737f5a67286256c2daffc387da215"
   },
   "model_initialization": [
     "PP-LCNet_x1_0_doc_ori",

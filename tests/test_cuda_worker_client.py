@@ -181,10 +181,11 @@ assert not any(name in sys.modules for name in ("paddle", "paddleocr", "cv2", "n
         text=True, encoding="utf-8", errors="strict", capture_output=True,
         check=True, timeout=20, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
     )
-    assert [json.loads(line) for line in result.stdout.splitlines()] == [
-        {"ok": False, "error": "unknown worker operation: " + text},
+    responses = [json.loads(line) for line in result.stdout.splitlines()]
+    assert responses == [
+        {"ok": False, "error": "unknown worker operation: " + text, "errorType": "INFERENCE_FAILED"},
         {"ok": True, "status": "stopped"},
-    ]
+    ], responses
     assert result.stderr == diagnostic + "\n"
 
 

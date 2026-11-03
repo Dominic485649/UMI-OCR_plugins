@@ -28,6 +28,7 @@ param(
     [string]$CpuStagingRoot = "",
     [string]$ReleaseGates = "",
     [string]$OverlayRoot = "",
+    [ValidateSet("loose", "stored")][string]$RuntimeLayout = "loose",
     [switch]$ReuseDependencies,
     [switch]$SkipModels,
     [switch]$ReuseModels,
@@ -246,72 +247,6 @@ function Remove-UnsupportedPaddleXConfigs([string]$VendorPath) {
     Write-Host "裁掉 $($removed.Count) 个不支持的 PaddleX 模型配置。"
 }
 
-function Remove-NonRuntimeFiles([string]$VendorPath) {
-    $removedFiles = 0
-    $removedBytes = [int64]0
-    $allowedRoot = [IO.Path]::GetFullPath($VendorPath) + [IO.Path]::DirectorySeparatorChar
-
-    $directories = @(
-        Get-ChildItem -Recurse -Directory -LiteralPath (Join-Path $VendorPath "nvidia") -Filter "include" -ErrorAction SilentlyContinue
-        Get-Item -LiteralPath (Join-Path $VendorPath "paddle\include") -ErrorAction SilentlyContinue
-    )
-    foreach ($directory in $directories) {
-        $full = [IO.Path]::GetFullPath($directory.FullName)
-        if (-not $full.StartsWith($allowedRoot, [StringComparison]::OrdinalIgnoreCase)) {
-            throw "拒绝裁剪 vendor 之外的路径: $full"
-        }
-        $files = Get-ChildItem -Recurse -File -Force -LiteralPath $full
-        $removedFiles += $files.Count
-        $removedBytes += [int64](($files | Measure-Object Length -Sum).Sum)
-        Remove-Item -Recurse -Force -LiteralPath $full
-    }
-
-    $developmentFiles = Get-ChildItem -Recurse -File -Force -LiteralPath $VendorPath |
-        Where-Object Extension -In ".lib", ".exp", ".pdb", ".pyi", ".pyx", ".pxd"
-    foreach ($file in $developmentFiles) {
-        $removedFiles += 1
-        $removedBytes += [int64]$file.Length
-        Remove-Item -Force -LiteralPath $file.FullName
-    }
-
-    $testDirs = Get-ChildItem -Recurse -Directory -Force -LiteralPath $VendorPath |
-        Where-Object Name -In "test", "tests" |
-        Sort-Object { $_.FullName.Length } -Descending
-    foreach ($directory in $testDirs) {
-        if (-not (Test-Path -LiteralPath $directory.FullName)) { continue }
-        $files = Get-ChildItem -Recurse -File -Force -LiteralPath $directory.FullName
-        $removedFiles += $files.Count
-        $removedBytes += [int64](($files | Measure-Object Length -Sum).Sum)
-        Remove-Item -Recurse -Force -LiteralPath $directory.FullName
-    }
-
-    Get-ChildItem -Recurse -Directory -Force -LiteralPath $StagingRoot -Filter "__pycache__" |
-        Sort-Object { $_.FullName.Length } -Descending |
-        ForEach-Object {
-            if (Test-Path -LiteralPath $_.FullName) {
-                $files = Get-ChildItem -Recurse -File -Force -LiteralPath $_.FullName
-                $removedFiles += $files.Count
-                $removedBytes += [int64](($files | Measure-Object Length -Sum).Sum)
-                Remove-Item -Recurse -Force -LiteralPath $_.FullName
-            }
-        }
-    Get-ChildItem -Recurse -Directory -Force -LiteralPath $VendorPath -Filter "src" |
-        Sort-Object { $_.FullName.Length } -Descending |
-        ForEach-Object {
-            if (Test-Path -LiteralPath $_.FullName) {
-                $full = [IO.Path]::GetFullPath($_.FullName)
-                if (-not $full.StartsWith($allowedRoot, [StringComparison]::OrdinalIgnoreCase)) {
-                    throw "Refusing to trim src outside vendor: $full"
-                }
-                $files = Get-ChildItem -Recurse -File -Force -LiteralPath $full
-                $removedFiles += $files.Count
-                $removedBytes += [int64](($files | Measure-Object Length -Sum).Sum)
-                Remove-Item -Recurse -Force -LiteralPath $full
-            }
-        }
-    Write-Host "裁掉 $removedFiles 个非运行时文件（$([math]::Round($removedBytes / 1MB, 2)) MiB）。"
-}
-
 # ===================== 1. 安装私有依赖闭包 =====================
 
 $basePython = Resolve-BuildPath (Join-Path $BaseStagingRoot "UmiOCR-data\runtime\python.exe")
@@ -382,9 +317,10 @@ if (-not $SkipModels) {
     Remove-Item -Recurse -Force -LiteralPath $uvdoc
 }
 
-# ===================== 5. 裁剪非运行时文件 =====================
+# ===================== 5. 保留依赖与明确的分发边界 =====================
 
-Remove-NonRuntimeFiles $VendorRoot
+# 不按后缀或 tests/src/include 等目录名删减依赖；小文件仅按白名单聚合。
+# 下方仅保留已有且明确列名的原生分发闭包排除规则。
 
 # Umi-OCR does not expose OpenCV video I/O. The bundled FFmpeg backend lacks
 # a closed source/configuration record, so keep this optional DLL out of the
@@ -414,8 +350,15 @@ $cudaWorkerBinary = Resolve-BuildPath (Join-Path $cudaWorkerBuild "Release/UmiOC
 if (-not (Test-Path -LiteralPath $cudaWorkerBinary -PathType Leaf)) { throw "CUDA worker executable is missing: $cudaWorkerBinary" }
 Copy-Item -LiteralPath $cudaWorkerBinary -Destination $cudaWorkerTarget
 
-# ===================== 6. 依赖闭包锁 =====================
+# ===================== 6. 私有容器与依赖闭包锁 =====================
 
+if ($RuntimeLayout -eq "stored") {
+    & $basePython -I -B -S -X utf8 (Join-Path $RepoRoot "build/tools/merge_runtime.py") $PluginRoot `
+        --kind plugin --policy (Join-Path $RepoRoot "build/windows/runtime_archives_cuda.json") --project-root $RepoRoot
+    if ($LASTEXITCODE -ne 0) { throw "CUDA Stored-ZIP aggregation failed." }
+    & $basePython -I -B -S -X utf8 (Join-Path $RepoRoot "build/tools/audit_runtime_archives.py") --root $PluginRoot
+    if ($LASTEXITCODE -ne 0) { throw "CUDA Stored-ZIP source verification failed." }
+}
 & $basePython -B -I -S (Join-Path $RepoRoot "build/tools/freeze_gpu_runtime.py") $PluginRoot
 if ($LASTEXITCODE -ne 0) { throw "GPU native closure lock generation failed." }
 

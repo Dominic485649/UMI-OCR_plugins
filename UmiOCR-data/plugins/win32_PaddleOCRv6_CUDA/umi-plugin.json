@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "win32_PaddleOCRv6_CUDA",
   "name": "PP-OCRv6 CUDA",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "host_api": ">=2.7,<3.0",
   "platform": [
     "win32"
@@ -19,10 +19,14 @@
     {
       "type": "ocr",
       "entry": "api:Api",
-      "config": "config:CONFIG"
+      "config": "config:CONFIG",
+      "meta": {
+        "settingsOrder": 10
+      }
     }
   ],
   "health": "health:check",
+  "i18n": "i18n.csv",
   "runtime": {
     "priority": "append",
     "vendor_dirs": [],

@@ -17,6 +17,13 @@ import sys
 import tarfile
 from pathlib import Path
 
+_chunks_spec = importlib.util.spec_from_file_location("umi_gate_chunks", Path(__file__).with_name("chunked_files.py"))
+chunks = importlib.util.module_from_spec(_chunks_spec)
+_chunks_spec.loader.exec_module(chunks)
+_directed_spec = importlib.util.spec_from_file_location("umi_directed_release312", Path(__file__).with_name("release312_directed_evidence.py"))
+directed = importlib.util.module_from_spec(_directed_spec)
+_directed_spec.loader.exec_module(directed)
+
 PLUGIN_ID = "win32_PaddleOCRv6_CUDA"
 PUBLIC_REPOSITORIES = {
     "host": "https://github.com/Dominic485649/UMI-OCR",
@@ -32,6 +39,9 @@ METADATA_NAMES = {
 MANUAL_CHECKS = {"full_desktop_capture", "manual_hdr_acceptance", "mixed_monitor_hdr_sdr"}
 AUTOMATED_CHECKS = {"base_tests", "combined_tests", "gui", "tray", "gpu_workflows", "gpu_workflow_log"}
 STARTUP_SCOPE = "cuda-startup-hotfix"
+BASE_CAPTURE_SCOPE = "base-3.1.1-no-further-capture-tests"
+BASE_CAPTURE_PAYLOAD = {"files": 1866, "sha256": "51ccc30910c0d83cdb9401884901679aa9511ab1ad44e84ef971aa99a3289fbe"}
+BASE_APPROVED_NOTES_SHA256 = "81ffb8e031edf25321471b525420952b9a81fa598a011dea0d203004d2e94079"
 STARTUP_AUTOMATED_CHECKS = {"startup_unit_tests", "gpu_startup_matrix"}
 STARTUP_TEST_SOURCES = {
     "tests/test_release_gate_inputs.py", "tests/test_release_evidence_status.py",
@@ -211,6 +221,16 @@ def public_tag(url: str, tag: str, commit: str, *, cwd: Path) -> dict:
     return refs
 
 
+def _checked_git_blob(checkout: Path, oid: bytes, maximum: int) -> bytes:
+    size_text = _git(["cat-file", "-s", oid.decode("ascii")], cwd=checkout).strip()
+    if not size_text.isdigit() or not 0 < int(size_text) <= maximum:
+        raise ValueError("public source metadata/blob exceeds its size budget")
+    content = _git(["cat-file", "blob", oid.decode("ascii")], cwd=checkout)
+    if len(content) != int(size_text):
+        raise ValueError("public source Git blob changed or was truncated")
+    return content
+
+
 def git_source_matches(checkout: Path, commit: str, source: dict[str, str]) -> None:
     if not checkout.is_absolute() or not checkout.is_dir():
         raise ValueError("source receipt requires an existing absolute checkout path")
@@ -228,9 +248,36 @@ def git_source_matches(checkout: Path, commit: str, source: dict[str, str]) -> N
         if filename in objects:
             raise ValueError("duplicate public source path")
         objects[filename] = oid
-    if set(objects) != set(source):
+    ordinary = dict(source)
+    if chunks.SOURCE_INDEX in objects:
+        if chunks.SOURCE_INDEX in source:
+            raise ValueError("canonical source must contain original archives, not a chunk index")
+        index_bytes = _checked_git_blob(checkout, objects[chunks.SOURCE_INDEX], chunks.INDEX_LIMIT)
+        try:
+            index = chunks.parse_index(index_bytes, "source")
+        except chunks.layout.LayoutError as exc:
+            raise ValueError("public source chunk paths are unsafe") from exc
+        physical = {chunks.SOURCE_INDEX}
+        for item in index["files"]:
+            name = item["path"]
+            if ordinary.pop(name, None) != item["sha256"]:
+                raise ValueError("chunked public source is absent or differs from canonical source")
+            physical.update(part["path"] for part in item["parts"])
+        if set(objects) != set(ordinary) | physical:
+            raise ValueError("public chunked source has missing or extra physical members")
+        for item in index["files"]:
+            checksum, total = hashlib.sha256(), 0
+            for part in item["parts"]:
+                content = _checked_git_blob(checkout, objects[part["path"]], chunks.POLICIES["source"]["part"])
+                if len(content) != part["bytes"] or hashlib.sha256(content).hexdigest() != part["sha256"]:
+                    raise ValueError("public Git source chunk size or SHA256 differs")
+                checksum.update(content)
+                total += len(content)
+            if total != item["bytes"] or checksum.hexdigest() != item["sha256"]:
+                raise ValueError("reconstructed public Git source differs from canonical source")
+    elif set(objects) != set(source):
         raise ValueError("packaged source member set differs from the public commit")
-    names = sorted(source)
+    names = sorted(ordinary)
     content = _git(["cat-file", "--batch"], cwd=checkout, input_data=b"".join(objects[name] + b"\n" for name in names))
     offset = 0
     for name in names:
@@ -483,8 +530,92 @@ def verified_startup_exception(current, startup=None) -> bool:
             all(accepted.get(name) is True for name in ("program_review_approved", "release_notes_approved", "publish_with_untested_ocr")))
 
 
+def verified_base_capture_waiver(current) -> bool:
+    """仅本次已审3.1.1本体可停止截图实测，不放宽GPU或其它组件状态。"""
+    if not isinstance(current, dict):
+        return False
+    acceptance = current.get("user_acceptance")
+    binding = current.get("binding")
+    return (current.get("validation_scope") == BASE_CAPTURE_SCOPE and current.get("artifact_kind") == "base" and
+            current.get("release_version") == "3.1.1" and current.get("status") == "ACCEPTED_WITH_LIMITATIONS" and
+            current.get("verified") is True and current.get("publication_authorized") is True and
+            isinstance(binding, dict) and _same_binding(binding.get("payload"), BASE_CAPTURE_PAYLOAD) and
+            current.get("manual_checks") == {name: "NOT_RUN" for name in MANUAL_CHECKS} and
+            isinstance(current.get("unverified_scenarios"), list) and
+            all(isinstance(name, str) for name in current["unverified_scenarios"]) and
+            len(current["unverified_scenarios"]) == len(MANUAL_CHECKS) and set(current["unverified_scenarios"]) == MANUAL_CHECKS and
+            isinstance(acceptance, dict) and _same_binding(acceptance.get("binding"), binding) and
+            acceptance.get("published_components") == ["base"] and
+            acceptance.get("original_approved_notes_sha256") == BASE_APPROVED_NOTES_SHA256 and
+            all(acceptance.get(name) is True for name in ("program_review_approved", "release_notes_approved",
+                "capture_tests_cancelled", "cuda_publication_cancelled")) and
+            acceptance.get("hdr_capture_success") is not True)
+
+
+def _verify_base_capture_waiver(record, kind, binding, staging, authorized, automated):
+    identity = read_json(staging / "UmiOCR-data/about.json").get("version")
+    version = ".".join(str(identity.get(key, "")) for key in ("major", "minor", "patch")) if isinstance(identity, dict) else identity
+    if (kind != "base" or version != "3.1.1" or not authorized or
+            not _same_binding(binding.get("payload"), BASE_CAPTURE_PAYLOAD)):
+        raise ValueError("The capture waiver only covers the unchanged, reviewed 3.1.1 base payload")
+    plugins = staging / "UmiOCR-data/plugins"
+    if ((plugins.exists() and (not plugins.is_dir() or any(plugins.iterdir()))) or
+            (staging / "source/UmiOCR-data/plugins" / PLUGIN_ID).exists() or
+            (staging / "source/build/windows/CudaWorker").exists()):
+        raise ValueError("The base-only publication must not contain CUDA execution or implementation sources")
+    acceptance = record.get("user_acceptance")
+    if not isinstance(acceptance, dict):
+        raise ValueError("Current base review and capture-test cancellation evidence is missing")
+    if "hdr_capture_success" in acceptance and acceptance["hdr_capture_success"] is not False:
+        raise ValueError("Cancelling capture tests must not invent HDR success")
+    fields = ("source", "program_review_quote", "release_notes_quote", "publication_quote", "scope_change_quote")
+    if any(not isinstance(acceptance.get(name), str) or not acceptance[name].strip() for name in fields):
+        raise ValueError("Original base review/publication and scope-change quotes are required")
+    quote = acceptance["scope_change_quote"].lower()
+    if not all(word in quote for word in ("cuda", "不发布", "截图", "不再测试")):
+        raise ValueError("The original user quote must cancel CUDA publication and further capture tests")
+    for name, noun in (("program_review_quote", "程序"), ("release_notes_quote", "文案")):
+        text = acceptance[name]
+        if noun not in text or not any(word in text for word in ("通过", "同意", "批准")) or re.search(r"不(?:同意|批准|通过)|未(?:同意|批准|通过)|拒绝|暂不", text):
+            raise ValueError("The original main program and notes approval must remain explicit")
+    if "3.1.1" not in acceptance["publication_quote"] or "发布" not in acceptance["publication_quote"]:
+        raise ValueError("The original 3.1.1 publication request is required")
+    locator = acceptance["source"]
+    if (locator.startswith(("/", chr(92))) or any(letter + ":" + separator in locator
+            for letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" for separator in ("/", chr(92)))):
+        raise ValueError("The public decision locator must not expose a host filesystem path")
+    original_notes, public_original = evidence_file(acceptance.get("original_approved_notes"))
+    notes, public_notes = evidence_file(acceptance.get("release_notes"))
+    confirmation, public_confirmation = evidence_file(acceptance.get("record"))
+    if digest(original_notes) != BASE_APPROVED_NOTES_SHA256:
+        raise ValueError("The original reviewed main release notes have changed")
+    note_text = notes.read_text("utf-8-sig", errors="strict")
+    if ("本次仅发布主程序" not in note_text or "CUDA 不发布" not in note_text or
+            "NOT_RUN" not in note_text or "Umi-OCR-Plugin_" in note_text):
+        raise ValueError("Current release notes must disclose base-only publication and untested capture limits")
+    confirmation_text = confirmation.read_text("utf-8-sig", errors="strict")
+    required = [acceptance[name] for name in fields if name != "source"]
+    required += [BASE_CAPTURE_SCOPE, "3.1.1", binding["payload"]["sha256"], binding["source"]["sha256"],
+                 BASE_APPROVED_NOTES_SHA256, digest(notes), *MANUAL_CHECKS, "NOT_RUN"]
+    if any(text not in confirmation_text for text in required):
+        raise ValueError("The original decision record lacks its quotes, exact notes, source/payload or untested scope")
+    public_acceptance = {name: acceptance[name] for name in (*fields, "binding", "published_components",
+        "program_review_approved", "release_notes_approved", "capture_tests_cancelled", "cuda_publication_cancelled") if name in acceptance}
+    public_acceptance.update(original_approved_notes_sha256=digest(original_notes), original_approved_notes=public_original,
+                             release_notes=public_notes, record=public_confirmation, hdr_capture_success=False)
+    result = {"status":record["status"], "verified":True, "publication_authorized":authorized,
+        "validation_scope":BASE_CAPTURE_SCOPE, "artifact_kind":kind, "release_version":version, "binding":binding,
+        "automated_evidence":automated, "manual_checks":record.get("manual_checks"),
+        "unverified_scenarios":record.get("unverified_scenarios"), "user_acceptance":public_acceptance, "blockers":[]}
+    if not verified_base_capture_waiver(result):
+        raise ValueError("The base-only waiver must preserve all manual NOT_RUN limits and literal current approvals")
+    return result
+
+
 def verify_current_source(record, kind: str, binding: dict, staging: Path, authorized: bool) -> dict:
-    if isinstance(record, dict) and record.get("validation_scope", "full") != "full":
+    if isinstance(record, dict) and record.get("validation_scope") == directed.SCOPE:
+        return directed.verify(record, kind, binding, staging, authorized, globals())
+    if isinstance(record, dict) and record.get("validation_scope", "full") not in {"full", BASE_CAPTURE_SCOPE}:
         if record.get("validation_scope") != STARTUP_SCOPE:
             raise ValueError("Unknown current-source validation scope")
         return _verify_startup_current_source(record, kind, binding, staging, authorized)
@@ -529,6 +660,8 @@ def verify_current_source(record, kind: str, binding: dict, staging: Path, autho
         raise ValueError("manual coverage must preserve explicit PASS/NOT_RUN for each named check")
     if not isinstance(untested, list) or any(not isinstance(item, str) or not item.strip() for item in untested):
         raise ValueError("unverified scenarios must be an explicit list")
+    if record.get("validation_scope") == BASE_CAPTURE_SCOPE:
+        return _verify_base_capture_waiver(record, kind, binding, staging, authorized, verified_evidence)
     acceptance = None
     if record["status"] == "ACCEPTED_WITH_LIMITATIONS":
         acceptance = record.get("user_acceptance")

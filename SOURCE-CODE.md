@@ -1,4 +1,14 @@
-# Umi-OCR 3.0.3 Corresponding Source and Delivery Contract
+# Umi-OCR Corresponding Source and Delivery Contract
+
+## 本次 3.1.2 交付与大源码归档
+
+本次已授权公开主程序 3.1.2、CUDA 插件 3.0.5 和 PaddleVL 插件 3.1.2，各自保留完整对应源码、构建脚本、锁定依赖及许可材料。下文 3.0.3 的范围与日期记录只描述当时状态，不代替本次实际门禁与批准。
+
+程序归档内的 `source/` 和源码 ZIP 始终包含完整原始第三方源码归档。公开 Git 中超过普通 Git 单文件上限的第三方归档可使用 `.source-chunks.json` 与逐块原始字节表示；索引列出逻辑路径、顺序、大小及每块/总文件 SHA256。源码门禁从指定 commit 的实际 Git blobs 重组校验，与包内完整文件逐字节相符；不是省略源码、Git LFS 指针或仅校验一个版本号。
+
+如公开源码目录含该索引，可在该目录运行 `python -I build/tools/chunked_files.py restore --root . --purpose source` 恢复原始归档。工具验证每块和总哈希，只创建新目标，不覆盖现存文件。二进制发行包内的对应源码已经完整，无需恢复分块。
+
+## 历史 3.0.3 契约
 
 ## Product and source scope
 
