@@ -1,5 +1,5 @@
 {
-  "scope": "实际本组件共有的MPL来源，不含本体Qt或模型",
+  "scope": "实际VL依赖的MPL来源",
   "files": [
     {
       "name": "certifi-2026.6.17.tar.gz",

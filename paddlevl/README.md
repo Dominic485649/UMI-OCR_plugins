@@ -1,29 +1,29 @@
-# PaddleVL 插件 3.1.2
+# PaddleOCR-VL 1.6 插件
 
-这是 Umi-OCR 的独立文档与图片识别插件，对应 Umi-OCR 3.1.2／Host API 2.9，兼容声明为 `>=2.9,<3.0`。插件、本体和 CUDA 各自维护版本，不要求同版。
+当前源码版本 **3.1.3**，独立于主程序和 CUDA 插件，要求 Host API `>=2.9,<3.0`。本轮为本地候选，不据此宣称已公开发布。[主项目](https://github.com/Dominic485649/UMI-OCR) · [公开插件](https://github.com/Dominic485649/UMI-OCR_plugins)
 
-- [主程序 3.1.2](https://github.com/Dominic485649/UMI-OCR/releases/tag/v3.1.2)
-- [PaddleVL 3.1.2](https://github.com/Dominic485649/UMI-OCR_plugins/releases/tag/v3.1.2)
-- [CUDA 3.0.5](https://github.com/Dominic485649/UMI-OCR_plugins/releases/tag/v3.0.5)
+## 能力与模型
 
-实际发布状态、文件与摘要以对应 Release 为准。先完整解压主程序，再将 PaddleVL 归档解压到同一根目录，不覆盖正在运行的程序。超过附件上限时，下载全部分卷、`archive-chunks.json` 和 `Restore-ReleaseArchive.ps1`，使用本体附带的 Python／恢复工具还原完整 `.tar.xz`；恢复会校验每块及完整归档，拒绝覆盖已有文件。
+- 图片 OCR 使用官方 v1.6 Spotting，返回文字与四点多边形；模型不提供置信度时保持未知，不伪造百分比。
+- 完整文档解析使用 PP-DocLayoutV3 与官方 v1.6 pipeline，提供 Markdown、结构化 JSON、阅读顺序和资源；默认通过 HTTP 使用，文档 UI 默认不展示。
+- 两项能力共用插件内置 llama.cpp 服务，默认端口 9931，仅监听回环，不接管外部服务；已显式配置的其它端口仍有效。
+- 主 GGUF、视觉投影 GGUF 和版面模型可手动导入，或在模型路径行点击“下载”获取固定 revision 的官方文件。下载后放到**用户实际安装的本插件根目录 `model/`**；不在启动时自动下载，不改原始权重、不另选量化档、不搬迁外部模型。
+- 下载显示进度、支持取消，完整校验后回填；同名冲突不覆盖，权限失败不静默换目录。模型下载由支持该功能的主程序完成，不触发推理服务预热。
 
-## 能力与配置
+## 安装与分发
 
-PaddleOCR-VL 1.6 Spotting 用于图片 OCR，输出文本与多边形；模型不提供识别分数时保留未知置信度，不伪造百分比。结构化文档解析默认通过 `/api/document/*` 提供，不展示文档任务页。HTTP 的启用、监听与鉴权仍由用户配置，不会自动打开。
+先完整解压主程序，再将 PaddleVL `.tar.xz` 解压到同一软件根目录，插件位于 `UmiOCR-data/plugins/win32_PaddleOCRVL_1_6/`。更新前正常退出，保留用户配置、任务资源与 `model/`。
 
-两个能力共享一个插件级本地 `llama-server` 和用户选择的 GGUF／mmproj。服务默认端口为 `9931`，已有明确配置的其他端口不强制迁移。端口占用时不接管外部程序。模型、上下文、GPU 层数及启动／空闲策略在共享模型设置中维护。
+最简运行归档包含插件、内置运行时、私有依赖和必要许可/源码指引，不附带完整源码与审计树。对应源码独立提供，见 [SOURCE-CODE.md](SOURCE-CODE.md)。本轮不捆绑 GGUF、mmproj 或版面权重；用户可按需从官方获取，模型按各自许可使用。
 
-插件附带锁定的 llama.cpp 及 Python 运行依赖，但不含 GGUF、mmproj 或 PP-DocLayoutV3 权重；由用户自行提供并确认适用许可。不会下载、修改或量化原模型。Windows x64 是本次目标，GPU／驱动仍需通过实际检查，不以目标架构列表保证所有设备兼容。
+## 构建与验证
 
-## 本次修复及验证边界
+`Build-Plugin.ps1` 使用显式 `VendorRoot`、`RuntimeLock` 和 `LlamaRuntimeBundle`，复用已核对的依赖/服务闭包；不会静默从宿主安装依赖。每轮使用新的 `StagingRoot`。
 
-修复文档坐标映射、Markdown／公式／代码预览、跨页图片重复、任务结束后的安全模型切换和图片格式对齐；补齐跨页表格所需的 Beautiful Soup／SoupSieve 依赖闭包。界面输出统一 Markdown，HTTP TXT 兼容为同内容 `.md.txt`。
+默认 `DistributionLayout=minimal`，完整输入保存在 staging；最简运行目录默认为 `<StagingRoot>-runtime`，分包回执位于 `build/audit/`。`SkipArchive` 只准备，不授予公开发布权限。构建按宿主 Python ABI（当前 3.13.16），不单独将 worker 升到缺少 Paddle GPU wheel 的 ABI。
 
-已执行的真实 PDF HTTP／GPU 定向检查覆盖选页、整篇、页面标识、坐标边界及 MD/TXT 内容一致性；具体源与载荷绑定由本次正式交付记录说明。截图捕获、HDR、混屏／多屏继续 NOT_RUN；没有用户原始文档，不声称所有文档、模型、硬件或历史完整矩阵都已重测。
+针对本轮改动验证模型声明、宿主下载/配置、分包闭包、真实重装和代表性运行；截图/HDR/混屏继续 NOT_RUN，不将旧记录或元数据探测冒充新权重完整下载。
 
-## 对应源码与许可
+## 许可
 
-适配器、QML、构建脚本、测试、依赖锁和补丁完整保留在本目录。固定原生运行时的完整适用源码、构建输入／结果、来源及许可保留于安装后的 `UmiOCR-data/plugins/win32_PaddleOCRVL_1_6/resources/llama.cpp/`。公开对应源码位于插件仓库的 `v3.1.2` 标签，适配器在 `paddlevl/`，原生来源材料在 `paddlevl-native/`。
-
-适配器按 AGPL-3.0-or-later 提供，见 `LICENSE` 与 `COPYING`；运行依赖遵守各自许可。收费交付或支持不限制接收者复制、修改或再分发覆盖源码的权利。未新增模型或商标授权主张，亦不声称第三方专有运行库属于 AGPL。
+插件适配器采用 AGPL-3.0-or-later，保留 [LICENSE](LICENSE)、[COPYING](COPYING) 与第三方声明。收费交付或支持不限制接收者复制、修改和再分发覆盖内容的权利。运行库、NVIDIA 与模型分别适用其条款，不新增模型/商标授权主张。

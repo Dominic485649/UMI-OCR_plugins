@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "win32_PaddleOCRVL_1_6",
   "name": "PaddleOCR-VL 1.6",
-  "version": "3.1.2",
+  "version": "3.1.3",
   "host_api": ">=2.9,<3.0",
   "platform": [
     "win32"
@@ -13,7 +13,7 @@
   "vendor": "Umi-OCR Plugin (independent source delivery)",
   "license": "AGPL-3.0-or-later",
   "homepage": "https://github.com/Dominic485649/UMI-OCR",
-  "description": "PaddleOCR-VL 1.6 提供文字识别与完整文档解析，共用插件内置 llama.cpp。GGUF、mmproj 与版面模型由用户导入；CUDA 兼容目标为 Turing sm75 及以后，不提供 CPU 回退。实际支持须通过 GPU 与驱动检查。",
+  "description": "PaddleOCR-VL 1.6 提供文字识别与完整文档解析，共用插件内置 llama.cpp。GGUF、mmproj 与版面模型支持手动导入或官方直链下载；CUDA 兼容目标为 Turing sm75 及以后，不提供 CPU 回退。实际支持须通过 GPU 与驱动检查。",
   "i18n": "i18n.csv",
   "services": [
     {
@@ -28,10 +28,10 @@
           "optionsList": [
             [
               "user-supplied",
-              "内置运行时，用户导入模型"
+              "内置运行时，导入或下载模型"
             ]
           ],
-          "toolTip": "插件包含固定版本 llama.cpp 运行时，仅监听 127.0.0.1。GGUF、mmproj 与版面模型仍由用户导入，不下载或修改模型。端口被外部程序占用时不会接管。"
+          "toolTip": "插件包含固定版本 llama.cpp 运行时，仅监听 127.0.0.1。模型可手动导入，或点击下载按钮从官方直链获取到当前已安装插件的 model/。不会在启动时自动下载，不修改已有模型。端口被外部程序占用时不会接管。"
         },
         "service": {
           "title": "本地服务",
@@ -44,6 +44,7 @@
             "isInt": true
           },
           "mainModel": {
+            "download": "paddlevl-main",
             "title": "主 GGUF",
             "type": "file",
             "default": "",
@@ -55,6 +56,7 @@
             "toolTip": "请选择 PaddleOCR-VL-1.6-GGUF.gguf。下载：https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6-GGUF/tree/main 。该名称仅作提示，不会按文件名拒绝内容合法的 GGUF 模型。"
           },
           "mmprojModel": {
+            "download": "paddlevl-mmproj",
             "title": "视觉投影 GGUF",
             "type": "file",
             "default": "",
@@ -232,6 +234,7 @@
             "title": "版面检测",
             "type": "group",
             "layoutModelDir": {
+              "download": "paddlevl-layout",
               "title": "版面检测模型目录",
               "type": "file",
               "default": "",
@@ -294,6 +297,40 @@
       "intro": "# 文档解析\n\n使用 PP-DocLayoutV3 和 PaddleOCR-VL 1.6 恢复页面结构，输出 Markdown 和结构化 JSON，预览支持公式与代码高亮。插件内置模型服务运行时，模型由用户导入。"
     }
   ],
+  "model_downloads": {
+    "paddlevl-main": {
+      "title": "PaddleOCR-VL 1.6 主 GGUF",
+      "kind": "file",
+      "destination": "PaddleOCR-VL-1.6-GGUF.gguf",
+      "files": [{
+        "name": "PaddleOCR-VL-1.6-GGUF.gguf",
+        "url": "https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6-GGUF/resolve/511b09642bb324401f15f97cc23bc67e8f0a291d/PaddleOCR-VL-1.6-GGUF.gguf",
+        "bytes": 935769056,
+        "sha256": "f3ae46ec885050acf4b3d31944431e1fd90d50664fb09126af4a3c050ba14ee8"
+      }]
+    },
+    "paddlevl-mmproj": {
+      "title": "PaddleOCR-VL 1.6 视觉投影 GGUF",
+      "kind": "file",
+      "destination": "PaddleOCR-VL-1.6-GGUF-mmproj.gguf",
+      "files": [{
+        "name": "PaddleOCR-VL-1.6-GGUF-mmproj.gguf",
+        "url": "https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6-GGUF/resolve/511b09642bb324401f15f97cc23bc67e8f0a291d/PaddleOCR-VL-1.6-GGUF-mmproj.gguf",
+        "bytes": 881770560,
+        "sha256": "204d757d7610d9b3faab10d506d69e5b244e32bf765e2bab2d0167e65e0a058a"
+      }]
+    },
+    "paddlevl-layout": {
+      "title": "PP-DocLayoutV3 版面模型",
+      "kind": "directory",
+      "destination": "PP-DocLayoutV3",
+      "files": [
+        {"name": "inference.json", "url": "https://huggingface.co/PaddlePaddle/PP-DocLayoutV3/resolve/241f8bdfc77a7c7bee915a5057aaee58c235a8d3/inference.json", "bytes": 1196890, "sha256": "2b68367c5b312a03de5a6e1642c597c8f95165a7e40cd59c6700cf4a5042f4fd"},
+        {"name": "inference.pdiparams", "url": "https://huggingface.co/PaddlePaddle/PP-DocLayoutV3/resolve/241f8bdfc77a7c7bee915a5057aaee58c235a8d3/inference.pdiparams", "bytes": 130806572, "sha256": "70bd316b0582769ec968829fd1feb1a6a58b7c941b938327e551b6b12b45c137"},
+        {"name": "inference.yml", "url": "https://huggingface.co/PaddlePaddle/PP-DocLayoutV3/resolve/241f8bdfc77a7c7bee915a5057aaee58c235a8d3/inference.yml", "bytes": 1482, "sha256": "506fcfac13b3b546ae40d7886b44126420f392adb694e3f8bb6a6286a1f90fdc"}
+      ]
+    }
+  },
   "health": "health:check",
   "runtime": {
     "priority": "append",

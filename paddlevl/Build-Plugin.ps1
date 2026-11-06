@@ -9,6 +9,9 @@ param(
     [string]$RuntimeLock = "",
     [string]$LlamaRuntimeBundle = "",
     [ValidateSet("loose", "stored")][string]$RuntimeLayout = "loose",
+    [ValidateSet("minimal", "complete")][string]$DistributionLayout = "minimal",
+    [string]$MinimalRoot = "",
+    [string]$DistributionRecord = "",
     [switch]$SkipTests,
     [switch]$SkipArchive,
     [switch]$LocalCandidate
@@ -417,7 +420,20 @@ $runtimeFiles = Get-ChildItem -Recurse -File -LiteralPath $pluginRoot | ForEach-
 @{ pluginId = $pluginName; files = @($runtimeFiles) } |
     ConvertTo-Json -Depth 4 | Set-Content -Encoding utf8 (Join-Path $pluginRoot "runtime.lock.json")
 
-if (-not $SkipArchive) {
+if ($DistributionLayout -eq "minimal") {
+    if (-not $MinimalRoot) { $MinimalRoot = "$StagingRoot-runtime" }
+    if (-not $DistributionRecord) { $DistributionRecord = Join-Path $BuildRoot "audit/minimal-vl-$([guid]::NewGuid().ToString('N')).json" }
+    & $Python -I -B (Join-Path $HostRepoRoot "build/tools/prepare_minimal_distribution.py") prepare --component vl --root $StagingRoot --output $MinimalRoot --report $DistributionRecord
+    if ($LASTEXITCODE -ne 0) { throw "PaddleVL 最简运行覆盖层或外置材料绑定失败。" }
+    if (-not $SkipArchive) {
+        $candidateSuffix = if ($LocalCandidate) { "-local-candidate" } else { "" }
+        $archive = Join-Path $OutputRoot "Umi-OCR-Plugin_v${Version}${candidateSuffix}_Windows_x64_PaddleVL.tar.xz"
+        & $Python -I -B (Join-Path $HostRepoRoot "build/tools/package_tar_xz.py") create --root $MinimalRoot --output $archive --integrity-output "$archive.integrity.json"
+        if ($LASTEXITCODE -ne 0) { throw "最简 PaddleVL 归档失败。" }
+    }
+    Write-Host "最简运行目录：$MinimalRoot；完整源码/证据目录：$StagingRoot；清单：$DistributionRecord"
+}
+elseif (-not $SkipArchive) {
     $candidateSuffix = if ($LocalCandidate) { "-local-candidate" } else { "" }
     $archive = Join-Path $OutputRoot "Umi-OCR-Plugin_PaddleOCR-VL_v${Version}${candidateSuffix}_Windows_x64_CUDA12.6.7z"
     if (Test-Path -LiteralPath $archive) { Remove-Item -Force -LiteralPath $archive }

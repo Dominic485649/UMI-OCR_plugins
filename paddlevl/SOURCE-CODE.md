@@ -1,20 +1,32 @@
-# PaddleVL 3.1.2 对应源码交付
+# PaddleOCR-VL 3.1.3 local-candidate source notice
 
-本组件运行代码及依赖复用已审 3.1.2 构建，不重新编译或更换模型。原始构建使用 `Build-Plugin.ps1 -LocalCandidate`；本次在全新交付目录补齐公开来源、准确文案及实际源码／运行载荷绑定，再单独核验正式交付条件。原始本地构建记录、归档及失败证据不改写为新的通过记录。
+This archive retains the minimal corresponding plugin source under source/;
+it does not contain GGUF, mmproj, or PP-DocLayoutV3 weights.
+The fixed llama.cpp runtime, its licenses and source/provenance are included in
+`win32_PaddleOCRVL_1_6/resources/llama.cpp/` inside the installable plugin.
 
-## 包内材料
+- Plugin repository commit: 0fd11167573f08de7629a7fae01d1a9fe3501244
+- Uncommitted source changes included: True. The commit alone is not the artifact identity; retained source files and runtime hashes bind this local candidate.
+- Local tag: v3.1.3 (local tag pending at build time)
+- Upstream/reference repository: https://github.com/Dominic485649/Umi-OCR-Plugin
+- Public source URL: **PENDING** (no user-owned 3.1.3 remote is published)
+- Build entry: Build-Plugin.ps1 -LocalCandidate
+- Runtime lock SHA-256: f8dfac1cca93dee10a4b309a75f3d2002e7c7ce4b2314c249c8d544601d0d683
+- Bundled llama.cpp manifest SHA-256: a7722c76d3e452de9de7e0752c6630ebae96cc4611f23553c5d6460d2900b18d
+- Bundled llama.cpp build identity, exact source archive, build argv, binary
+  origins and license terms: `resources/llama.cpp/source/` and `LICENSES/`.
+- VL extra lock SHA-256: 7688687015600573b8d471e139180d8f79bb00edd68e4e64bc9dbcd3a9b575f5
+- PaddleOCR 3.7.0 wheel: https://pypi.org/project/paddleocr/3.7.0/
+  (SHA-256: c0f0a81ad4112727f30c6fcf986ac0ef6a120d31ee0991a01fae0357ee32d338); restored PaddleOCRVL files come from this
+  exact wheel.
+- PaddleX 3.7.2 wheel: https://pypi.org/project/paddlex/3.7.2/
+  (SHA-256: f1678bf650bbaccfd8f0d4e49d0ae631b4685c829fdae6e802ccd90d4fcb9a7f); the VL package contains this independent
+  locked PaddleX runtime after the recorded compatibility patch.
+- PaddleX VL source patch: tools/patch_paddlex_vl_3_7_2.py narrows the upstream
+  `ocr` gate to the bundled `ocr-core` feature for the llama.cpp-server
+  path; patched file SHA-256: 88b5e26e05927be0dd1ab6b1a9e6a59be0bb5d416797399cb5382474b086ea64.
+- Other third-party source URLs/revisions/hashes: recorded by the included
+  lock and package metadata; no unpinned source is implied.
 
-- 本目录的 `source-records/` 完整保留适配器、QML、构建脚本、测试、依赖锁、PaddleX 补丁与许可说明。该目录不是用户状态目录。
-- llama.cpp 固定提交为 `74bca3950054eed1795f525cb9cf06bfe796492d`。完整适用源码、构建脚本、输入／结果和来源材料位于安装后的 `UmiOCR-data/plugins/win32_PaddleOCRVL_1_6/resources/llama.cpp/source/`，相邻 `LICENSES/` 保留许可和专有运行库条款。
-- 原生源码 TAR SHA256 为 `c71b9c01e263232c854dea1c9992d6e1a42b9e96d4a687e05f1f0c0fc13dae12`。公开 Git 仅对该原 TAR 做无损 xz 表示；解压后的总长度和 SHA256 必须与包内 TAR 相同，不是另一个来源快照。
-- 分发包不含 GGUF、mmproj 或版面模型权重，未获得或宣称额外模型／商标许可。
-
-## 公开来源
-
-- 仓库：https://github.com/Dominic485649/UMI-OCR_plugins
-- 标签：`v3.1.2`
-- 适配器对应源码：`paddlevl/`
-- 固定原生运行时来源和许可：`paddlevl-native/`
-- 具体不可变 commit、匿名标签校验结果、逐文件清单及实际交付验证由本次 `PUBLIC_DELIVERY.json` 记录；此说明本身不替代来源门禁通过。
-
-本包中的 Python worker、原生服务及各自依赖按其声明的进程边界通信。主程序与 CUDA 插件保持各自独立的版本、源码、许可和正式验收。开源许可及第三方专有条款分别适用，不以版本一致、源码链接或用户发布同意替代许可事实。
+The candidate is not approved for public release until the exact source URL is
+available without an additional fee.
