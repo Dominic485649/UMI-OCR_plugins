@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "verification_date": "2026-11-22",
+  "artifact_kind": "gpu",
+  "gates": {
+    "runtime_vendor": "PASS",
+    "paddle_models": "PASS",
+    "cuda": "BLOCK",
+    "cudnn": "BLOCK",
+    "opencv": "PASS",
+    "ffmpeg": "NOT_INCLUDED",
+    "mpl": "PASS",
+    "agpl_nvidia": "BLOCK",
+    "cpu_ocr": "NOT_INCLUDED",
+    "document_models": "NOT_INCLUDED",
+    "gpu_ocr_e2e": "BLOCK",
+    "source_delivery": "BLOCK",
+    "current_source_e2e": "BLOCK",
+    "pymupdf_corresponding_source": "NOT_INCLUDED"
+  },
+  "public_prerelease_allowed": false,
+  "validation_errors": [],
+  "local_candidate": true,
+  "source_delivery": {
+    "status": "BLOCK",
+    "verified": false,
+    "previous_recorded_status": null,
+    "blockers": [
+      "A fresh --release-gates input and successful verification are required."
+    ]
+  },
+  "current_source_e2e": {
+    "status": "BLOCK",
+    "verified": false,
+    "previous_recorded_status": null,
+    "blockers": [
+      "A fresh --release-gates input and successful verification are required."
+    ]
+  },
+  "dependency_source_lock": {
+    "path": "build/sources-windows-cu129.lock.json",
+    "sha256": "4773e52913bee9f81b50490d4bd592609c340da8ceaeb249203f612fb957f1de"
+  }
+}
